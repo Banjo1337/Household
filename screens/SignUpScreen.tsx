@@ -25,6 +25,9 @@ export default function SignUpScreen(Props: NativeStackScreenProps<RootStackPara
   });
   const dispatch = useAppDispatch();
 
+  //on submit something something...med RTK query
+  //const reply: SignUpReplyType = await signUpHttpRequestAsync(dispatch, { username, email, password });
+
   return (
     <View>
       <Title>Hello from SignUpScreen</Title>
