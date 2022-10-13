@@ -2,9 +2,11 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { View } from "react-native";
 import { Title } from "react-native-paper";
 import { RootStackParamList } from "../NavContainer";
-import { SignUpReplyType } from "../features/authentication/authenticationTypes";
+import { SignUpReply } from "../features/authentication/authenticationTypes";
+import { useAppDispatch } from "../hooks/reduxHooks";
 import { useState } from "react";
 
+//Skall nog inte användas. Skall tjuvkolla på reactnative forms i puppy appen. :)
 type SignUpFormType = {
   [fieldName: string]: string;
 };
