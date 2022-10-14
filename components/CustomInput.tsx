@@ -12,6 +12,7 @@ interface Props {
     maxLength?: number;
     keyboardType?: KeyboardTypeOptions;
     defaultValue?: string;
+    value?: string
 }
 const CustomInput = ({
     control,
@@ -30,7 +31,7 @@ const CustomInput = ({
             rules={rules}
             render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                 <>
-                    <View style={[styles.container, { borderColor: error ? "red" : "#e8e8e8" }]}>
+                    <View style={[styles.container, { borderColor: error ? "red" : "white" }]}>
                         <TextInput
                             defaultValue={defaultValue}
                             value={value}
@@ -44,6 +45,7 @@ const CustomInput = ({
                         />
                     </View>
                     {error && <Text style={{ color: "red", alignSelf: "stretch" }}>{error.message}</Text>}
+
                 </>
             )}
         />
@@ -58,7 +60,7 @@ const styles = StyleSheet.create({
         minWidth: "100%",
         width: "100%",
 
-        borderColor: "#e8e8e8",
+        borderColor: "red",
         borderWidth: 1,
 
         borderRadius: 5,
