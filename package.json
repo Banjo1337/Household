@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "check": "eslint ."
+    "lint": "eslint .",
+    "lint:report": "eslint --output-file eslint_report.json --format json src"
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.13",
