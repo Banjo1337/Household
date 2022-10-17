@@ -1,21 +1,22 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import CustomInput from "../components/CustomInput";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
 import { RootStackParamList } from "../NavContainer";
 
-export default function SignUpScreen(
-  Props: NativeStackScreenProps<RootStackParamList, "SignUp">
-) {
+export default function SignUpScreen({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList>) {
   const { passwordVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
   const { control, handleSubmit, watch } = useForm({});
   const pwd = watch("password");
-  const onRegisterPressed = (data: any) => {
-    alert(data.username + data.password);
+  const onRegisterPressed = (data: FieldValues) => {
+    console.log(data.username + data.password);
+    navigation.navigate("CreateProfile");
   };
   const onRegisterFailed = () => {
     alert("Failed");
