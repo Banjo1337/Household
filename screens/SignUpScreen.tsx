@@ -39,13 +39,16 @@ export default function SignUpScreen(
           placeholder="Password"
           name="password"
           control={control}
-          secureTextEntry
+          secureTextEntry={passwordVisibility}
         />
+        <Pressable onPress={handlePasswordVisibility}>
+          <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
+        </Pressable>
         <CustomInput
           placeholder="Repeat password"
           name="passwordRepeat"
           control={control}
-          secureTextEntry
+          secureTextEntry={passwordVisibility}
           rules={{
             required: "Repeat password",
             validate: (value: any) => value === pwd || "Password not matching",
@@ -56,13 +59,6 @@ export default function SignUpScreen(
           onPress={handleSubmit(onRegisterPressed, onRegisterFailed)}
         >
           <Text>Register</Text>
-          <Pressable onPress={handlePasswordVisibility}>
-            <MaterialCommunityIcons
-              name={rightIcon}
-              size={22}
-              color="#232323"
-            />
-          </Pressable>
         </Pressable>
       </View>
     </ScrollView>
