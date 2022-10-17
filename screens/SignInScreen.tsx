@@ -6,20 +6,26 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import CustomInput from "../components/CustomInput";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
 import { RootStackParamList } from "../NavContainer";
+import useSecureStorage from "../hooks/useSecureStorage";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { postSignInThunk, selectAuthUserId, selectToken } from "../features/authentication/authenticationSlice";
 
-export default function SignInScreen({
-  navigation,
-}: NativeStackScreenProps<RootStackParamList>) {
-  const { passwordVisibility, rightIcon, handlePasswordVisibility } =
-    useTogglePasswordVisibility();
+export default function SignInScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
+  const dispatch = useAppDispatch();
+  const token = useAppSelector(selectToken);
+  const userId = useAppSelector(selectAuthUserId);
+  //const [token] = useSecureStorage("token", "");
+  const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
   const {
     control,
     handleSubmit,
-    formState: {},
+    //formState: {},
   } = useForm();
-  const onLoginPressed = (data: FieldValues) => {
-    console.log(data.username + data.password);
-    navigation.navigate("SelectProfile");
+  const OnLoginPressed = (data: FieldValues) => {
+    //console.log(data.username + data.password);
+    console.log("Dispatching");
+    dispatch(postSignInThunk({ username: data.username, password: data.password }));
+    //navigation.navigate("SelectProfile");
   };
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -28,26 +34,15 @@ export default function SignInScreen({
         <CustomInput placeholder="Username" name="username" control={control} />
         <View>
           <Pressable onPress={handlePasswordVisibility}>
-            <MaterialCommunityIcons
-              name={rightIcon}
-              size={22}
-              color="#232323"
-            />
+            <MaterialCommunityIcons size={22} color="#232323" />
           </Pressable>
-          <CustomInput
-            placeholder="Password"
-            name="password"
-            control={control}
-            secureTextEntry={passwordVisibility}
-          />
-          <Pressable
-            style={styles.pressable}
-            onPress={handleSubmit(onLoginPressed)}
-          >
+          <CustomInput placeholder="Password" name="password" control={control} secureTextEntry={passwordVisibility} />
+          <Pressable style={styles.pressable} onPress={handleSubmit(OnLoginPressed)}>
             <Text>Sign in</Text>
           </Pressable>
         </View>
       </View>
+      <Text style={styles.title}>token: {token}</Text>
     </ScrollView>
   );
 }
