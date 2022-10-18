@@ -69,7 +69,7 @@ export default function SelectProfileScreen({ navigation } : NativeStackScreenPr
                 </Pressable>
             </View>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
