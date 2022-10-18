@@ -1,13 +1,18 @@
+export interface ProfileState {
+    profile: Profile,
+    hasError: boolean,
+    error: string,
+}
+
 export interface Profile {
     id: string,
     alias: string,
+    avatar: string,
     color: string,
     isAdmin: boolean,
     pendingRequest: boolean,
     authUserId: string,
     householdId: string, 
-    hasError: boolean,
-    error: string
 }
 
 export interface ProfileCreateDto {
@@ -23,3 +28,18 @@ export interface ProfileEditDto {
     color?: string,
     pendingRequest?: boolean
 }
+
+export enum Avatars {
+    "fox" = "🦊",
+    "pig" = "🐷",
+    "frog" = "🐸",
+    "chicken" = "🐥",
+    "octopus" = "🐙",
+    "dolphin" = "🐬",
+    "owl" = "🦉",
+    "unicorn" = "🦄"
+}
+
+
+
+
