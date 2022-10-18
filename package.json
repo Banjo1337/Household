@@ -7,8 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "eslint ./*",
-    "lint_report": "eslint ./* --output-file eslint_report.json --format json"
+    "lint": "eslint *",
+    "lint_report": "eslint * --output-file eslint_report.json --format json"
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.13",
@@ -41,7 +41,6 @@
   "private": true,
   "eslintConfig": {
     "env": {
-      "browser": true,
       "es6": true,
       "node": true
     },
@@ -64,7 +63,7 @@
       "react-hooks"
     ],
     "rules": {
-      "no-inline-comments": "error",
+      "no-inline-comments": "warn",
       "react/react-in-jsx-scope": "off",
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
