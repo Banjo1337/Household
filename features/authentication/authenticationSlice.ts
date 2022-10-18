@@ -3,6 +3,7 @@ import { WritableDraft } from "immer/dist/internal";
 import { RootStateType } from "../../app/store";
 import useSecureStorage from "../../hooks/useSecureStorage";
 import { AuthenticationCredentials, SignInReply } from "./authenticationTypes";
+import * as SecureStore from "expo-secure-store";
 
 const BASE_URL = "https://household-backend.azurewebsites.net/api/V01/Authenticate/";
 
@@ -51,6 +52,7 @@ const authenticationSlice = createSlice({
       state.authUserId = action.payload.authUserId;
       state.token = action.payload.token;
       //SetTokenInSecureStorage(action.payload.token);
+      //SecureStore.setItemAsync(key, JSON.stringify(value)).catch((err) => console.log(err));
       state.hasError = false;
     });
     builder.addCase(postSignInThunk.rejected, (state, action) => {
