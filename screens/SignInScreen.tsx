@@ -7,15 +7,12 @@ import CustomInput from "../components/CustomInput";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
 import { RootStackParamList } from "../NavContainer";
 
-export default function SignInScreen({
-  navigation,
-}: NativeStackScreenProps<RootStackParamList>) {
-  const { passwordVisibility, rightIcon, handlePasswordVisibility } =
-    useTogglePasswordVisibility();
+export default function SignInScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
+  const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
   const {
     control,
     handleSubmit,
-    formState: {},
+    //formState: {},
   } = useForm();
   const onLoginPressed = (data: FieldValues) => {
     console.log(data.username + data.password);
@@ -28,22 +25,10 @@ export default function SignInScreen({
         <CustomInput placeholder="Username" name="username" control={control} />
         <View>
           <Pressable onPress={handlePasswordVisibility}>
-            <MaterialCommunityIcons
-              name={rightIcon}
-              size={22}
-              color="#232323"
-            />
+            <MaterialCommunityIcons size={22} color="#232323" />
           </Pressable>
-          <CustomInput
-            placeholder="Password"
-            name="password"
-            control={control}
-            secureTextEntry={passwordVisibility}
-          />
-          <Pressable
-            style={styles.pressable}
-            onPress={handleSubmit(onLoginPressed)}
-          >
+          <CustomInput placeholder="Password" name="password" control={control} secureTextEntry={passwordVisibility} />
+          <Pressable style={styles.pressable} onPress={handleSubmit(onLoginPressed)}>
             <Text>Sign in</Text>
           </Pressable>
         </View>
