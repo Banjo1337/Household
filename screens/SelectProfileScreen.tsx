@@ -6,7 +6,7 @@ import { RootStackParamList } from "../NavContainer";
 export default function SelectProfileScreen(Props: NativeStackScreenProps<RootStackParamList, "SelectProfile">) {
     return (
         <View>
-            <Title>Hello from SelectProfileScreen</Title>
+            <Title>Hello from SelectProfileScreen!</Title>
         </View>
     )
 }
