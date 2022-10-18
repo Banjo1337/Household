@@ -1,9 +1,9 @@
 import {
-  AnyAction
+  AnyAction,
   createAsyncThunk,
   createSlice,
   isRejectedWithValue,
-  PayloadAction,
+  PayloadAction, Reducer
 } from "@reduxjs/toolkit";
 
 import { Household, HouseholdCreateDto, HouseholdEditDto } from "./householdTypes";
@@ -13,7 +13,8 @@ import useSecureStorage from "../../hooks/useSecureStorage";
 
 const [token] = useSecureStorage("token", "");
 
- export const getHouseholdThunk = createAsyncThunk(
+
+export const getHouseholdThunk = createAsyncThunk(
     "household/getHousehold",
    async (householdId: string ) => {
         const response = await fetch(baseUrl + "getHousehold/" + householdId)
@@ -94,41 +95,66 @@ export const deleteHouseholdThunk = createAsyncThunk<
 });
 
 
-
-
 interface HouseholdState {
   id: string;
   name: string;
   code: string;
+  hasError: boolean;
 }
 
 const initialState: HouseholdState = {
   id: "",
   name: "",
   code: "",
+  hasError: false,
 };
 
 const householdSlice = createSlice({
   name: "household",
   initialState,
   reducers: {
-    changeHouseholdName: (state, action) => {
-      state.name = action.payload;
+        createHousehold(_, action: PayloadAction<HouseholdCreateDto>) {
+            createHouseholdThunk(action.payload);
+        },
+        editHousehold(_, action: PayloadAction<HouseholdEditDto>) { 
+            editHouseholdThunk(action.payload);
+        },
+        deleteHousehold(_, action: PayloadAction<Household>) { 
+            deleteHouseholdThunk(action.payload);
+        }
     },
-    createHousehold: (state, action) => {
-      return {
-        ...state,
-        ...action.payload,
-      };
+    extraReducers: builder => {
+        builder.addCase(createHouseholdThunk.fulfilled, (state, action) => {
+            state = action.payload;
+            state.hasError = false
+        }),
+        builder.addCase(createHouseholdThunk.rejected, (state, action) => {
+            if(action.payload)
+                state.error = action.payload;
+            state.hasError = true
+        }),
+        builder.addCase(editHouseholdThunk.fulfilled, (state, action) => {
+            state = action.payload
+            state.hasError = false
+        }),
+        builder.addCase(editHouseholdThunk.rejected, (state, action) => {
+            if(action.payload)
+                state.error = action.payload
+            state.hasError = true;
+        })
+        builder.addCase(deleteHouseholdThunk.fulfilled, (state, action) => {
+            state = action.payload
+            state.hasError = false
+        }),
+        builder.addCase(deleteHouseholdThunk.rejected, (state, action) => {
+            if(action.payload)
+                state.error = action.payload
+            state.hasError = true;
+        })
     },
-    deleteHousehold: (state, action) => {
-      const Householdid = action.payload;
-      //not completed yet
-    },
-  },
 });
 
-export const { changeHouseholdName, createHousehold, deleteHousehold } =
+export const { editHousehold, createHousehold, deleteHousehold } =
   householdSlice.actions;
 export const householdReducer: Reducer<HouseholdState, AnyAction> =
   householdSlice.reducer;
@@ -137,7 +163,7 @@ export const householdReducer: Reducer<HouseholdState, AnyAction> =
 
 
 
-const profileSlice = createSlice({
+/* const profileSlice = createSlice({
     name: "profile",
     initialState: {} as Profile,
     reducers: {
@@ -179,7 +205,11 @@ const profileSlice = createSlice({
                 state.error = action.payload
             state.hasError = true;
         })
-    },
+    }, */
 
-    
+/*     
 })
+
+export default profileSlice.reducer;
+
+export const { setActiveProfile } = profileSlice.actions; */
