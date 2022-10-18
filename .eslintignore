@@ -2,3 +2,8 @@ node_modules
 .expo
 .expo_shared
 assets
+readme.md
+app.json
+package-lock.json
+package.json
+tsconfig.json
