@@ -1,27 +1,14 @@
-import { createAsyncThunk, createSlice, isRejectedWithValue, PayloadAction } from "@reduxjs/toolkit";
-import { Profile, ProfileCreateDto, ProfileEditDto } from "./profileTypes";
+import { createAsyncThunk, createSlice, isAnyOf, isRejectedWithValue, PayloadAction } from "@reduxjs/toolkit";
+import { Profile, ProfileCreateDto, ProfileEditDto, ProfileState } from "./profileTypes";
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/profile/"
 import useSecureStorage from "../../hooks/useSecureStorage";
 
-const [token] = useSecureStorage("token", "");
 
-// export const getProfilesByUserId = createAsyncThunk(
-//     "profile/getProfilesByUserId",
 
-//     async (userId: string) => {
-//         const response = await fetch(baseUrl + "getByUserId/" + userId)
-
-//         if(response.ok) {
-//             return (await response.json()) as Profile
-//         } else {
-//             return isRejectedWithValue(response.body)
-//         }
-//     }
-// )
-
-export const createProfileThunk = createAsyncThunk<Profile, ProfileCreateDto, { rejectValue: string }>(
+export const createProfile = createAsyncThunk<Profile, ProfileCreateDto, { rejectValue: string }>(
     "profile/CreateProfile",
     async (profileCreateDto: ProfileCreateDto, thunkApi) => {
+        const [token] = useSecureStorage("token", "");
         const response = await fetch(baseUrl + "createProfile", {
             method: "POST",
             headers: {
@@ -40,9 +27,10 @@ export const createProfileThunk = createAsyncThunk<Profile, ProfileCreateDto, { 
     }
 )
 
-export const editProfileThunk = createAsyncThunk<Profile, ProfileEditDto, { extra: { profileId: string }, rejectValue: string }>(
+export const editProfile = createAsyncThunk<Profile, ProfileEditDto, { extra: { profileId: string }, rejectValue: string }>(
     "profile/EditProfile",
     async (profileEditDto: ProfileEditDto, thunkApi) => {
+        const [token] = useSecureStorage("token", "");
         const response = await fetch(baseUrl + "editProfile/" + thunkApi.extra.profileId, {
             method: "PATCH",
             headers: {
@@ -61,9 +49,10 @@ export const editProfileThunk = createAsyncThunk<Profile, ProfileEditDto, { extr
     }
 )
 
-export const deleteProfileThunk = createAsyncThunk<Profile, string, { rejectValue: string}>(
+export const deleteProfile = createAsyncThunk<Profile, string, { rejectValue: string}>(
     "profile/deleteProfile",
     async (profileId: string, thunkApi) => {
+            const [token] = useSecureStorage("token", "");
             const response = await fetch(baseUrl + "deleteProfile/" + profileId, {
             method: "DELETE",
             headers: {
@@ -80,50 +69,31 @@ export const deleteProfileThunk = createAsyncThunk<Profile, string, { rejectValu
     }
 )
 
+const initialState: ProfileState = {
+    profile: {} as Profile,
+    hasError: false,
+    error: ""
+}
 
 const profileSlice = createSlice({
     name: "profile",
-    initialState: {} as Profile,
+    initialState,
     reducers: {
         setActiveProfile(state, action: PayloadAction<Profile>) {
-            state = action.payload;
+            state.profile = action.payload;
         },
-        createNewProfile(_, action: PayloadAction<ProfileCreateDto>) {
-            createProfileThunk(action.payload);
-        },
-        editProfile(_, action: PayloadAction<ProfileEditDto>) { 
-            editProfileThunk(action.payload);
-        }
     },
     extraReducers: builder => {
-        builder.addCase(createProfileThunk.fulfilled, (state, action) => {
-            state = action.payload;
-            state.hasError = false
+        builder.addMatcher(isAnyOf ( createProfile.fulfilled, editProfile.fulfilled, deleteProfile.fulfilled ), (state, action) => {
+            state.profile = action.payload;
+            state.hasError = false;
         }),
-        builder.addCase(createProfileThunk.rejected, (state, action) => {
+        builder.addMatcher(isAnyOf ( createProfile.rejected, editProfile.rejected, deleteProfile.rejected ), (state, action) => {
             if(action.payload)
                 state.error = action.payload;
-            state.hasError = true
-        }),
-        builder.addCase(editProfileThunk.fulfilled, (state, action) => {
-            state = action.payload
-            state.hasError = false
-        }),
-        builder.addCase(editProfileThunk.rejected, (state, action) => {
-            if(action.payload)
-                state.error = action.payload
             state.hasError = true;
         })
-        builder.addCase(deleteProfileThunk.fulfilled, (state, action) => {
-            state = action.payload
-            state.hasError = false
-        }),
-        builder.addCase(deleteProfileThunk.rejected, (state, action) => {
-            if(action.payload)
-                state.error = action.payload
-            state.hasError = true;
-        })
-    },
+    }
 
     
 })
