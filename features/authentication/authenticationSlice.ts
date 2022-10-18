@@ -28,6 +28,6 @@ const authenticationSlice = createSlice({
 });
 
 export const { authenticate, logout } = authenticationSlice.actions;
-//Slår knut på migsjälv nedan, fixa senare. Framöver om samma filter används på många olika ställen, kan filter med fördel exporteras här istället. DRY
+//Slår knut på migsjälv nedan, fixa senare. Framöver om samma filter används på många olika ställen, kan filter med fördel exporteras här istället. DRY asdf
 //export const authenticationSelectorFilterGetAuthenticationState = (state: { authenticateUserReducer: AuthenticationState }) => state.authenticateUserReducer;
 export const authenticateUserReducer: Reducer<AuthenticationState, AnyAction> = authenticationSlice.reducer;
