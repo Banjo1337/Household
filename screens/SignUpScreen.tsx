@@ -7,11 +7,8 @@ import CustomInput from "../components/CustomInput";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
 import { RootStackParamList } from "../NavContainer";
 
-export default function SignUpScreen({
-  navigation,
-}: NativeStackScreenProps<RootStackParamList>) {
-  const { passwordVisibility, rightIcon, handlePasswordVisibility } =
-    useTogglePasswordVisibility();
+export default function SignUpScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
+  const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
   const { control, handleSubmit, watch } = useForm({});
   const pwd = watch("password");
   const onRegisterPressed = (data: FieldValues) => {
@@ -30,20 +27,10 @@ export default function SignUpScreen({
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <Text style={styles.title}>Create an account</Text>
-        <CustomInput
-          placeholder="Username"
-          name="username"
-          control={control}
-          rules={{ required: "Username is required" }}
-        />
-        <CustomInput
-          placeholder="Password"
-          name="password"
-          control={control}
-          secureTextEntry={passwordVisibility}
-        />
+        <CustomInput placeholder="Username" name="username" control={control} rules={{ required: "Username is required" }} />
+        <CustomInput placeholder="Password" name="password" control={control} secureTextEntry={passwordVisibility} />
         <Pressable onPress={handlePasswordVisibility}>
-          <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
+          <MaterialCommunityIcons size={22} color="#232323" />
         </Pressable>
         <CustomInput
           placeholder="Repeat password"
@@ -55,10 +42,7 @@ export default function SignUpScreen({
             validate: (value: any) => value === pwd || "Password not matching",
           }}
         />
-        <Pressable
-          style={styles.pressable}
-          onPress={handleSubmit(onRegisterPressed, onRegisterFailed)}
-        >
+        <Pressable style={styles.pressable} onPress={handleSubmit(onRegisterPressed, onRegisterFailed)}>
           <Text>Register</Text>
         </Pressable>
       </View>

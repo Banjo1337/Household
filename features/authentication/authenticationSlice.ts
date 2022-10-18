@@ -14,14 +14,14 @@ const authenticationSlice = createSlice({
   initialState,
   reducers: {
     authenticate: (state: WritableDraft<AuthenticationState>, action: PayloadAction<AuthenticationState>) => {
-      sessionStorage.setItem("token", action.payload.token); //Probably convert to mobile something....AsyncStorage?
+      sessionStorage.setItem("token", action.payload.token);
       return {
         ...state,
         token: action.payload.token,
       };
     },
     logout: () => {
-      sessionStorage.removeItem("token"); //Probably convert to mobile something....AsyncStorage?
+      sessionStorage.removeItem("token");
       return initialState;
     },
   },

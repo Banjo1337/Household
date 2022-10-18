@@ -7,8 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "eslint ./*",
-    "lint_report": "eslint ./* --output-file eslint_report.json --format json"
+    "lint": "eslint --ext .js,.ts,.tsx .",
+    "lint_report": "eslint --ext .js,.ts,.tsx . --output-file eslint_report.json --format json"
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.13",
@@ -30,6 +30,7 @@
     "react-redux": "^8.0.4"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "^5.40.1",
     "@babel/core": "^7.12.9",
     "@babel/eslint-parser": "^7.19.1",
     "@types/react": "~18.0.14",
@@ -41,23 +42,17 @@
   "private": true,
   "eslintConfig": {
     "env": {
-      "browser": true,
       "es6": true,
       "node": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+      "eslint:recommended"
+    ],
     "globals": {
       "Atomics": "readonly",
       "SharedArrayBuffer": "readonly"
     },
-    "parser": "@babel/eslint-parser",
-    "parserOptions": {
-      "ecmaFeatures": {
-        "jsx": true
-      },
-      "ecmaVersion": 2018,
-      "sourceType": "module"
-    },
+    "parser": "@typescript-eslint/parser",
     "plugins": [
       "react",
       "@typescript-eslint",
@@ -72,7 +67,6 @@
       "no-undef": "off",
       "no-unused-vars": "warn",
       "semi": "warn"
-
     }
   }
 }
