@@ -9,6 +9,7 @@ export type SignInReply = {
   authUserId: string;
   error: string;
   hasError: boolean;
+  dataWrittenToSecureStoreCounter?: number;
 };
 
 export type SignUpReply = {
