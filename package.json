@@ -7,7 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "eslint ./*",
+    "lint": "eslint ./**/*",
     "lint_report": "eslint ./* --output-file eslint_report.json --format json"
   },
   "dependencies": {
@@ -41,21 +41,22 @@
   "private": true,
   "eslintConfig": {
     "env": {
-      "browser": true,
       "es6": true,
       "node": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+      "eslint:recommended"
+    ],
     "globals": {
       "Atomics": "readonly",
       "SharedArrayBuffer": "readonly"
     },
-    "parser": "@babel/eslint-parser",
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
       "ecmaFeatures": {
         "jsx": true
       },
-      "ecmaVersion": 2018,
+      "ecmaVersion": "latest",
       "sourceType": "module"
     },
     "plugins": [
@@ -72,7 +73,6 @@
       "no-undef": "off",
       "no-unused-vars": "warn",
       "semi": "warn"
-
     }
   }
 }

@@ -4,9 +4,9 @@ export type AuthenticationCredentials = {
 };
 
 export type Token = {
-  authUserId: string; //PK connection to AuthUserId (FK i Profile)
+  authUserId: string;
   token: string;
-  expiration: Date; //not used right now. Token is set to be valid for 21 days in backend
+  expiration: Date;
   //Format from backend is 2022-09-14T00:35:18Z
 };
 
