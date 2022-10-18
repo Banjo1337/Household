@@ -1,7 +1,7 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react" 
-import { Profile } from "./profileTypes"
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Profile } from "./profileTypes";
 
-const profileApiSlice = createApi({
+export const profileApiSlice = createApi({
     reducerPath: "profile",
     baseQuery: fetchBaseQuery({ baseUrl: "https://household-backend.azurewebsites.net/api/V01/profile "}),
     tagTypes: ["profiles"],
@@ -14,5 +14,3 @@ const profileApiSlice = createApi({
 })
 
 export const { useGetProfilesFromUserIdQuery } = profileApiSlice; 
-
-// export const profileApiReducer = profileApiSlice.reducer;
