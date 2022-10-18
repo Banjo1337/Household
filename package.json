@@ -30,6 +30,7 @@
     "react-redux": "^8.0.4"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "^5.40.1",
     "@babel/core": "^7.12.9",
     "@babel/eslint-parser": "^7.19.1",
     "@types/react": "~18.0.14",
