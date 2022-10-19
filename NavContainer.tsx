@@ -17,6 +17,7 @@ import StatisticsScreen from "./screens/StatisticsScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { useTheme } from "./features/theme/ThemeContext";
 import { Provider as PaperProvider } from "react-native-paper";
+import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
 
 export type RootStackParamList = {
   Chores: undefined;
@@ -25,6 +26,7 @@ export type RootStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
   CreateProfile: undefined;
+  CreateHousehold: undefined;
   SelectProfile: undefined;
   FinalizeProfile: undefined;
   PendingRequest: undefined;
@@ -61,5 +63,5 @@ export default function NavContainer() {
         </NavigationContainer>
       </PaperProvider>
     </SafeAreaProvider>
-  )
+  );
 }
