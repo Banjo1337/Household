@@ -1,11 +1,14 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { Button, Title } from "react-native-paper";
 import { RootStackParamList } from "../NavContainer";
 
-export default function MegaNavigationGodScreen(Props: NativeStackScreenProps<RootStackParamList, "MegaNavigationGod">) {
-    return (
-      <View style={styles.container}>
+export default function MegaNavigationGodScreen(
+  Props: NativeStackScreenProps<RootStackParamList, "MegaNavigationGod">
+) {
+  return (
+    <View style={styles.container}>
+      <ScrollView style={styles.scrollview}>
         <Button
           mode="contained"
           style={styles.button}
@@ -55,7 +58,13 @@ export default function MegaNavigationGodScreen(Props: NativeStackScreenProps<Ro
         >
           CreateHousehold
         </Button>
-
+        <Button
+          mode="contained"
+          style={styles.button}
+          onPress={() => Props.navigation.navigate("EditHousehold")}
+        >
+          EditHousehold
+        </Button>
         <Button
           mode="contained"
           style={styles.button}
@@ -98,16 +107,20 @@ export default function MegaNavigationGodScreen(Props: NativeStackScreenProps<Ro
         >
           Statistics
         </Button>
-      </View>
-    );
+      </ScrollView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        alignItems: "center"
-    },
-    button: {
-        marginTop: 25,
-        width: "80%",
-    }
-})
+  container: {
+    alignItems: "center",
+  },
+  button: {
+    marginTop: 25,
+    width: "100%",
+  },
+  scrollview: {
+    width: "80%",
+  },
+});
