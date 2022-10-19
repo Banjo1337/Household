@@ -6,13 +6,11 @@ import { Title, TextInput } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { RootStackParamList } from "../NavContainer";
 
-export default function CreateProfileScreen({
-  navigation,
-}: NativeStackScreenProps<RootStackParamList>) {
+export default function CreateProfileScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
   const {
     control,
     handleSubmit,
-    formState: {},
+    //formState: {},
   } = useForm();
   const toggleInput = () => {
     setInput((input) => !input);
@@ -30,26 +28,15 @@ export default function CreateProfileScreen({
   };
   return (
     <View style={styles.container}>
-      <CustomInput
-        name="username"
-        placeholder="Desired profile name"
-        control={control}
-      ></CustomInput>
+      <CustomInput name="username" placeholder="Desired profile name" control={control}></CustomInput>
       {/* Detta är en riktig ful lösning för att toggla rätt inputfält. vill egentligen dölja det ena på något snyggare sätt */}
       {input ? (
         <View>
           <Pressable style={styles.pressable} onPress={toggleInput}>
             <Text>Got a household code already?</Text>
           </Pressable>
-          <CustomInput
-            name="householdName"
-            placeholder="Name of household"
-            control={control}
-          ></CustomInput>
-          <Pressable
-            style={styles.pressable}
-            onPress={handleSubmit(onCreateHouseholdPressed)}
-          >
+          <CustomInput name="householdName" placeholder="Name of household" control={control}></CustomInput>
+          <Pressable style={styles.pressable} onPress={handleSubmit(onCreateHouseholdPressed)}>
             <Text>Create Household</Text>
           </Pressable>
         </View>
@@ -58,15 +45,8 @@ export default function CreateProfileScreen({
           <Pressable style={styles.pressable} onPress={toggleInput}>
             <Text>Dont have a household yet? Create one</Text>
           </Pressable>
-          <CustomInput
-            name="householdCode"
-            placeholder="Code to the household you want to join"
-            control={control}
-          ></CustomInput>
-          <Pressable
-            style={styles.pressable}
-            onPress={handleSubmit(onJoinHouseholdPressed)}
-          >
+          <CustomInput name="householdCode" placeholder="Code to the household you want to join" control={control}></CustomInput>
+          <Pressable style={styles.pressable} onPress={handleSubmit(onJoinHouseholdPressed)}>
             <Text>Join household</Text>
           </Pressable>
         </View>
