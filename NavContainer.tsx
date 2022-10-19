@@ -25,6 +25,7 @@ export type RootStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
   CreateProfile: undefined;
+  CreateHousehold: undefined;
   SelectProfile: undefined;
   FinalizeProfile: undefined;
   PendingRequest: undefined;
@@ -61,5 +62,5 @@ export default function NavContainer() {
         </NavigationContainer>
       </PaperProvider>
     </SafeAreaProvider>
-  )
+  );
 }
