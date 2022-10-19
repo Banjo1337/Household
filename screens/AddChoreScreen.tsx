@@ -1,15 +1,24 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useCallback, useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { Pressable, View, StyleSheet, Text } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
+import { Pressable, View, StyleSheet, Text, Button, Image } from "react-native";
 import { Title } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { RootStackParamList } from "../NavContainer";
+import * as ImagePicker from "expo-image-picker";
+import { Audio } from "expo-av";
+import * as Sharing from "expo-sharing";
+import DropDownPicker from "react-native-dropdown-picker";
 
 export default function AddChoreScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList>) {
+  const {
+    control,
+    handleSubmit,
+    formState: {},
+  } = useForm();
+
   const [openPoint, setOpenPoint] = useState(false);
   const [openFrequency, setOpenFrequency] = useState(false);
   const [frequencyValue, setFrequencyValue] = useState("1");
@@ -38,34 +47,102 @@ export default function AddChoreScreen({
     { label: "8", value: "8" },
   ]);
 
+  const [recording, setRecording] = useState<Audio.Recording | any>();
+  const [recordings, setRecordings] = React.useState([]);
+  const [message, setMessage] = React.useState("");
+  const [image, setImage] = useState<string | null>(null);
+
+  async function startRecording() {
+    try {
+      const permission = await Audio.requestPermissionsAsync();
+
+      if (permission.status === "granted") {
+        await Audio.setAudioModeAsync({
+          allowsRecordingIOS: true,
+          playsInSilentModeIOS: true,
+        });
+
+        const { recording } = await Audio.Recording.createAsync(
+          Audio.RecordingOptionsPresets.HIGH_QUALITY
+        );
+
+        setRecording(recording);
+      } else {
+        setMessage("Please grant permission to app to access microphone");
+      }
+    } catch (err) {
+      console.error("Failed to start recording", err);
+    }
+  }
+
+  async function stopRecording() {
+    setRecording(undefined!);
+    await recording!.stopAndUnloadAsync();
+
+    let updatedRecordings: any = [...recordings];
+    const { sound, status } = await recording!.createNewLoadedSoundAsync();
+    updatedRecordings.push({
+      sound: sound,
+      duration: getDurationFormatted(status.durationMillis),
+      file: recording!.getURI(),
+    });
+    setRecordings(updatedRecordings);
+  }
+
+  function getDurationFormatted(millis: number) {
+    const minutes = millis / 1000 / 60;
+    const minutesDisplay = Math.floor(minutes);
+    const seconds = Math.round((minutes - minutesDisplay) * 60);
+    const secondsDisplay = seconds < 10 ? `0${seconds}` : seconds;
+    return `${minutesDisplay}:${secondsDisplay}`;
+  }
+
+  function getRecordingLines() {
+    return recordings.map((recordingLine: any, index) => {
+      return (
+        <View>
+          <Text>
+            Recording {index + 1} - {recordingLine.duration}
+          </Text>
+          <Pressable onPress={() => recordingLine.sound.replayAsync()}>
+            <Text>Play</Text>
+          </Pressable>
+          <Pressable onPress={() => Sharing.shareAsync(recordingLine.file)}>
+            <Text>Stop</Text>
+          </Pressable>
+        </View>
+      );
+    });
+  }
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
   const onAddChorePressed = (data: FieldValues) => {
     console.log(data.title + data.description + frequencyValue + pointValue);
     navigation.navigate("Chores");
   };
 
-  const {
-    control,
-    handleSubmit,
-    formState: {},
-  } = useForm();
-
   return (
     <View>
       <Title>Add Chore</Title>
       <CustomInput placeholder="Title" name="title" control={control} />
-
       <CustomInput
         placeholder="Description"
         name="description"
         control={control}
       />
-
-      <Pressable
-        style={styles.pressable}
-        onPress={handleSubmit(onAddChorePressed)}
-      >
-        <Text>Add Chore</Text>
-      </Pressable>
       <View style={{ display: "flex", flexDirection: "row" }}>
         <View
           style={{
@@ -94,7 +171,7 @@ export default function AddChoreScreen({
             justifyContent: "flex-end",
           }}
         >
-          <Text>Difficulty of view</Text>
+          <Text>Difficulty of chore</Text>
           <DropDownPicker
             modalTitle="Select how difficult this task is"
             listMode="FLATLIST"
@@ -111,6 +188,52 @@ export default function AddChoreScreen({
             dropDownContainerStyle={{}}
           />
         </View>
+      </View>
+      <View style={styles.container}>
+        <Pressable
+          style={styles.pressable}
+          onPress={recording ? stopRecording : startRecording}
+        >
+          {recording ? (
+            <Text>"Stop Recording"</Text>
+          ) : (
+            <Text>"Start Recording"</Text>
+          )}
+        </Pressable>
+        {getRecordingLines()}
+      </View>
+      <Pressable style={styles.pressable} onPress={pickImage}>
+        <Text>Pick Image</Text>
+      </Pressable>
+      {image && (
+        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+      )}
+      <View style={{ display: "flex", flexDirection: "row" }}>
+        <Pressable
+          onPress={handleSubmit(onAddChorePressed)}
+          style={styles.pressable}
+        >
+          <Text
+            style={{
+              color: "black",
+              alignSelf: "center",
+              justifyContent: "center",
+            }}
+          >
+            Save
+          </Text>
+        </Pressable>
+        <Pressable style={styles.pressable}>
+          <Text
+            style={{
+              color: "black",
+              alignSelf: "center",
+              justifyContent: "center",
+            }}
+          >
+            Close
+          </Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -130,13 +253,14 @@ const styles = StyleSheet.create({
   pressable: {
     fontSize: 50,
     fontWeight: "bold",
-    width: 100,
-    height: 30,
-    backgroundColor: "gray",
+    width: "50%",
+    height: 50,
+    backgroundColor: "white",
     borderRadius: 5,
     margin: 2,
     borderColor: "black",
   },
+
   input: {
     height: 200,
     backgroundColor: "black",
