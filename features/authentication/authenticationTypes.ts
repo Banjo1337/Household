@@ -3,11 +3,13 @@ export type AuthenticationCredentials = {
   password: string;
 };
 
-export type Token = {
-  authUserId: string;
+export type SignInReply = {
   token: string;
   expiration: Date;
-  //Format from backend is 2022-09-14T00:35:18Z
+  authUserId: string;
+  error: string;
+  hasError: boolean;
+  dataWrittenToSecureStoreCounter?: number;
 };
 
 export type SignUpReply = {

@@ -15,6 +15,7 @@ import SignInScreen from "./screens/SignInScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import StatisticsScreen from "./screens/StatisticsScreen";
 import { NavigationContainer } from "@react-navigation/native";
+import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
 
 export type RootStackParamList = {
   Chores: undefined;
@@ -23,6 +24,7 @@ export type RootStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
   CreateProfile: undefined;
+  CreateHousehold: undefined;
   SelectProfile: undefined;
   FinalizeProfile: undefined;
   PendingRequest: undefined;
@@ -39,22 +41,36 @@ export default function NavContainer() {
     <SafeAreaProvider>
       <StatusBar style="light" />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='MegaNavigationGod'>
-          <Stack.Screen name="MegaNavigationGod" component={MegaNavigationGodScreen} options={() => ({title:"This is temporary"})} />
+        <Stack.Navigator initialRouteName="MegaNavigationGod">
+          <Stack.Screen
+            name="MegaNavigationGod"
+            component={MegaNavigationGodScreen}
+            options={() => ({ title: "This is temporary" })}
+          />
           <Stack.Screen name="Chores" component={ChoresScreen} />
           <Stack.Screen name="AddChore" component={AddChoreScreen} />
           <Stack.Screen name="ChoreDetails" component={ChoreDetailsScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
           <Stack.Screen name="CreateProfile" component={CreateProfileScreen} />
+          <Stack.Screen name="CreateHousehold" component={CreateHouseholdScreen} />
           <Stack.Screen name="SelectProfile" component={SelectProfileScreen} />
-          <Stack.Screen name="FinalizeProfile" component={FinalizeProfileScreen} />
-          <Stack.Screen name="PendingRequest" component={PendingRequestScreen} />
-          <Stack.Screen name="RequestResponse" component={RequestResponseScreen} />
+          <Stack.Screen
+            name="FinalizeProfile"
+            component={FinalizeProfileScreen}
+          />
+          <Stack.Screen
+            name="PendingRequest"
+            component={PendingRequestScreen}
+          />
+          <Stack.Screen
+            name="RequestResponse"
+            component={RequestResponseScreen}
+          />
           <Stack.Screen name="Settings" component={SettingsScreen} />
           <Stack.Screen name="Statistics" component={StatisticsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
-  )
+  );
 }

@@ -1,23 +1,53 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React from "react";
-import { FieldValue, FieldValues, useForm } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import CustomInput from "../components/CustomInput";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
 import { RootStackParamList } from "../NavContainer";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { postSignInThunk, selectHasError, selectErrorText, logout, selectDataWrittenToSecureStoreCounter } from "../features/authentication/authenticationSlice";
+import * as SecureStore from "expo-secure-store";
 
 export default function SignInScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
-  const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
+  const dispatch = useAppDispatch();
+  const hasError = useAppSelector(selectHasError);
+  const errorText = useAppSelector(selectErrorText);
+  const dataWrittenToSecureStoreCounter = useAppSelector(selectDataWrittenToSecureStoreCounter);
+  const { passwordVisibility, handlePasswordVisibility } = useTogglePasswordVisibility();
   const {
     control,
     handleSubmit,
     //formState: {},
   } = useForm();
+
+  const [token, setToken] = useState<string>("");
+  const [authUserId, setAuthUserId] = useState<string>("");
+
+  //Im not sure where to put this useEffect. Perhaps we need to move to a new file, or change dependency array. Time will tell.
+  useEffect(() => {
+    (async () => {
+      const token = await SecureStore.getItemAsync("token");
+      const authUserId = await SecureStore.getItemAsync("authUserId");
+      if (token && token !== "" && authUserId && authUserId !== "") {
+        setToken(token);
+        setAuthUserId(authUserId);
+        navigation.navigate("SelectProfile");
+      }
+    })();
+  }, [dataWrittenToSecureStoreCounter, navigation]);
+
   const onLoginPressed = (data: FieldValues) => {
-    console.log(data.username + data.password);
-    navigation.navigate("SelectProfile");
+    dispatch(postSignInThunk({ username: data.username, password: data.password }));
   };
+
+  const onLogoutPressed = () => {
+    setToken("");
+    setAuthUserId("");
+    dispatch(logout());
+  };
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
@@ -31,8 +61,16 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
           <Pressable style={styles.pressable} onPress={handleSubmit(onLoginPressed)}>
             <Text>Sign in</Text>
           </Pressable>
+          <Pressable style={styles.pressable} onPress={handleSubmit(onLogoutPressed)}>
+            <Text>Logout</Text>
+          </Pressable>
         </View>
       </View>
+
+      <Text style={styles.title}>authUserId: {authUserId}</Text>
+      <Text style={styles.title}>token: {token}</Text>
+      <Text style={styles.title}>hasError: {hasError}</Text>
+      <Text style={styles.title}>errorText: {errorText}</Text>
     </ScrollView>
   );
 }
