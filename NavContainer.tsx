@@ -16,6 +16,7 @@ import SignUpScreen from "./screens/SignUpScreen";
 import StatisticsScreen from "./screens/StatisticsScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
+import EditHouseholdScreen from "./screens/EditHouseholdScreen";
 
 export type RootStackParamList = {
   Chores: undefined;
@@ -25,6 +26,7 @@ export type RootStackParamList = {
   SignUp: undefined;
   CreateProfile: undefined;
   CreateHousehold: undefined;
+  EditHousehold: undefined;
   SelectProfile: undefined;
   FinalizeProfile: undefined;
   PendingRequest: undefined;
@@ -53,7 +55,14 @@ export default function NavContainer() {
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
           <Stack.Screen name="CreateProfile" component={CreateProfileScreen} />
-          <Stack.Screen name="CreateHousehold" component={CreateHouseholdScreen} />
+          <Stack.Screen
+            name="CreateHousehold"
+            component={CreateHouseholdScreen}
+          />
+          <Stack.Screen
+            name="EditHousehold"
+            component={EditHouseholdScreen}
+          />
           <Stack.Screen name="SelectProfile" component={SelectProfileScreen} />
           <Stack.Screen
             name="FinalizeProfile"
