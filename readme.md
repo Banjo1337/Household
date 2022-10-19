@@ -7,7 +7,6 @@ G: 20 (50%).
 
 VG: 32 (80%).
 
-
 ## Kravlista (4)
 
 [ ] - En logga, splashscreen och appikon ska designas och användas. 🚨⚠🚨

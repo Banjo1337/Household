@@ -18,10 +18,14 @@ type SignUpResponse = {
   message: string;
 };
 
-const BASE_URL = "https://household-backend.azurewebsites.net/api/V01/Authenticate/";
+const BASE_URL =
+  "https://household-backend.azurewebsites.net/api/V01/Authenticate/";
 
-export default function SignUpScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
-  const { passwordVisibility, handlePasswordVisibility } = useTogglePasswordVisibility();
+export default function SignUpScreen({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList>) {
+  const { passwordVisibility, handlePasswordVisibility } =
+    useTogglePasswordVisibility();
   const { control, handleSubmit, watch } = useForm({});
   const pwd = watch("password");
 
@@ -49,7 +53,9 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
       const response: Response = await PostSignUp(signUpDto);
       try {
         if (response.status != 200) {
-          throw new Error("Httprequest to get token failed, response is not 200");
+          throw new Error(
+            "Httprequest to get token failed, response is not 200"
+          );
         }
         const signUpResponse = (await response.json()) as SignUpResponse;
         return signUpResponse;
@@ -85,8 +91,18 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <Text style={styles.title}>Create an account</Text>
-        <CustomInput placeholder="Username" name="username" control={control} rules={{ required: "Username is required" }} />
-        <CustomInput placeholder="Password" name="password" control={control} secureTextEntry={passwordVisibility} />
+        <CustomInput
+          placeholder="Username"
+          name="username"
+          control={control}
+          rules={{ required: "Username is required" }}
+        />
+        <CustomInput
+          placeholder="Password"
+          name="password"
+          control={control}
+          secureTextEntry={passwordVisibility}
+        />
         <Pressable onPress={handlePasswordVisibility}>
           <MaterialCommunityIcons size={22} color="#232323" />
         </Pressable>
@@ -100,7 +116,10 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
             validate: (value: any) => value === pwd || "Password not matching",
           }}
         />
-        <Pressable style={styles.pressable} onPress={handleSubmit(onRegisterPressed, onRegisterFailed)}>
+        <Pressable
+          style={styles.pressable}
+          onPress={handleSubmit(onRegisterPressed, onRegisterFailed)}
+        >
           <Text>Register</Text>
         </Pressable>
       </View>

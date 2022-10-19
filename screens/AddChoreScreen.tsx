@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { Pressable, View, StyleSheet, Text, Button, Image } from "react-native";
+import { Pressable, View, StyleSheet, Text, Image } from "react-native";
 import { Title } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { RootStackParamList } from "../NavContainer";
@@ -49,7 +49,7 @@ export default function AddChoreScreen({
 
   const [recording, setRecording] = useState<Audio.Recording | any>();
   const [recordings, setRecordings] = React.useState([]);
-  const [message, setMessage] = React.useState("");
+  const [, setMessage] = React.useState("");
   const [image, setImage] = useState<string | null>(null);
 
   async function startRecording() {

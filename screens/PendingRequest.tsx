@@ -3,10 +3,13 @@ import { View } from "react-native";
 import { Title } from "react-native-paper";
 import { RootStackParamList } from "../NavContainer";
 
-export default function PendingRequestScreen(Props: NativeStackScreenProps<RootStackParamList, "PendingRequest">) {
-    return (
-        <View>
-            <Title>Hello from PendingRequestScreen</Title>
-        </View>
-    )
+export default function PendingRequestScreen(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  Props: NativeStackScreenProps<RootStackParamList, "PendingRequest">
+) {
+  return (
+    <View>
+      <Title>Hello from PendingRequestScreen</Title>
+    </View>
+  );
 }

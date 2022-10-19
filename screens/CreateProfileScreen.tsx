@@ -1,12 +1,14 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useReducer, useState } from "react";
-import { Field, FieldValue, FieldValues, useForm } from "react-hook-form";
+import React, { useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
 import { Pressable, View, Text, StyleSheet } from "react-native";
-import { Title, TextInput } from "react-native-paper";
+import {} from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { RootStackParamList } from "../NavContainer";
 
-export default function CreateProfileScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
+export default function CreateProfileScreen({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList>) {
   const {
     control,
     handleSubmit,
@@ -28,15 +30,26 @@ export default function CreateProfileScreen({ navigation }: NativeStackScreenPro
   };
   return (
     <View style={styles.container}>
-      <CustomInput name="username" placeholder="Desired profile name" control={control}></CustomInput>
+      <CustomInput
+        name="username"
+        placeholder="Desired profile name"
+        control={control}
+      ></CustomInput>
       {/* Detta är en riktig ful lösning för att toggla rätt inputfält. vill egentligen dölja det ena på något snyggare sätt */}
       {input ? (
         <View>
           <Pressable style={styles.pressable} onPress={toggleInput}>
             <Text>Got a household code already?</Text>
           </Pressable>
-          <CustomInput name="householdName" placeholder="Name of household" control={control}></CustomInput>
-          <Pressable style={styles.pressable} onPress={handleSubmit(onCreateHouseholdPressed)}>
+          <CustomInput
+            name="householdName"
+            placeholder="Name of household"
+            control={control}
+          ></CustomInput>
+          <Pressable
+            style={styles.pressable}
+            onPress={handleSubmit(onCreateHouseholdPressed)}
+          >
             <Text>Create Household</Text>
           </Pressable>
         </View>
@@ -45,8 +58,15 @@ export default function CreateProfileScreen({ navigation }: NativeStackScreenPro
           <Pressable style={styles.pressable} onPress={toggleInput}>
             <Text>Dont have a household yet? Create one</Text>
           </Pressable>
-          <CustomInput name="householdCode" placeholder="Code to the household you want to join" control={control}></CustomInput>
-          <Pressable style={styles.pressable} onPress={handleSubmit(onJoinHouseholdPressed)}>
+          <CustomInput
+            name="householdCode"
+            placeholder="Code to the household you want to join"
+            control={control}
+          ></CustomInput>
+          <Pressable
+            style={styles.pressable}
+            onPress={handleSubmit(onJoinHouseholdPressed)}
+          >
             <Text>Join household</Text>
           </Pressable>
         </View>

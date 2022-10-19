@@ -3,10 +3,14 @@ import { View } from "react-native";
 import { Title } from "react-native-paper";
 import { RootStackParamList } from "../NavContainer";
 
-export default function StatisticScreen(Props: NativeStackScreenProps<RootStackParamList, "Statistics">) {
-    return (
-        <View>
-            <Title>Hello from StatisticScreen</Title>
-        </View>
-    )
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function StatisticScreen(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  Props: NativeStackScreenProps<RootStackParamList, "Statistics">
+) {
+  return (
+    <View>
+      <Title>Hello from StatisticScreen</Title>
+    </View>
+  );
 }

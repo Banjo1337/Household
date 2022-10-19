@@ -1,12 +1,14 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useReducer, useState } from "react";
-import { Field, FieldValue, FieldValues, useForm } from "react-hook-form";
+import React from "react";
+import { FieldValues, useForm } from "react-hook-form";
 import { Pressable, View, Text, StyleSheet } from "react-native";
-import { Title, TextInput } from "react-native-paper";
+import {} from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { RootStackParamList } from "../NavContainer";
 
-export default function CreateHouseholdScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
+export default function CreateHouseholdScreen({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList>) {
   const {
     control,
     handleSubmit,
@@ -15,18 +17,25 @@ export default function CreateHouseholdScreen({ navigation }: NativeStackScreenP
 
   const onCreateHouseholdPressed = (data: FieldValues) => {
     //TODO: add dispatch from CreateHouseholdSlice
-    console.log("you have pressed create household" + data.householdName);  
+    console.log("you have pressed create household" + data.householdName);
     navigation.navigate("MegaNavigationGod");
   };
 
   return (
     <View style={styles.container}>
-        <View>
-          <CustomInput name="householdName" placeholder="Name of household" control={control}></CustomInput>
-          <Pressable style={styles.pressable} onPress={handleSubmit(onCreateHouseholdPressed)}>
-            <Text>Create Household</Text>
-          </Pressable>
-        </View>
+      <View>
+        <CustomInput
+          name="householdName"
+          placeholder="Name of household"
+          control={control}
+        ></CustomInput>
+        <Pressable
+          style={styles.pressable}
+          onPress={handleSubmit(onCreateHouseholdPressed)}
+        >
+          <Text>Create Household</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }

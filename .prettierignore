@@ -1,0 +1,7 @@
+# Ignore artifacts:
+.expo
+.expo-shared
+.github
+.vscode
+
+node_modules

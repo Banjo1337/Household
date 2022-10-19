@@ -7,15 +7,26 @@ import CustomInput from "../components/CustomInput";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
 import { RootStackParamList } from "../NavContainer";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { postSignInThunk, selectHasError, selectErrorText, logout, selectDataWrittenToSecureStoreCounter } from "../features/authentication/authenticationSlice";
+import {
+  postSignInThunk,
+  selectHasError,
+  selectErrorText,
+  logout,
+  selectDataWrittenToSecureStoreCounter,
+} from "../features/authentication/authenticationSlice";
 import * as SecureStore from "expo-secure-store";
 
-export default function SignInScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
+export default function SignInScreen({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList>) {
   const dispatch = useAppDispatch();
   const hasError = useAppSelector(selectHasError);
   const errorText = useAppSelector(selectErrorText);
-  const dataWrittenToSecureStoreCounter = useAppSelector(selectDataWrittenToSecureStoreCounter);
-  const { passwordVisibility, handlePasswordVisibility } = useTogglePasswordVisibility();
+  const dataWrittenToSecureStoreCounter = useAppSelector(
+    selectDataWrittenToSecureStoreCounter
+  );
+  const { passwordVisibility, handlePasswordVisibility } =
+    useTogglePasswordVisibility();
   const {
     control,
     handleSubmit,
@@ -39,7 +50,9 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
   }, [dataWrittenToSecureStoreCounter, navigation]);
 
   const onLoginPressed = (data: FieldValues) => {
-    dispatch(postSignInThunk({ username: data.username, password: data.password }));
+    dispatch(
+      postSignInThunk({ username: data.username, password: data.password })
+    );
   };
 
   const onLogoutPressed = () => {
@@ -57,11 +70,22 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
           <Pressable onPress={handlePasswordVisibility}>
             <MaterialCommunityIcons size={22} color="#232323" />
           </Pressable>
-          <CustomInput placeholder="Password" name="password" control={control} secureTextEntry={passwordVisibility} />
-          <Pressable style={styles.pressable} onPress={handleSubmit(onLoginPressed)}>
+          <CustomInput
+            placeholder="Password"
+            name="password"
+            control={control}
+            secureTextEntry={passwordVisibility}
+          />
+          <Pressable
+            style={styles.pressable}
+            onPress={handleSubmit(onLoginPressed)}
+          >
             <Text>Sign in</Text>
           </Pressable>
-          <Pressable style={styles.pressable} onPress={handleSubmit(onLogoutPressed)}>
+          <Pressable
+            style={styles.pressable}
+            onPress={handleSubmit(onLogoutPressed)}
+          >
             <Text>Logout</Text>
           </Pressable>
         </View>

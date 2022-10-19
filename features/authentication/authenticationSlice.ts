@@ -1,26 +1,39 @@
-import { AnyAction, createAsyncThunk, createSlice, Reducer } from "@reduxjs/toolkit";
+import {
+  AnyAction,
+  createAsyncThunk,
+  createSlice,
+  Reducer,
+} from "@reduxjs/toolkit";
 import { RootStateType } from "../../app/store";
 import { AuthenticationCredentials, SignInReply } from "./authenticationTypes";
 import * as SecureStore from "expo-secure-store";
 
-const BASE_URL = "https://household-backend.azurewebsites.net/api/V01/Authenticate/";
+const BASE_URL =
+  "https://household-backend.azurewebsites.net/api/V01/Authenticate/";
 
-export const postSignInThunk = createAsyncThunk<SignInReply, AuthenticationCredentials, { rejectValue: string }>("authentication/postLogin", async (credentials: AuthenticationCredentials, thunkApi) => {
-  const response = await fetch(BASE_URL + `login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(credentials),
-  });
-  if (response.ok) {
-    const signInReply: SignInReply = await response.json();
-    SecureStore.setItemAsync("token", signInReply.token);
-    SecureStore.setItemAsync("authUserId", signInReply.authUserId);
-    return signInReply;
+export const postSignInThunk = createAsyncThunk<
+  SignInReply,
+  AuthenticationCredentials,
+  { rejectValue: string }
+>(
+  "authentication/postLogin",
+  async (credentials: AuthenticationCredentials, thunkApi) => {
+    const response = await fetch(BASE_URL + `login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentials),
+    });
+    if (response.ok) {
+      const signInReply: SignInReply = await response.json();
+      SecureStore.setItemAsync("token", signInReply.token);
+      SecureStore.setItemAsync("authUserId", signInReply.authUserId);
+      return signInReply;
+    }
+    return thunkApi.rejectWithValue(await response.json());
   }
-  return thunkApi.rejectWithValue(await response.json());
-});
+);
 
 const authenticationSlice = createSlice({
   name: "authentication",
@@ -55,7 +68,11 @@ const authenticationSlice = createSlice({
 
 export const { logout } = authenticationSlice.actions;
 export default authenticationSlice.reducer;
-export const selectHasError = (state: RootStateType) => state.authenticateUserReducer.hasError;
-export const selectErrorText = (state: RootStateType) => state.authenticateUserReducer.error;
-export const selectDataWrittenToSecureStoreCounter = (state: RootStateType) => state.authenticateUserReducer.dataWrittenToSecureStoreCounter;
-export const authenticateUserReducer: Reducer<SignInReply, AnyAction> = authenticationSlice.reducer;
+export const selectHasError = (state: RootStateType) =>
+  state.authenticateUserReducer.hasError;
+export const selectErrorText = (state: RootStateType) =>
+  state.authenticateUserReducer.error;
+export const selectDataWrittenToSecureStoreCounter = (state: RootStateType) =>
+  state.authenticateUserReducer.dataWrittenToSecureStoreCounter;
+export const authenticateUserReducer: Reducer<SignInReply, AnyAction> =
+  authenticationSlice.reducer;
