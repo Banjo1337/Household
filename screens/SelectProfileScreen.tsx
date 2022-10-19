@@ -26,8 +26,7 @@ export default function SelectProfileScreen({ navigation } : NativeStackScreenPr
         mockDataIfProfilesIsEmpty = [
             {
                 id: "1",
-                color: "#d179c4",
-                avatar: "octopus", 
+                avatar: "fox", 
                 isAdmin: false,
                 householdId: "abc",
                 authUserId: "abc",
@@ -36,8 +35,7 @@ export default function SelectProfileScreen({ navigation } : NativeStackScreenPr
             },
             {
                 id: "2",
-                color: "#87f5c7",
-                avatar: "dolphin", 
+                avatar: "pig", 
                 isAdmin: false,
                 householdId: "abc",
                 authUserId: "abc",
@@ -46,14 +44,58 @@ export default function SelectProfileScreen({ navigation } : NativeStackScreenPr
             },
             {
                 id: "3",
-                color: "#2495a2",
-                avatar: "fox", 
+                avatar: "frog", 
                 isAdmin: false,
                 householdId: "abc",
                 authUserId: "abc",
                 alias: "alias",
                 pendingRequest: false
             },
+            // {
+            //     id: "4",
+            //     avatar: "chicken", 
+            //     isAdmin: false,
+            //     householdId: "abc",
+            //     authUserId: "abc",
+            //     alias: "alias",
+            //     pendingRequest: false
+            // },
+            // {
+            //     id: "3",
+            //     avatar: "octopus", 
+            //     isAdmin: false,
+            //     householdId: "abc",
+            //     authUserId: "abc",
+            //     alias: "alias",
+            //     pendingRequest: false
+            // },
+            // {
+            //     id: "3",
+            //     avatar: "dolphin", 
+            //     isAdmin: false,
+            //     householdId: "abc",
+            //     authUserId: "abc",
+            //     alias: "alias",
+            //     pendingRequest: false
+            // },
+            // {
+            //     id: "3",
+            //     avatar: "owl", 
+            //     isAdmin: false,
+            //     householdId: "abc",
+            //     authUserId: "abc",
+            //     alias: "alias",
+            //     pendingRequest: false
+            // },
+            // {
+            //     id: "3",
+            //     avatar: "unicorn", 
+            //     isAdmin: false,
+            //     householdId: "abc",
+            //     authUserId: "abc",
+            //     alias: "alias",
+            //     pendingRequest: false
+            // },
         ];
     }
 
