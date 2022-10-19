@@ -7,21 +7,79 @@ import CustomInput from "../components/CustomInput";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
 import { RootStackParamList } from "../NavContainer";
 
+interface SignUpDto {
+  username: string;
+  password: string;
+}
+
+//This is the body from BE. Note that status here is not a HTTP status code.
+type SignUpResponse = {
+  status: string;
+  message: string;
+};
+
+const BASE_URL = "https://household-backend.azurewebsites.net/api/V01/Authenticate/";
+
 export default function SignUpScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
-  const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
+  const { passwordVisibility, handlePasswordVisibility } = useTogglePasswordVisibility();
   const { control, handleSubmit, watch } = useForm({});
   const pwd = watch("password");
+
   const onRegisterPressed = (data: FieldValues) => {
     console.log(data.username + data.password);
-    navigation.navigate("CreateProfile");
+    const signUpDto: SignUpDto = {
+      username: data.username,
+      password: data.password,
+    };
+
+    (async () => {
+      const signUpResponse: SignUpResponse = await signUp(signUpDto);
+      if (signUpResponse.status === "Success") {
+        navigation.navigate("SignIn");
+      }
+    })();
   };
+
   const onRegisterFailed = () => {
     alert("Failed");
   };
 
-  // const dispatch = useAppDispatch();
-  //on submit something something...med RTK query
-  //const reply: SignUpReplyType = await signUpHttpRequestAsync(dispatch, { username, email, password });
+  async function signUp(signUpDto: SignUpDto) {
+    {
+      const response: Response = await PostSignUp(signUpDto);
+      try {
+        if (response.status != 200) {
+          throw new Error("Httprequest to get token failed, response is not 200");
+        }
+        const signUpResponse = (await response.json()) as SignUpResponse;
+        return signUpResponse;
+      } catch (error) {
+        console.log("Error in signUp in SignUpScreen.tsx: ", error);
+        return {} as SignUpResponse;
+      }
+    }
+  }
+
+  const PostSignUp = async (signUpDto: SignUpDto): Promise<Response> => {
+    try {
+      console.log("About to send signUp post request");
+      const response: Response = await fetch(BASE_URL + `register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(signUpDto),
+      });
+
+      //const jsonBody = await response.json();
+      //console.log("Response.status in PostSingUp: ", response.status);
+      //console.log("jsonBody in PostSingUp: ", jsonBody);
+      return response;
+    } catch (error) {
+      console.log("Error in PostSignUp in SignUpScreen.tsx: ", error);
+      return {} as Response;
+    }
+  };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>

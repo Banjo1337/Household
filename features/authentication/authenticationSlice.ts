@@ -45,9 +45,6 @@ const authenticationSlice = createSlice({
       state.hasError = false;
     });
     builder.addCase(postSignInThunk.rejected, (state, action) => {
-      console.log("postSignInThunk.rejected");
-      console.log("action.error: " + action.error.message);
-      console.log("error: " + action.payload);
       if (action.payload) {
         state.error = action.payload;
       }
