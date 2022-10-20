@@ -30,14 +30,12 @@ export default function EditHouseholdScreen({
   };
 
   const onEditHouseholdPressed = (data: FieldValues) => {
-    //TODO: add dispatch from EditHouseholdSlice
+    //TODO: add import from EditHouseholdSlice
     dispatch(
       editHouseholdThunk({
         name: data.householdName,
       })
     );
-    console.log("you have pressed edit household" + data.householdName);
-    navigation.navigate("MegaNavigationGod");
   };
 
   var householdPicture = "../assets/household.png";
