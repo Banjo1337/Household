@@ -15,6 +15,8 @@ import SignInScreen from "./screens/SignInScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import StatisticsScreen from "./screens/StatisticsScreen";
 import { NavigationContainer } from "@react-navigation/native";
+import { useTheme } from "./features/theme/ThemeContext";
+import { Provider as PaperProvider } from "react-native-paper";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
 
@@ -39,47 +41,52 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function NavContainer() {
+  const { currentTheme } = useTheme();
   return (
     <SafeAreaProvider>
-      <StatusBar style="light" />
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="MegaNavigationGod">
-          <Stack.Screen
-            name="MegaNavigationGod"
-            component={MegaNavigationGodScreen}
-            options={() => ({ title: "This is temporary" })}
-          />
-          <Stack.Screen name="Chores" component={ChoresScreen} />
-          <Stack.Screen name="AddChore" component={AddChoreScreen} />
-          <Stack.Screen name="ChoreDetails" component={ChoreDetailsScreen} />
-          <Stack.Screen name="SignIn" component={SignInScreen} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
-          <Stack.Screen name="CreateProfile" component={CreateProfileScreen} />
-          <Stack.Screen
-            name="CreateHousehold"
-            component={CreateHouseholdScreen}
-          />
-          <Stack.Screen
-            name="EditHousehold"
-            component={EditHouseholdScreen}
-          />
-          <Stack.Screen name="SelectProfile" component={SelectProfileScreen} />
-          <Stack.Screen
-            name="FinalizeProfile"
-            component={FinalizeProfileScreen}
-          />
-          <Stack.Screen
-            name="PendingRequest"
-            component={PendingRequestScreen}
-          />
-          <Stack.Screen
-            name="RequestResponse"
-            component={RequestResponseScreen}
-          />
-          <Stack.Screen name="Settings" component={SettingsScreen} />
-          <Stack.Screen name="Statistics" component={StatisticsScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <StatusBar style={currentTheme.dark ? "dark" : "light"} />
+      <PaperProvider theme={currentTheme}>
+        <NavigationContainer theme={currentTheme}>
+          <Stack.Navigator initialRouteName="MegaNavigationGod">
+            <Stack.Screen
+              name="MegaNavigationGod"
+              component={MegaNavigationGodScreen}
+              options={() => ({ title: "This is temporary" })}
+            />
+            <Stack.Screen name="Chores" component={ChoresScreen} />
+            <Stack.Screen name="AddChore" component={AddChoreScreen} />
+            <Stack.Screen name="ChoreDetails" component={ChoreDetailsScreen} />
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
+            <Stack.Screen
+              name="CreateHousehold"
+              component={CreateHouseholdScreen}
+            />
+            <Stack.Screen
+              name="CreateProfile"
+              component={CreateProfileScreen}
+            />
+            <Stack.Screen
+              name="SelectProfile"
+              component={SelectProfileScreen}
+            />
+            <Stack.Screen
+              name="FinalizeProfile"
+              component={FinalizeProfileScreen}
+            />
+            <Stack.Screen
+              name="PendingRequest"
+              component={PendingRequestScreen}
+            />
+            <Stack.Screen
+              name="RequestResponse"
+              component={RequestResponseScreen}
+            />
+            <Stack.Screen name="Settings" component={SettingsScreen} />
+            <Stack.Screen name="Statistics" component={StatisticsScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
     </SafeAreaProvider>
   );
 }

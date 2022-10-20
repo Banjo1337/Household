@@ -30,6 +30,7 @@
         }
       ],
       "no-undef": "off",
-      "semi": "warn"
+      "semi": "warn",
+      "no-empty-pattern": "off"
     }
 }

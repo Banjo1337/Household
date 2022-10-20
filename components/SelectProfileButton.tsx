@@ -9,12 +9,12 @@ interface Props {
 }
 
 export default function SelectProfileButton({ profile, handleSelectUser}: Props) {
-    const avatar = useAvatar(profile.avatar);
+    const { emoji, color } = useAvatar(profile.avatar);
 
     return (
-            <View style={ [styles.profilePortrait, { backgroundColor: profile.color }] }>
+            <View style={ [styles.profilePortrait, { backgroundColor: color }] }>
                 <Pressable onPress={() => handleSelectUser(profile)}>
-                    <Text style={ styles.avatar }>{avatar}</Text>
+                    <Text style={ styles.avatar }>{emoji}</Text>
                 </Pressable>
             </View>
     );

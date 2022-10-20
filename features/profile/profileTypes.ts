@@ -7,8 +7,7 @@ export interface ProfileState {
 export interface Profile {
     id: string,
     alias: string,
-    avatar: string,
-    color: string,
+    avatar: Avatar,
     isAdmin: boolean,
     pendingRequest: boolean,
     authUserId: string,
@@ -25,21 +24,21 @@ export interface ProfileEditDto {
     alias?: string,
     isAdmin?: boolean,
     avatar?: string,
-    color?: string,
     pendingRequest?: boolean
 }
 
-export enum Avatars {
-    "fox" = "🦊",
-    "pig" = "🐷",
-    "frog" = "🐸",
-    "chicken" = "🐥",
-    "octopus" = "🐙",
-    "dolphin" = "🐬",
-    "owl" = "🦉",
-    "unicorn" = "🦄"
-}
+export const Avatars = {
+    "fox": { emoji: "🦊", color: "#ff8244" },
+    "pig": { emoji: "🐷", color: "#fcc598" },
+    "frog": { emoji: "🐸", color: "#d2eb47" },
+    "chicken": { emoji: "🐥", color: "#ffe39c" },
+    "octopus": { emoji: "🐙", color: "#fa8e8c" },
+    "dolphin": { emoji: "🐬", color: "#62ccf3" },
+    "owl": { emoji: "🦉", color: "#f2d3b0" },
+    "unicorn": { emoji: "🦄", color: "#f880b2"}
+} as const;
 
+export type Avatar = keyof typeof Avatars;
 
 
 
