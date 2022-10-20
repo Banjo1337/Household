@@ -1,36 +1,42 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useReducer, useState } from "react";
 import { Field, FieldValue, FieldValues, useForm } from "react-hook-form";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Title, TextInput, Switch } from "react-native-paper";
 import { shouldUseActivityState } from "react-native-screens";
 import CustomInput from "../components/CustomInput";
+import { useAppDispatch } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 
-export default function EditHouseholdScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
+export default function EditHouseholdScreen({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList>) {
+  const dispatch = useAppDispatch();
+  //const household = useAppSelector();
+  //const members = useAppSelector();
+
   const {
     control,
     handleSubmit,
     //formState: {},
   } = useForm();
 
-//Mock-up data
-const household = {
-  householdName: "My household",
-  householdPicture: "",
-  householdCode: "aE7fZ",
-  members: ["AA","BB","CC"]
-};
+  //Mock-up data
+  const household = {
+    householdName: "My household",
+    householdPicture: "",
+    householdCode: "aE7fZ",
+    members: ["AA", "BB", "CC"],
+  };
 
   const onEditHouseholdPressed = (data: FieldValues) => {
     //TODO: add dispatch from EditHouseholdSlice
-    console.log("you have pressed edit household" + data.householdName);  
+    dispatch(
+      postNewHouseholdNameThunk({
+        name: data.householdName,
+      })
+    );
+    console.log("you have pressed edit household" + data.householdName);
     navigation.navigate("MegaNavigationGod");
   };
 
