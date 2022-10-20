@@ -1,13 +1,13 @@
-export type Household {
+export type Household = {
   id: string;
   name: string;
   code: string;
 }
 
-export type HouseholdCreateDto {
+export type HouseholdCreateDto = {
   name: string;
 }
 
-export type HouseholdEditDto {
+export type HouseholdEditDto = {
   name: string;
 }
