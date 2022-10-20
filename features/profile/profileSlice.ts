@@ -35,7 +35,11 @@ export const createProfile = createAsyncThunk<Profile, ProfileCreateDto, { rejec
 
 			return thunkApi.rejectWithValue(JSON.stringify(response.body));
 		} catch (err) {
-			return thunkApi.rejectWithValue(err);
+			if (err instanceof Error) {
+				return thunkApi.rejectWithValue(err.message);
+			} else {
+				return thunkApi.rejectWithValue("");
+			}
 		}
 	}
 );
@@ -65,7 +69,11 @@ export const editProfile = createAsyncThunk<
 
 		return thunkApi.rejectWithValue(JSON.stringify(response.body));
 	} catch (err) {
-		return thunkApi.rejectWithValue(err);
+		if (err instanceof Error) {
+			return thunkApi.rejectWithValue(err.message);
+		} else {
+			return thunkApi.rejectWithValue("");
+		}
 	}
 });
 
@@ -91,7 +99,11 @@ export const deleteProfile = createAsyncThunk<Profile, string, { rejectValue: st
 
 			return thunkApi.rejectWithValue(JSON.stringify(response.body));
 		} catch (err) {
-			return thunkApi.rejectWithValue(err);
+			if (err instanceof Error) {
+				return thunkApi.rejectWithValue(err.message);
+			} else {
+				return thunkApi.rejectWithValue("");
+			}
 		}
 	}
 );
