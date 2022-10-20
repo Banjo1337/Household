@@ -12,8 +12,8 @@ export default function EditHouseholdScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList>) {
   const dispatch = useAppDispatch();
-  //const household = useAppSelector();
-  //const members = useAppSelector();
+  //const household = useAppSelector(); // to use instead of mock-up data
+  //const members = useAppSelector(); // to use instead of mock-up data
 
   const {
     control,
@@ -21,7 +21,7 @@ export default function EditHouseholdScreen({
     //formState: {},
   } = useForm();
 
-  //Mock-up data
+  //Mock-up data for testing - to remove when useAppSelector aktiveras
   const household = {
     householdName: "My household",
     householdPicture: "",
@@ -32,7 +32,7 @@ export default function EditHouseholdScreen({
   const onEditHouseholdPressed = (data: FieldValues) => {
     //TODO: add dispatch from EditHouseholdSlice
     dispatch(
-      postNewHouseholdNameThunk({
+      editHouseholdThunk({
         name: data.householdName,
       })
     );
