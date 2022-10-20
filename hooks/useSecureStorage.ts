@@ -15,7 +15,7 @@ export default function useSecureStorage<T>(key: string, initialState: T) {
       SecureStore.setItemAsync(key, JSON.stringify(value)).catch((err) => console.log(err));
     }
   }, [value]);
-  
+
   async function initilizeState() {
     const result = await SecureStore.getItemAsync(key);
     if (result) {
@@ -24,6 +24,6 @@ export default function useSecureStorage<T>(key: string, initialState: T) {
       setValue(initialState);
     }
   }
-  
+
   return [value, setValue] as const;
 }

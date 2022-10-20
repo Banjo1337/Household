@@ -3,11 +3,13 @@ export type AuthenticationCredentials = {
   password: string;
 };
 
-export type Token = {
-  authUserId: string; //PK connection to AuthUserId (FK i Profile)
+export type SignInReply = {
   token: string;
-  expiration: Date; //not used right now. Token is set to be valid for 21 days in backend
-  //Format from backend is 2022-09-14T00:35:18Z
+  expiration: Date;
+  authUserId: string;
+  error: string;
+  hasError: boolean;
+  dataWrittenToSecureStoreCounter?: number;
 };
 
 export type SignUpReply = {
