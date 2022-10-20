@@ -2,7 +2,6 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useReducer, useState } from "react";
 import { Field, FieldValue, FieldValues, useForm } from "react-hook-form";
 import {
-  Pressable,
   View,
   Text,
   StyleSheet,
@@ -27,7 +26,7 @@ const household = {
   householdPicture: "",
   householdCode: "aE7fZ",
   members: ["AA","BB","CC"]
-}
+};
 
   const onEditHouseholdPressed = (data: FieldValues) => {
     //TODO: add dispatch from EditHouseholdSlice
