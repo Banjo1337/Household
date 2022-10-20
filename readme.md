@@ -61,7 +61,7 @@ godkänna användaren.
 
 [ ] - Avataren ska användas i appen för att visa vad användaren har gjort. 🚨⚠🚨
 
-[ ] - En användare ska kunna ställa in appens utseende (mörkt, ljust, auto).
+[x] - En användare ska kunna ställa in appens utseende (mörkt, ljust, auto).
 
 [ ] - Om en användare tillhör två eller fler hushåll ska denne kunna välja att byta mellan de
 olika hushållen.
