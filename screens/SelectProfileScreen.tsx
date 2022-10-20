@@ -20,7 +20,6 @@ export default function SelectProfileScreen({
 
 	function handleSelectUser(profile: Profile) {
 		dispatch(setActiveProfile(profile));
-		dispatch(createProfile({} as Profile));
 	}
 
 	let mockDataIfProfilesIsEmpty: Profile[];
