@@ -5,6 +5,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Title, TextInput, Switch } from "react-native-paper";
 import { shouldUseActivityState } from "react-native-screens";
 import CustomInput from "../components/CustomInput";
+import { editHousehold } from "../features/household/householdSlice";
 import { useAppDispatch } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 
@@ -30,9 +31,8 @@ export default function EditHouseholdScreen({
   };
 
   const onEditHouseholdPressed = (data: FieldValues) => {
-    //TODO: add import from EditHouseholdSlice
     dispatch(
-      editHouseholdThunk({
+      editHousehold({
         name: data.householdName,
       })
     );
