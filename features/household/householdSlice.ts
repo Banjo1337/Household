@@ -5,14 +5,24 @@ import {
   isRejectedWithValue,
   PayloadAction, Reducer
 } from "@reduxjs/toolkit";
-
+import * as SecureStore from "expo-secure-store";
 import { Household, HouseholdCreateDto, HouseholdEditDto } from "./householdTypes";
 
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/household/";
-import useSecureStorage from "../../hooks/useSecureStorage";
 
-const [token] = useSecureStorage("token", "");
+//Behöver se över hur man hämtar token
+//const [token] = useSecureStorage("token", "");
+async function getToken(): Promise<string> {
+  const token = await SecureStore.getItemAsync("token");
+  if (token) {
+    return JSON.parse(token).token;
+  } else {
+    return "";
+  }
+}
+const token = getToken();
 
+//---------------------------
 
 export const getHouseholdThunk = createAsyncThunk(
     "household/getHousehold",
@@ -100,6 +110,8 @@ interface HouseholdState {
   name: string;
   code: string;
   hasError: boolean;
+  error: string;
+  isLoading: boolean;
 }
 
 const initialState: HouseholdState = {
@@ -107,6 +119,8 @@ const initialState: HouseholdState = {
   name: "",
   code: "",
   hasError: false,
+  error: "",
+  isLoading: false,
 };
 
 const householdSlice = createSlice({
@@ -120,37 +134,43 @@ const householdSlice = createSlice({
             editHouseholdThunk(action.payload);
         },
         deleteHousehold(_, action: PayloadAction<Household>) { 
-            deleteHouseholdThunk(action.payload);
+            deleteHouseholdThunk(action.payload.id);
         }
     },
     extraReducers: builder => {
         builder.addCase(createHouseholdThunk.fulfilled, (state, action) => {
-            state = action.payload;
-            state.hasError = false
+          state.name = action.payload.name;
+          state.hasError = false;
         }),
-        builder.addCase(createHouseholdThunk.rejected, (state, action) => {
-            if(action.payload)
-                state.error = action.payload;
-            state.hasError = true
-        }),
-        builder.addCase(editHouseholdThunk.fulfilled, (state, action) => {
-            state = action.payload
-            state.hasError = false
-        }),
-        builder.addCase(editHouseholdThunk.rejected, (state, action) => {
-            if(action.payload)
-                state.error = action.payload
+          builder.addCase(createHouseholdThunk.pending, (state) => {
+            state.isLoading = true;
+          }),
+          builder.addCase(createHouseholdThunk.rejected, (state, action) => {
+            if (action.payload) state.error = action.payload;
             state.hasError = true;
-        })
+          }),
+          builder.addCase(editHouseholdThunk.fulfilled, (state, action) => {
+            state.name = action.payload.name;
+            state.hasError = false;
+          }),
+          builder.addCase(editHouseholdThunk.pending, (state) => {
+            state.isLoading = true;
+          }),
+          builder.addCase(editHouseholdThunk.rejected, (state, action) => {
+            if (action.payload) state.error = action.payload;
+            state.hasError = true;
+          });
         builder.addCase(deleteHouseholdThunk.fulfilled, (state, action) => {
-            state = action.payload
-            state.hasError = false
+          state.id = action.payload.id;
+          state.hasError = false;
         }),
-        builder.addCase(deleteHouseholdThunk.rejected, (state, action) => {
-            if(action.payload)
-                state.error = action.payload
+          builder.addCase(deleteHouseholdThunk.pending, (state) => {
+            state.isLoading = true;
+          }),
+          builder.addCase(deleteHouseholdThunk.rejected, (state, action) => {
+            if (action.payload) state.error = action.payload;
             state.hasError = true;
-        })
+          });
     },
 });
 
