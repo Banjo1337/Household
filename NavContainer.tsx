@@ -67,6 +67,10 @@ export default function NavContainer() {
               component={CreateProfileScreen}
             />
             <Stack.Screen
+              name="EditHousehold"
+              component={EditHouseholdScreen}
+            />
+            <Stack.Screen
               name="SelectProfile"
               component={SelectProfileScreen}
             />
