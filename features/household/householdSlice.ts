@@ -28,13 +28,14 @@ const baseUrl = "https://household-backend.azurewebsites.net/api/V01/Household/"
 
 //---------------------------
 
-export const getHouseholdThunk = createAsyncThunk<Household, string, { rejectValue: string }>(
+export const hydrateHouseholdThunk = createAsyncThunk<Household, string, { rejectValue: string }>(
 	"household/getHousehold",
 	async (householdId: string, thunkApi) => {
 		const response = await fetch(baseUrl + "GetHouseholdById/" + householdId);
+		console.log(response);
 		if (response.ok) {
 			const household = await response.json();
-			thunkApi.dispatch(getProfilesByHouseholdId(household.id));
+			//thunkApi.dispatch(getProfilesByHouseholdId(household.id));
 			return household as Household;
 		} else {
 			return thunkApi.rejectWithValue(JSON.stringify(response.body));
@@ -146,60 +147,53 @@ const householdSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
-		builder.addCase(getHouseholdThunk.fulfilled, (state, action) => {
-			state.household = action.payload;
-			state.isLoading = false;
-		}),
-		builder.addCase(createHouseholdThunk.fulfilled, (state, action) => {
-			state.household.name = action.payload.name;
-		}),
-		builder.addCase(editHouseholdThunk.fulfilled, (state, action) => {
-			state.household.name = action.payload.name;
-		}),
-		builder.addCase(deleteHouseholdThunk.fulfilled, (state, action) => {
-			state.household.id = action.payload.id;
-		}),
-		builder.addCase(getProfilesByHouseholdId.fulfilled, (state, action) => {
-			state.profiles = action.payload;
-		}),
-		builder.addMatcher(
-			isAnyOf(
-				editHouseholdThunk.pending,
-				deleteHouseholdThunk.pending,
-				createHouseholdThunk.pending,
-				editHouseholdThunk.pending,
-				getHouseholdThunk.pending
-			),
-			(state, _) => {
-				state.isLoading = true;
-			}
-		),
-		builder.addMatcher(
-			isAnyOf(
-				editHouseholdThunk.rejected,
-				deleteHouseholdThunk.rejected,
-				createHouseholdThunk.rejected,
-				editHouseholdThunk.rejected,
-				getHouseholdThunk.rejected
-			),
-			(state, action) => {
-				if (action.payload) {
-					state.error = action.payload;
-				}
-				state.isLoading = false;
-			}
-		);
+		builder.addCase(hydrateHouseholdThunk.fulfilled, (state, action) => {
+      state.household = action.payload;
+      state.isLoading = false;
+    }),
+      builder.addCase(createHouseholdThunk.fulfilled, (state, action) => {
+        state.household.name = action.payload.name;
+      }),
+      builder.addCase(editHouseholdThunk.fulfilled, (state, action) => {
+        state.household.name = action.payload.name;
+      }),
+      builder.addCase(deleteHouseholdThunk.fulfilled, (state, action) => {
+        state.household.id = action.payload.id;
+      }),
+      builder.addCase(getProfilesByHouseholdId.fulfilled, (state, action) => {
+        state.profiles = action.payload;
+      }),
+      builder.addMatcher(
+        isAnyOf(
+          editHouseholdThunk.pending,
+          deleteHouseholdThunk.pending,
+          createHouseholdThunk.pending,
+          editHouseholdThunk.pending,
+          hydrateHouseholdThunk.pending
+        ),
+        (state, _) => {
+          state.isLoading = true;
+        }
+      ),
+      builder.addMatcher(
+        isAnyOf(
+          editHouseholdThunk.rejected,
+          deleteHouseholdThunk.rejected,
+          createHouseholdThunk.rejected,
+          editHouseholdThunk.rejected,
+          hydrateHouseholdThunk.rejected
+        ),
+        (state, action) => {
+          if (action.payload) {
+            state.error = action.payload;
+          }
+          state.isLoading = false;
+        }
+      );
 	},
 });
 
 
 export const householdReducer: Reducer<HouseholdState, AnyAction> = householdSlice.reducer;
-export const selectHouseholdById = (state: RootStateType, householdId: string) =>
-  state.householdReducer.household((household)=>household.household == householdId);
-export const selectMembersForThisHouseholdId = (
-  state: RootStateType,
-  householdId: string
-) =>
-  state.householdReducer.profiles(
-    (household) => household.household == householdId
-  );
+export const selectHousehold = (state: RootStateType) =>
+  state.householdReducer.household;
