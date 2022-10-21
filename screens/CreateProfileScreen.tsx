@@ -1,16 +1,18 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useReducer, useState } from "react";
-import { Field, FieldValue, FieldValues, useForm } from "react-hook-form";
-import { Pressable, View, Text, StyleSheet } from "react-native";
-import { Title, TextInput } from "react-native-paper";
+import React, { useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { Button, Title } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { RootStackParamList } from "../NavContainer";
 
-export default function CreateProfileScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
+export default function CreateProfileScreen({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList>) {
   const {
     control,
     handleSubmit,
-    //formState: {},
+    formState: {},
   } = useForm();
   const toggleInput = () => {
     setInput((input) => !input);
@@ -19,62 +21,101 @@ export default function CreateProfileScreen({ navigation }: NativeStackScreenPro
   const [input, setInput] = useState(false);
 
   const onCreateHouseholdPressed = (data: FieldValues) => {
-    console.log("you have pressed create household" + data.householdName);
+    console.log(
+      "you have pressed create household" +
+        data.householdname +
+        data.profilename
+    );
     navigation.navigate("Chores");
   };
   const onJoinHouseholdPressed = (data: FieldValues) => {
-    console.log("you have pressed join household" + data.householdCode);
+    console.log(
+      "you have pressed join household" + data.householdname + data.profilename
+    );
     navigation.navigate("PendingRequest");
   };
   return (
-    <View style={styles.container}>
-      <CustomInput name="username" placeholder="Desired profile name" control={control}></CustomInput>
-      {/* Detta är en riktig ful lösning för att toggla rätt inputfält. vill egentligen dölja det ena på något snyggare sätt */}
-      {input ? (
-        <View>
-          <Pressable style={styles.pressable} onPress={toggleInput}>
-            <Text>Got a household code already?</Text>
-          </Pressable>
-          <CustomInput name="householdName" placeholder="Name of household" control={control}></CustomInput>
-          <Pressable style={styles.pressable} onPress={handleSubmit(onCreateHouseholdPressed)}>
-            <Text>Create Household</Text>
-          </Pressable>
-        </View>
-      ) : (
-        <View>
-          <Pressable style={styles.pressable} onPress={toggleInput}>
-            <Text>Dont have a household yet? Create one</Text>
-          </Pressable>
-          <CustomInput name="householdCode" placeholder="Code to the household you want to join" control={control}></CustomInput>
-          <Pressable style={styles.pressable} onPress={handleSubmit(onJoinHouseholdPressed)}>
-            <Text>Join household</Text>
-          </Pressable>
-        </View>
-      )}
-    </View>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.container}>
+        <Title style={styles.title}>Add Chore</Title>
+        <CustomInput
+          style={styles.input}
+          name="profilename"
+          placeholder="Desired profile name"
+          control={control}
+          rules={{
+            required: "Name of profile is required",
+            minLength: { value: 2, message: "At least 2 letters" },
+            maxLength: { value: 50, message: "Cant be more than 50 letters" },
+          }}
+        ></CustomInput>
+        {/* Detta är en riktig ful lösning för att toggla rätt inputfält. vill egentligen dölja det ena på något snyggare sätt */}
+        {input ? (
+          <View>
+            <Button style={styles.button} onPress={toggleInput}>
+              <Text>Got a household code already?</Text>
+            </Button>
+            <CustomInput
+              style={styles.input}
+              name="householdname"
+              placeholder="Name of Household"
+              control={control}
+              rules={{
+                required: "Name of household is required",
+                maxLength: {
+                  value: 50,
+                  message: "Cant be more than 50 letters",
+                },
+              }}
+            ></CustomInput>
+            <Button
+              style={styles.button}
+              onPress={handleSubmit(onCreateHouseholdPressed)}
+            >
+              Create Household
+            </Button>
+          </View>
+        ) : (
+          <View>
+            <Button style={styles.button} onPress={toggleInput}>
+              <Text>Dont have a household yet? Create one</Text>
+            </Button>
+            <CustomInput
+              style={styles.input}
+              name="householdcode"
+              placeholder="Code to the household you want to join"
+              control={control}
+              rules={{
+                required: "Household Code is required",
+                maxLength: {
+                  value: 10,
+                  message: "Cant be more than 50 letters",
+                },
+              }}
+            ></CustomInput>
+            <Button
+              style={styles.button}
+              onPress={handleSubmit(onJoinHouseholdPressed)}
+            >
+              Join household
+            </Button>
+          </View>
+        )}
+      </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    backgroundColor: "green",
     padding: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "black",
-    backgroundColor: "green",
-    margin: 10,
+    backgroundColor: "blue",
   },
-  pressable: {
-    fontSize: 70,
-    fontWeight: "bold",
-    width: 200,
-    height: 50,
-    color: "blue",
-    backgroundColor: "white",
-    borderRadius: 5,
-    margin: 2,
-    borderColor: "red",
-  },
+  button: { backgroundColor: "hotpink" },
+
+  input: { backgroundColor: "brown" },
+  dropDownPicker: { backgroundColor: "yellow" },
 });

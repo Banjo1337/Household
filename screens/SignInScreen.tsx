@@ -7,19 +7,31 @@ import CustomInput from "../components/CustomInput";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
 import { RootStackParamList } from "../NavContainer";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { postSignInThunk, selectHasError, selectErrorText, logout, selectDataWrittenToSecureStoreCounter } from "../features/authentication/authenticationSlice";
+import {
+  postSignInThunk,
+  selectHasError,
+  selectErrorText,
+  logout,
+  selectDataWrittenToSecureStoreCounter,
+} from "../features/authentication/authenticationSlice";
 import * as SecureStore from "expo-secure-store";
+import { Button, Title } from "react-native-paper";
 
-export default function SignInScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
+export default function SignInScreen({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList>) {
   const dispatch = useAppDispatch();
   const hasError = useAppSelector(selectHasError);
   const errorText = useAppSelector(selectErrorText);
-  const dataWrittenToSecureStoreCounter = useAppSelector(selectDataWrittenToSecureStoreCounter);
-  const { passwordVisibility, handlePasswordVisibility } = useTogglePasswordVisibility();
+  const dataWrittenToSecureStoreCounter = useAppSelector(
+    selectDataWrittenToSecureStoreCounter
+  );
+  const { passwordVisibility, rightIcon, handlePasswordVisibility } =
+    useTogglePasswordVisibility();
   const {
     control,
     handleSubmit,
-    //formState: {},
+    formState: {},
   } = useForm();
 
   const [token, setToken] = useState<string>("");
@@ -33,67 +45,73 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
       if (token && token !== "" && authUserId && authUserId !== "") {
         setToken(token);
         setAuthUserId(authUserId);
+        console.log(token, hasError, authUserId, errorText);
         navigation.navigate("SelectProfile");
       }
     })();
   }, [dataWrittenToSecureStoreCounter, navigation]);
 
   const onLoginPressed = (data: FieldValues) => {
-    dispatch(postSignInThunk({ username: data.username, password: data.password }));
+    dispatch(
+      postSignInThunk({ username: data.username, password: data.password })
+    );
   };
 
   const onLogoutPressed = () => {
     setToken("");
     setAuthUserId("");
     dispatch(logout());
+    console.log(token);
   };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        <Text style={styles.title}>Create an account</Text>
-        <CustomInput placeholder="Username" name="username" control={control} />
-        <View>
-          <Pressable onPress={handlePasswordVisibility}>
-            <MaterialCommunityIcons size={22} color="#232323" />
-          </Pressable>
-          <CustomInput placeholder="Password" name="password" control={control} secureTextEntry={passwordVisibility} />
-          <Pressable style={styles.pressable} onPress={handleSubmit(onLoginPressed)}>
-            <Text>Sign in</Text>
-          </Pressable>
-          <Pressable style={styles.pressable} onPress={handleSubmit(onLogoutPressed)}>
-            <Text>Logout</Text>
-          </Pressable>
-        </View>
+        <Title style={styles.title}>Sign In Screen</Title>
+        <CustomInput
+          style={styles.input}
+          placeholder="Username"
+          name="username"
+          control={control}
+          rules={{
+            required: "Username is required",
+            minLength: { value: 4, message: "Must be minimum 4 " },
+            maxLength: { value: 50, message: "Cant be more than 50 letters" },
+          }}
+        />
+        <CustomInput
+          style={styles.input}
+          placeholder="Password"
+          name="password"
+          control={control}
+          secureTextEntry={passwordVisibility}
+          rules={{ required: "Password is required" }}
+        />
+        <Text style={styles.title}>Toggle password visibility</Text>
+        <Pressable style={styles.pressable} onPress={handlePasswordVisibility}>
+          <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
+        </Pressable>
+        <Button style={styles.button} onPress={handleSubmit(onLoginPressed)}>
+          Sign In
+        </Button>
+        <Button style={styles.button} onPress={onLogoutPressed}>
+          Logout
+        </Button>
       </View>
-
-      <Text style={styles.title}>authUserId: {authUserId}</Text>
-      <Text style={styles.title}>token: {token}</Text>
-      <Text style={styles.title}>hasError: {hasError}</Text>
-      <Text style={styles.title}>errorText: {errorText}</Text>
     </ScrollView>
   );
 }
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    backgroundColor: "green",
     padding: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "black",
-    backgroundColor: "gray",
-    margin: 10,
+    backgroundColor: "white",
   },
-  pressable: {
-    fontSize: 50,
-    fontWeight: "bold",
-    width: 100,
-    height: 30,
-    backgroundColor: "gray",
-    borderRadius: 5,
-    margin: 2,
-    borderColor: "black",
-  },
+  button: { backgroundColor: "hotpink" },
+  pressable: { backgroundColor: "red" },
+  input: { backgroundColor: "brown" },
+  dropDownPicker: { backgroundColor: "yellow" },
 });
