@@ -12,8 +12,10 @@ interface Props {
   maxLength?: number;
   keyboardType?: KeyboardTypeOptions;
   value?: string;
+  style?: any;
 }
 const CustomInput = ({
+  style,
   control,
   name,
   rules = {},
@@ -42,8 +44,8 @@ const CustomInput = ({
               maxLength={maxLength}
               keyboardType={keyboardType}
               placeholder={placeholder}
-              style={styles.input}
               secureTextEntry={secureTextEntry}
+              style={style}
             />
           </View>
           {error && (
@@ -65,11 +67,7 @@ const styles = StyleSheet.create({
     minWidth: "100%",
     width: "100%",
 
-    borderColor: "red",
     borderWidth: 1,
-
-    borderRadius: 5,
-    marginVertical: 5,
   },
   input: {},
 });
