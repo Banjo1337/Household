@@ -197,3 +197,5 @@ const householdSlice = createSlice({
 export const householdReducer: Reducer<HouseholdState, AnyAction> = householdSlice.reducer;
 export const selectHousehold = (state: RootStateType) =>
   state.householdReducer.household;
+export const selectProfileByHousholdId = (state: RootStateType) =>
+  state.householdReducer.profiles;
