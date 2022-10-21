@@ -13,6 +13,8 @@ interface Props {
   keyboardType?: KeyboardTypeOptions;
   value?: string;
   style?: any;
+  multiline?: boolean;
+  numOfLines?: number;
 }
 const CustomInput = ({
   style,
@@ -23,20 +25,17 @@ const CustomInput = ({
   secureTextEntry,
   maxLength,
   keyboardType,
+  multiline,
+  numOfLines,
 }: Props) => {
   return (
     <Controller
       control={control}
       name={name}
       rules={rules}
-      render={({
-        field: { value, onChange, onBlur },
-        fieldState: { error },
-      }) => (
+      render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
         <>
-          <View
-            style={[styles.container, { borderColor: error ? "red" : "white" }]}
-          >
+          <View style={[styles.container, { borderColor: error ? "red" : "white" }]}>
             <TextInput
               value={value}
               onChangeText={onChange}
@@ -46,13 +45,11 @@ const CustomInput = ({
               placeholder={placeholder}
               secureTextEntry={secureTextEntry}
               style={style}
+              multiline={multiline}
+              numberOfLines={numOfLines}
             />
           </View>
-          {error && (
-            <Text style={{ color: "red", alignSelf: "stretch" }}>
-              {error.message}
-            </Text>
-          )}
+          {error && <Text style={{ color: "red", alignSelf: "stretch" }}>{error.message}</Text>}
         </>
       )}
     />
