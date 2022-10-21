@@ -53,7 +53,7 @@ export default function EditHouseholdScreen({route,
     );
   };
 
-  //Change the picture to a beeter one
+  //Change the picture to a better one
   var householdPicture = "../assets/household.png";
 
   return (
