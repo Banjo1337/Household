@@ -8,7 +8,7 @@ import CustomInput from "../components/CustomInput";
 import {
   editHousehold,
   getHouseholdThunk,
-  getProfileByHouseholdId,
+  getProfilesByHouseholdId,
 } from "../features/household/householdSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
@@ -27,7 +27,7 @@ export default function EditHouseholdScreen({route,
   // to use instead of mock-up data
   const household = useAppSelector(getHouseholdThunk(householdId));
   // to use instead of mock-up data
-  const members = useAppSelector(getProfileByHouseholdId(householdId));
+  const members = useAppSelector(getProfilesByHouseholdId(householdId));
 
   const {
     control,
