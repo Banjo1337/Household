@@ -38,6 +38,7 @@ export default function EditHouseholdScreen({
     );
   };
 
+  //Change the picture to a beeter one
   var householdPicture = "../assets/household.png";
 
   return (
