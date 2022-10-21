@@ -135,133 +135,128 @@ export default function AddChoreScreen({
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.container}>
-        <Title style={styles.title}>Add Chore</Title>
-        <CustomInput
-          style={styles.input}
-          placeholder="Title"
-          name="title"
-          control={control}
-          rules={{
-            required: "Title of chore is required",
-            minLength: { value: 2, message: "Must be 2 or more letters." },
-            maxLength: {
-              value: 100,
-              message: "Title can be maximum 100 letters.",
-            },
+    <View style={styles.container}>
+      <Title style={styles.title}>Add Chore</Title>
+      <CustomInput
+        style={styles.input}
+        placeholder="Title"
+        name="title"
+        control={control}
+        rules={{
+          required: "Title of chore is required",
+          minLength: { value: 2, message: "Must be 2 or more letters." },
+          maxLength: {
+            value: 100,
+            message: "Title can be maximum 100 letters.",
+          },
+        }}
+      />
+      <CustomInput
+        style={styles.input}
+        placeholder="Description"
+        name="description"
+        control={control}
+        rules={{
+          required: "Description of chore is required",
+          minLength: { value: 2, message: "Must be 2 or more letters" },
+          maxLength: {
+            value: 1000,
+            message: "Cannot be longer than 1000 letters",
+          },
+        }}
+      />
+      <View style={{ display: "flex", flexDirection: "row" }}>
+        <View
+          style={{
+            width: "50%",
+            alignSelf: "flex-start",
+            justifyContent: "flex-start",
           }}
-        />
-        <CustomInput
-          style={styles.input}
-          placeholder="Description"
-          name="description"
-          control={control}
-          rules={{
-            required: "Description of chore is required",
-            minLength: { value: 2, message: "Must be 2 or more letters" },
-            maxLength: {
-              value: 1000,
-              message: "Cannot be longer than 1000 letters",
-            },
+        >
+          <Text>Frequency of chore</Text>
+          <DropDownPicker
+            style={styles.dropDownPicker}
+            listMode="FLATLIST"
+            open={openFrequency}
+            onOpen={onOpenFrequency}
+            itemKey="value"
+            value={frequencyValue}
+            items={frequencyItems}
+            setOpen={setOpenFrequency}
+            setValue={setFrequencyValue}
+            setItems={setFrequencyItems}
+          />
+        </View>
+        <View
+          style={{
+            width: "50%",
+            alignSelf: "flex-end",
+            justifyContent: "flex-end",
           }}
-        />
-        <View style={{ display: "flex", flexDirection: "row" }}>
-          <View
-            style={{
-              width: "50%",
-              alignSelf: "flex-start",
-              justifyContent: "flex-start",
-            }}
-          >
-            <Text>Frequency of chore</Text>
-            <DropDownPicker
-              style={styles.dropDownPicker}
-              listMode="FLATLIST"
-              open={openFrequency}
-              onOpen={onOpenFrequency}
-              itemKey="value"
-              value={frequencyValue}
-              items={frequencyItems}
-              setOpen={setOpenFrequency}
-              setValue={setFrequencyValue}
-              setItems={setFrequencyItems}
-            />
-          </View>
-          <View
-            style={{
-              width: "50%",
-              alignSelf: "flex-end",
-              justifyContent: "flex-end",
-            }}
-          >
-            <Text>Difficulty of chore</Text>
-            <DropDownPicker
-              style={styles.dropDownPicker}
-              modalTitle="Select how difficult this task is"
-              listMode="FLATLIST"
-              open={openPoint}
-              onOpen={onOpenPoint}
-              value={pointValue}
-              itemKey="value"
-              items={pointItems}
-              setOpen={setOpenPoint}
-              setValue={setPointValue}
-              setItems={setPointItems}
-              closeOnBackPressed={true}
-              closeAfterSelecting={true}
-              dropDownContainerStyle={{}}
-            />
-          </View>
-        </View>
-        <View style={styles.container}>
-          <Button
-            style={styles.button}
-            onPress={recording ? stopRecording : startRecording}
-          >
-            {recording ? (
-              <Text>"Stop Recording"</Text>
-            ) : (
-              <Text>"Start Recording"</Text>
-            )}
-          </Button>
-          {getRecordingLines()}
-        </View>
-        <Button style={styles.button} onPress={pickImage}>
-          <Text>Pick Image</Text>
-        </Button>
-        {image && (
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-        )}
-        <View style={{ display: "flex", flexDirection: "row" }}>
-          <Button
-            onPress={handleSubmit(onAddChorePressed)}
-            style={styles.button}
-          >
-            <Text
-              style={{
-                color: "black",
-                alignSelf: "center",
-                justifyContent: "center",
-              }}
-            >
-              Save
-            </Text>
-          </Button>
-          <Button style={styles.button}>
-            <Text
-              style={{
-                color: "black",
-                alignSelf: "center",
-                justifyContent: "center",
-              }}
-            >
-              Close
-            </Text>
-          </Button>
+        >
+          <Text>Difficulty of chore</Text>
+          <DropDownPicker
+            style={styles.dropDownPicker}
+            modalTitle="Select how difficult this task is"
+            listMode="FLATLIST"
+            open={openPoint}
+            onOpen={onOpenPoint}
+            value={pointValue}
+            itemKey="value"
+            items={pointItems}
+            setOpen={setOpenPoint}
+            setValue={setPointValue}
+            setItems={setPointItems}
+            closeOnBackPressed={true}
+            closeAfterSelecting={true}
+            dropDownContainerStyle={{}}
+          />
         </View>
       </View>
-    </ScrollView>
+      <View style={styles.container}>
+        <Button
+          style={styles.button}
+          onPress={recording ? stopRecording : startRecording}
+        >
+          {recording ? (
+            <Text>"Stop Recording"</Text>
+          ) : (
+            <Text>"Start Recording"</Text>
+          )}
+        </Button>
+        {getRecordingLines()}
+      </View>
+      <Button style={styles.button} onPress={pickImage}>
+        <Text>Pick Image</Text>
+      </Button>
+      {image && (
+        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+      )}
+      <View style={{ display: "flex", flexDirection: "row" }}>
+        <Button onPress={handleSubmit(onAddChorePressed)} style={styles.button}>
+          <Text
+            style={{
+              color: "black",
+              alignSelf: "center",
+              justifyContent: "center",
+            }}
+          >
+            Save
+          </Text>
+        </Button>
+        <Button style={styles.button}>
+          <Text
+            style={{
+              color: "black",
+              alignSelf: "center",
+              justifyContent: "center",
+            }}
+          >
+            Close
+          </Text>
+        </Button>
+      </View>
+    </View>
   );
 }
 const styles = StyleSheet.create({
