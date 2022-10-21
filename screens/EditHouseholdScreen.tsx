@@ -6,7 +6,7 @@ import { Switch } from "react-native-paper";
 
 import CustomInput from "../components/CustomInput";
 import {
-  editHousehold,
+  editHouseholdThunk,
   getHouseholdThunk,
   getProfilesByHouseholdId,
 } from "../features/household/householdSlice";
@@ -22,7 +22,7 @@ import { RootStackParamList } from "../NavContainer";
 
 export default function EditHouseholdScreen({route,
 }: NativeStackScreenProps<RootStackParamList>) {
-  const householdId = route.params;
+  const householdId = "kkkk";
   const dispatch = useAppDispatch();
   // to use instead of mock-up data
   const household = useAppSelector(getHouseholdThunk(householdId));
@@ -45,9 +45,10 @@ export default function EditHouseholdScreen({route,
 
   const onEditHouseholdPressed = (data: FieldValues) => {
     dispatch(
-      editHousehold({
-        name: data.householdName,
-      })
+      editHouseholdThunk(
+        { name: data.householdName },
+        { extra:  householdId: householdId }
+      )
     );
   };
 
