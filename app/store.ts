@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authenticateUserReducer } from "../features/authentication/authenticationSlice";
+import { householdReducer } from "../features/household/householdSlice";
 import { profileApiSlice } from "../features/profile/profileApiSlice";
 import  profileReducer  from "../features/profile/profileSlice";
 
@@ -7,7 +8,8 @@ export const store = configureStore({
   reducer: {
     authenticateUserReducer: authenticateUserReducer,
     profileReducer: profileReducer,
-    [profileApiSlice.reducerPath]: profileApiSlice.reducer
+    [profileApiSlice.reducerPath]: profileApiSlice.reducer,
+    householdReducer: householdReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(profileApiSlice.middleware),
