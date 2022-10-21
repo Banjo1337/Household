@@ -1,20 +1,33 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useReducer, useState } from "react";
-import { Field, FieldValue, FieldValues, useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { Title, TextInput, Switch } from "react-native-paper";
-import { shouldUseActivityState } from "react-native-screens";
+import { Switch } from "react-native-paper";
+
 import CustomInput from "../components/CustomInput";
-import { editHousehold } from "../features/household/householdSlice";
-import { useAppDispatch } from "../hooks/reduxHooks";
+import {
+  editHousehold,
+  getHouseholdThunk,
+  getProfileByHouseholdId,
+} from "../features/household/householdSlice";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 
-export default function EditHouseholdScreen({
-  navigation,
+
+
+
+
+
+
+
+export default function EditHouseholdScreen({route,
 }: NativeStackScreenProps<RootStackParamList>) {
+  const householdId = route.params;
   const dispatch = useAppDispatch();
-  //const household = useAppSelector(); // to use instead of mock-up data
-  //const members = useAppSelector(); // to use instead of mock-up data
+  // to use instead of mock-up data
+  const household = useAppSelector(getHouseholdThunk(householdId));
+  // to use instead of mock-up data
+  const members = useAppSelector(getProfileByHouseholdId(householdId));
 
   const {
     control,
@@ -23,12 +36,12 @@ export default function EditHouseholdScreen({
   } = useForm();
 
   //Mock-up data for testing - to remove when useAppSelector aktiveras
-  const household = {
+  /* const household = {
     householdName: "My household",
     householdPicture: "",
     householdCode: "aE7fZ",
     members: ["AA", "BB", "CC"],
-  };
+  }; */
 
   const onEditHouseholdPressed = (data: FieldValues) => {
     dispatch(
@@ -49,7 +62,7 @@ export default function EditHouseholdScreen({
           style={styles.householdPicture}
         />
         <Text>Household's name: </Text>
-        <Text style={styles.showProperty}>{household.householdName}</Text>
+        <Text style={styles.showProperty}>{household.name}</Text>
 
         <Text>Change household's name: </Text>
         <CustomInput
@@ -64,10 +77,10 @@ export default function EditHouseholdScreen({
           <Text>Submit</Text>
         </TouchableOpacity>
         <Text>Household code: </Text>
-        <Text style={styles.showProperty}>{household.householdCode}</Text>
+        <Text style={styles.showProperty}>{household.code}</Text>
         <Text>Household members: </Text>
         <View style={{ flex: 1, flexDirection: "row" }}>
-          {household.members.map((member, memberIndex) => {
+          {members.map((member, memberIndex) => {
             return (
               <View style={{ padding: 5 }} key={memberIndex}>
                 <Image
@@ -75,7 +88,7 @@ export default function EditHouseholdScreen({
                   style={styles.householdMemberPicture}
                 />
                 <Text style={{ textAlign: "center" }}>{member}</Text>
-                <Switch></Switch>
+                <Switch></Switch> 
               </View>
             );
           })}
