@@ -3,10 +3,11 @@ import { View } from "react-native";
 import { Title } from "react-native-paper";
 import { RootStackParamList } from "../NavContainer";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ChoresScreen(Props: NativeStackScreenProps<RootStackParamList, "Chores">) {
-    return (
-        <View>
-            <Title>Hello from ChoresScreen</Title>
-        </View>
-    )
+  return (
+    <View>
+      <Title>Hello from ChoresScreen</Title>
+    </View>
+  );
 }
