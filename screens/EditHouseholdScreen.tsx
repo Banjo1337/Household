@@ -44,11 +44,12 @@ export default function EditHouseholdScreen({route,
   }; */
 
   const onEditHouseholdPressed = (data: FieldValues) => {
+    const name = data.housholdName;
     dispatch(
-      editHouseholdThunk(
-        { name: data.householdName },
-        { extra:  householdId: householdId }
-      )
+      editHouseholdThunk({
+        householdEditDto: { name: name },
+        householdId: householdId,
+      })
     );
   };
 
