@@ -6,6 +6,10 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import CustomInput from "../components/CustomInput";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
 import { RootStackParamList } from "../NavContainer";
+import { Button, Title } from "react-native-paper";
+
+const PWD_REGEX =
+  /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|).{6,32}$/;
 
 interface SignUpDto {
   username: string;
@@ -18,11 +22,20 @@ type SignUpResponse = {
   message: string;
 };
 
-const BASE_URL = "https://household-backend.azurewebsites.net/api/V01/Authenticate/";
+const BASE_URL =
+  "https://household-backend.azurewebsites.net/api/V01/Authenticate/";
 
-export default function SignUpScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
-  const { passwordVisibility, handlePasswordVisibility } = useTogglePasswordVisibility();
-  const { control, handleSubmit, watch } = useForm({});
+export default function SignUpScreen({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList>) {
+  const { passwordVisibility, rightIcon, handlePasswordVisibility } =
+    useTogglePasswordVisibility();
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: {},
+  } = useForm({});
   const pwd = watch("password");
 
   const onRegisterPressed = (data: FieldValues) => {
@@ -49,7 +62,9 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
       const response: Response = await PostSignUp(signUpDto);
       try {
         if (response.status != 200) {
-          throw new Error("Httprequest to get token failed, response is not 200");
+          throw new Error(
+            "Httprequest to get token failed, response is not 200"
+          );
         }
         const signUpResponse = (await response.json()) as SignUpResponse;
         return signUpResponse;
@@ -80,29 +95,62 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
       return {} as Response;
     }
   };
-
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        <Text style={styles.title}>Create an account</Text>
-        <CustomInput placeholder="Username" name="username" control={control} rules={{ required: "Username is required" }} />
-        <CustomInput placeholder="Password" name="password" control={control} secureTextEntry={passwordVisibility} />
-        <Pressable onPress={handlePasswordVisibility}>
-          <MaterialCommunityIcons size={22} color="#232323" />
+        <Title style={styles.title}>Sign Up Screen</Title>
+        <CustomInput
+          style={styles.input}
+          placeholder="Username"
+          name="username"
+          control={control}
+          rules={{
+            required: "Username is required",
+            minLength: { value: 4, message: "Must be minimum 4 " },
+            maxLength: { value: 50, message: "Cant be more than 50 letters" },
+          }}
+        />
+        <Text style={styles.title}>Toggle password visibility</Text>
+        <Pressable style={styles.pressable} onPress={handlePasswordVisibility}>
+          <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
         </Pressable>
         <CustomInput
+          style={styles.input}
+          placeholder="Password"
+          name="password"
+          control={control}
+          secureTextEntry={passwordVisibility}
+          rules={{
+            required: "Password is required",
+            minLength: {
+              value: 6,
+              message: "Password should be minimum 6 characters long",
+            },
+            pattern: {
+              value: PWD_REGEX,
+              message:
+                "Password too weak. Requires: A number\nOne lower and one uppercase character.\nOne special character. Minimum length: 6.",
+            },
+          }}
+        />
+        <CustomInput
+          style={styles.input}
           placeholder="Repeat password"
           name="passwordRepeat"
           control={control}
           secureTextEntry={passwordVisibility}
           rules={{
             required: "Repeat password",
-            validate: (value: any) => value === pwd || "Password not matching",
+            validate: (value: string) =>
+              value === pwd || "Password not matching",
           }}
         />
-        <Pressable style={styles.pressable} onPress={handleSubmit(onRegisterPressed, onRegisterFailed)}>
-          <Text>Register</Text>
-        </Pressable>
+        <Button
+          style={styles.button}
+          onPress={handleSubmit(onRegisterPressed, onRegisterFailed)}
+        >
+          Register
+        </Button>
       </View>
     </ScrollView>
   );
@@ -110,23 +158,14 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    backgroundColor: "green",
     padding: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "black",
-    backgroundColor: "gray",
-    margin: 10,
+    backgroundColor: "white",
   },
-  pressable: {
-    fontSize: 50,
-    fontWeight: "bold",
-    width: 100,
-    height: 30,
-    backgroundColor: "gray",
-    borderRadius: 5,
-    margin: 2,
-    borderColor: "black",
-  },
+  button: { backgroundColor: "hotpink" },
+  pressable: { backgroundColor: "red" },
+  input: { backgroundColor: "brown" },
+  dropDownPicker: { backgroundColor: "yellow" },
 });

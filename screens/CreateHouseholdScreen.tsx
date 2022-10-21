@@ -1,49 +1,65 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useReducer, useState } from "react";
-import { Field, FieldValue, FieldValues, useForm } from "react-hook-form";
-import { Pressable, View, Text, StyleSheet } from "react-native";
-import { Title, TextInput } from "react-native-paper";
+import React from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import {
+  Pressable as Button,
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
+import { Title } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { RootStackParamList } from "../NavContainer";
 
-export default function CreateHouseholdScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
+export default function CreateHouseholdScreen({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList>) {
   const {
     control,
     handleSubmit,
-    //formState: {},
+    formState: {},
   } = useForm();
 
   const onCreateHouseholdPressed = (data: FieldValues) => {
     //TODO: add dispatch from CreateHouseholdSlice
-    console.log("you have pressed create household" + data.householdName);  
+    console.log("you have pressed create household" + data.householdName);
     navigation.navigate("MegaNavigationGod");
   };
 
   return (
-    <View style={styles.container}>
-        <View>
-          <CustomInput name="householdName" placeholder="Name of household" control={control}></CustomInput>
-          <Pressable style={styles.pressable} onPress={handleSubmit(onCreateHouseholdPressed)}>
-            <Text>Create Household</Text>
-          </Pressable>
-        </View>
-    </View>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.container}>
+        <Title style={styles.title}>Create Household Screen</Title>
+        <CustomInput
+          style={styles.input}
+          name="householdname"
+          placeholder="Name of household"
+          control={control}
+          rules={{
+            required: "Name of household is required",
+            maxLength: { value: 50, message: "Cant be more than 50 letters" },
+          }}
+        ></CustomInput>
+        <Button
+          style={styles.button}
+          onPress={handleSubmit(onCreateHouseholdPressed)}
+        >
+          <Text>Create Household</Text>
+        </Button>
+      </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    backgroundColor: "green",
     padding: 20,
   },
-  pressable: {
-    fontSize: 70,
-    fontWeight: "bold",
-    width: 200,
-    height: 50,
-    color: "blue",
+  title: {
     backgroundColor: "white",
-    borderRadius: 5,
-    margin: 2,
-    borderColor: "red",
   },
+  button: { backgroundColor: "hotpink" },
+  input: { backgroundColor: "brown" },
 });
