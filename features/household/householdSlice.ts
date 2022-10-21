@@ -64,10 +64,11 @@ export const createHouseholdThunk = createAsyncThunk<
 
 export const editHouseholdThunk = createAsyncThunk<
 	Household,
-	HouseholdEditDto,
-	{ extra: { householdId: string }; rejectValue: string }
->("household/EditHousehold", async (householdEditDto: HouseholdEditDto, thunkApi) => {
-	const response = await fetch(baseUrl + "editHousehold/" + thunkApi.extra.householdId, {
+	{householdEditDto: HouseholdEditDto, householdId: string},
+	{ rejectValue: string }
+>("household/EditHousehold", async ({householdEditDto, householdId}, thunkApi) => {
+	
+	const response = await fetch(baseUrl + "editHousehold/" + householdId, {
 		method: "PATCH",
 		headers: {
 			"content-type": "application/json",
