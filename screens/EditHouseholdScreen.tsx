@@ -9,6 +9,8 @@ import {
   editHouseholdThunk,
   getHouseholdThunk,
   getProfilesByHouseholdId,
+  selectHousehold,
+  selectProfileByHousholdId,
 } from "../features/household/householdSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
@@ -24,10 +26,8 @@ export default function EditHouseholdScreen({route,
 }: NativeStackScreenProps<RootStackParamList>) {
   const householdId = "kkkk";
   const dispatch = useAppDispatch();
-  // to use instead of mock-up data
-  const household = useAppSelector(getHouseholdThunk(householdId));
-  // to use instead of mock-up data
-  const members = useAppSelector(getProfilesByHouseholdId(householdId));
+  const household = useAppSelector(selectHousehold);
+  const members = useAppSelector(selectProfileByHousholdId);
 
   const {
     control,
@@ -86,10 +86,10 @@ export default function EditHouseholdScreen({route,
             return (
               <View style={{ padding: 5 }} key={memberIndex}>
                 <Image
-                  source={require(householdPicture)}
+                  source={require(member.avatar)}
                   style={styles.householdMemberPicture}
                 />
-                <Text style={{ textAlign: "center" }}>{member}</Text>
+                <Text style={{ textAlign: "center" }}>{member.alias}</Text>
                 <Switch></Switch> 
               </View>
             );
