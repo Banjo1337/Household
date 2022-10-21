@@ -30,7 +30,7 @@ export default function CreateHouseholdScreen({
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        <Title style={styles.title}>Add Chore</Title>
+        <Title style={styles.title}>Create Household Screen</Title>
         <CustomInput
           style={styles.input}
           name="householdname"
