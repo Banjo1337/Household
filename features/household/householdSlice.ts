@@ -8,6 +8,7 @@ import {
 	Reducer,
 } from "@reduxjs/toolkit";
 import * as SecureStore from "expo-secure-store";
+import { RootStateType } from "../../app/store";
 import { Profile } from "../profile/profileTypes";
 import { Household, HouseholdCreateDto, HouseholdEditDto } from "./householdTypes";
 
@@ -193,3 +194,12 @@ const householdSlice = createSlice({
 
 
 export const householdReducer: Reducer<HouseholdState, AnyAction> = householdSlice.reducer;
+export const selectHouseholdById = (state: RootStateType, householdId: string) =>
+  state.householdReducer.household((household)=>household.household == householdId);
+export const selectMembersForThisHouseholdId = (
+  state: RootStateType,
+  householdId: string
+) =>
+  state.householdReducer.profiles(
+    (household) => household.household == householdId
+  );
