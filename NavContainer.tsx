@@ -18,6 +18,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { useTheme } from "./features/theme/ThemeContext";
 import { Provider as PaperProvider } from "react-native-paper";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
+import EditHouseholdScreen from "./screens/EditHouseholdScreen";
 
 export type RootStackParamList = {
   Chores: undefined;
@@ -27,6 +28,7 @@ export type RootStackParamList = {
   SignUp: undefined;
   CreateProfile: undefined;
   CreateHousehold: undefined;
+  EditHousehold: undefined;
   SelectProfile: undefined;
   FinalizeProfile: undefined;
   PendingRequest: undefined;
@@ -63,6 +65,10 @@ export default function NavContainer() {
             <Stack.Screen
               name="CreateProfile"
               component={CreateProfileScreen}
+            />
+            <Stack.Screen
+              name="EditHousehold"
+              component={EditHouseholdScreen}
             />
             <Stack.Screen
               name="SelectProfile"
