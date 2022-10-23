@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useReducer, useState } from "react";
+import React from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Switch } from "react-native-paper";
@@ -7,8 +7,6 @@ import { Switch } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import {
   editHouseholdThunk,
-  getHouseholdThunk,
-  getProfilesByHouseholdId,
   selectHousehold,
   selectProfileByHousholdId,
 } from "../features/household/householdSlice";
@@ -16,15 +14,10 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 
 
-
-
-
-
-
-
 export default function EditHouseholdScreen({route,
 }: NativeStackScreenProps<RootStackParamList>) {
-  const householdId = "kkkk";
+  //add route.params for householdId instead of "stringPlaceholder";
+  const householdId = "stringPlaceholder";
   const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
   const members = useAppSelector(selectProfileByHousholdId);
@@ -34,14 +27,6 @@ export default function EditHouseholdScreen({route,
     handleSubmit,
     //formState: {},
   } = useForm();
-
-  //Mock-up data for testing - to remove when useAppSelector aktiveras
-  /* const household = {
-    householdName: "My household",
-    householdPicture: "",
-    householdCode: "aE7fZ",
-    members: ["AA", "BB", "CC"],
-  }; */
 
   const onEditHouseholdPressed = (data: FieldValues) => {
     const name = data.housholdName;
@@ -85,12 +70,13 @@ export default function EditHouseholdScreen({route,
           {members.map((member, memberIndex) => {
             return (
               <View style={{ padding: 5 }} key={memberIndex}>
-                <Image
+                {/*                 <Image
                   source={require(member.avatar)}
                   style={styles.householdMemberPicture}
-                />
+                /> */}
+                <Text style={{ textAlign: "center" }}>{member.avatar}</Text>
                 <Text style={{ textAlign: "center" }}>{member.alias}</Text>
-                <Switch></Switch> 
+                <Switch></Switch>
               </View>
             );
           })}
