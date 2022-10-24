@@ -9,7 +9,8 @@ import CustomInput from "../components/CustomInput";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
 import { RootStackParamList } from "../NavContainer";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { postSignInThunk, selectHasError, selectError, selectToken, selectAuthUserId, logout } from "../features/authentication/authenticationSlice";
+import { postSignInThunk, logout } from "../features/authentication/authenticationSlice";
+import { selectHasError, selectError, selectToken, selectAuthUserId } from "../features/authentication/authenticationSelectors";
 
 export default function SignInScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
   const dispatch = useAppDispatch();
