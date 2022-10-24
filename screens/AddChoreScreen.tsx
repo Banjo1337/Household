@@ -4,11 +4,11 @@ import * as ImagePicker from "expo-image-picker";
 import * as Sharing from "expo-sharing";
 import React, { useCallback, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Button } from "react-native-paper";
-import { useTheme } from "../features/theme/ThemeContext";
 import CustomInput from "../components/CustomInput";
+import { useTheme } from "../features/theme/ThemeContext";
 import { RootStackParamList } from "../NavContainer";
 
 export default function AddChoreScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
@@ -220,18 +220,24 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
           />
         </View>
       </View>
-      <View style={styles.section}>
-        <Button style={styles.button} onPress={recording ? stopRecording : startRecording}>
+      <TouchableOpacity
+        style={[styles.section, styles[currentTheme.dark ? "sectionDark" : "sectionLight"]]}
+        onPress={recording ? stopRecording : startRecording}
+      >
+        <Button style={styles.button}>
           {recording ? <Text>⏹️ Stop Recording</Text> : <Text>🔴 Start Recording</Text>}
         </Button>
         {getRecordingLines()}
-      </View>
-      <View style={styles.section}>
-        <Button style={styles.button} onPress={pickImage}>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.section, styles[currentTheme.dark ? "sectionDark" : "sectionLight"]]}
+        onPress={pickImage}
+      >
+        <Button style={styles.button}>
           <Text>Pick Image</Text>
         </Button>
         {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-      </View>
+      </TouchableOpacity>
       <View style={{ display: "flex", flexDirection: "row" }}>
         <Button onPress={handleSubmit(onAddChorePressed)} style={styles.button}>
           <Text>Save</Text>
@@ -252,10 +258,15 @@ const styles = StyleSheet.create({
     fontSize: 50,
   },
   section: {
-    backgroundColor: "#aaa",
     borderRadius: 20,
     marginVertical: 10,
     padding: 30,
+  },
+  sectionLight: {
+    backgroundColor: "#aaa",
+  },
+  sectionDark: {
+    backgroundColor: "#333",
   },
   button: {},
   input: {},
