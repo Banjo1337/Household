@@ -1,18 +1,17 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Audio } from "expo-av";
+import * as ImagePicker from "expo-image-picker";
+import * as Sharing from "expo-sharing";
 import React, { useCallback, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { View, StyleSheet, Text, Image, ScrollView } from "react-native";
-import { Title, Button } from "react-native-paper";
-import CustomInput from "../components/CustomInput";
-import { RootStackParamList } from "../NavContainer";
-import * as ImagePicker from "expo-image-picker";
-import { Audio } from "expo-av";
-import * as Sharing from "expo-sharing";
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
+import { Button } from "react-native-paper";
+import CustomInput from "../components/CustomInput";
+import { useTheme } from "../features/theme/ThemeContext";
+import { RootStackParamList } from "../NavContainer";
 
-export default function AddChoreScreen({
-  navigation,
-}: NativeStackScreenProps<RootStackParamList>) {
+export default function AddChoreScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
   const {
     control,
     handleSubmit,
@@ -63,7 +62,7 @@ export default function AddChoreScreen({
         });
 
         const { recording } = await Audio.Recording.createAsync(
-          Audio.RecordingOptionsPresets.HIGH_QUALITY
+          Audio.RecordingOptionsPresets.HIGH_QUALITY,
         );
 
         setRecording(recording);
@@ -100,15 +99,15 @@ export default function AddChoreScreen({
   function getRecordingLines() {
     return recordings.map((recordingLine: any, index) => {
       return (
-        <View>
+        <View key={index}>
           <Text>
             Recording {index + 1} - {recordingLine.duration}
           </Text>
           <Button onPress={() => recordingLine.sound.replayAsync()}>
-            <Text>Play</Text>
+            <Text>▶️ Play</Text>
           </Button>
           <Button onPress={() => Sharing.shareAsync(recordingLine.file)}>
-            <Text>Stop</Text>
+            <Text>⏸️ Stop</Text>
           </Button>
         </View>
       );
@@ -134,75 +133,82 @@ export default function AddChoreScreen({
     navigation.navigate("Chores");
   };
 
+  const { currentTheme } = useTheme();
+
   return (
-    <View style={styles.container}>
-      <Title style={styles.title}>Add Chore</Title>
-      <CustomInput
-        style={styles.input}
-        placeholder="Title"
-        name="title"
-        control={control}
-        rules={{
-          required: "Title of chore is required",
-          minLength: { value: 2, message: "Must be 2 or more letters." },
-          maxLength: {
-            value: 100,
-            message: "Title can be maximum 100 letters.",
-          },
-        }}
-      />
-      <CustomInput
-        style={styles.input}
-        placeholder="Description"
-        name="description"
-        control={control}
-        rules={{
-          required: "Description of chore is required",
-          minLength: { value: 2, message: "Must be 2 or more letters" },
-          maxLength: {
-            value: 1000,
-            message: "Cannot be longer than 1000 letters",
-          },
-        }}
-      />
-      <View style={{ display: "flex", flexDirection: "row" }}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>Add Chore</Text>
+      <View>
+        <CustomInput
+          style={styles.input}
+          placeholder='Title'
+          name='title'
+          control={control}
+          rules={{
+            required: "Title of chore is required",
+            minLength: { value: 2, message: "Must be 2 or more letters." },
+            maxLength: {
+              value: 100,
+              message: "Title can be maximum 100 letters.",
+            },
+          }}
+        />
+        <CustomInput
+          style={styles.input}
+          placeholder='Description'
+          name='description'
+          control={control}
+          rules={{
+            required: "Description of chore is required",
+            minLength: { value: 2, message: "Must be 2 or more letters" },
+            maxLength: {
+              value: 1000,
+              message: "Cannot be longer than 1000 letters",
+            },
+          }}
+          multiline={true}
+          numOfLines={5}
+        />
+      </View>
+      <View style={{ display: "flex", flexDirection: "row", marginVertical: 30 }}>
         <View
           style={{
-            width: "50%",
-            alignSelf: "flex-start",
-            justifyContent: "flex-start",
+            width: "45%",
+            paddingHorizontal: 10,
           }}
         >
           <Text>Frequency of chore</Text>
           <DropDownPicker
             style={styles.dropDownPicker}
-            listMode="FLATLIST"
+            listMode='SCROLLVIEW'
             open={openFrequency}
             onOpen={onOpenFrequency}
-            itemKey="value"
+            itemKey='value'
             value={frequencyValue}
             items={frequencyItems}
             setOpen={setOpenFrequency}
             setValue={setFrequencyValue}
             setItems={setFrequencyItems}
+            closeOnBackPressed={true}
+            closeAfterSelecting={true}
+            theme={currentTheme.dark ? "DARK" : "LIGHT"}
           />
         </View>
         <View
           style={{
-            width: "50%",
-            alignSelf: "flex-end",
-            justifyContent: "flex-end",
+            width: "45%",
+            paddingHorizontal: 10,
           }}
         >
           <Text>Difficulty of chore</Text>
           <DropDownPicker
             style={styles.dropDownPicker}
-            modalTitle="Select how difficult this task is"
-            listMode="FLATLIST"
+            modalTitle='Select how difficult this task is'
+            listMode='SCROLLVIEW'
             open={openPoint}
             onOpen={onOpenPoint}
             value={pointValue}
-            itemKey="value"
+            itemKey='value'
             items={pointItems}
             setOpen={setOpenPoint}
             setValue={setPointValue}
@@ -210,66 +216,59 @@ export default function AddChoreScreen({
             closeOnBackPressed={true}
             closeAfterSelecting={true}
             dropDownContainerStyle={{}}
+            theme={currentTheme.dark ? "DARK" : "LIGHT"}
           />
         </View>
       </View>
-      <View style={styles.container}>
-        <Button
-          style={styles.button}
-          onPress={recording ? stopRecording : startRecording}
-        >
-          {recording ? (
-            <Text>"Stop Recording"</Text>
-          ) : (
-            <Text>"Start Recording"</Text>
-          )}
+      <TouchableOpacity
+        style={[styles.section, styles[currentTheme.dark ? "sectionDark" : "sectionLight"]]}
+        onPress={recording ? stopRecording : startRecording}
+      >
+        <Button style={styles.button}>
+          {recording ? <Text>⏹️ Stop Recording</Text> : <Text>🔴 Start Recording</Text>}
         </Button>
         {getRecordingLines()}
-      </View>
-      <Button style={styles.button} onPress={pickImage}>
-        <Text>Pick Image</Text>
-      </Button>
-      {image && (
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-      )}
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.section, styles[currentTheme.dark ? "sectionDark" : "sectionLight"]]}
+        onPress={pickImage}
+      >
+        <Button style={styles.button}>
+          <Text>Pick Image</Text>
+        </Button>
+        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+      </TouchableOpacity>
       <View style={{ display: "flex", flexDirection: "row" }}>
         <Button onPress={handleSubmit(onAddChorePressed)} style={styles.button}>
-          <Text
-            style={{
-              color: "black",
-              alignSelf: "center",
-              justifyContent: "center",
-            }}
-          >
-            Save
-          </Text>
+          <Text>Save</Text>
         </Button>
         <Button style={styles.button}>
-          <Text
-            style={{
-              color: "black",
-              alignSelf: "center",
-              justifyContent: "center",
-            }}
-          >
-            Close
-          </Text>
+          <Text>Close</Text>
         </Button>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: "green",
-    padding: 20,
+    paddingHorizontal: 30,
   },
   title: {
-    backgroundColor: "blue",
+    fontSize: 50,
   },
-  button: { backgroundColor: "hotpink" },
-
-  input: { backgroundColor: "brown" },
-  dropDownPicker: { backgroundColor: "yellow" },
+  section: {
+    borderRadius: 20,
+    marginVertical: 10,
+    padding: 30,
+  },
+  sectionLight: {
+    backgroundColor: "#aaa",
+  },
+  sectionDark: {
+    backgroundColor: "#333",
+  },
+  button: {},
+  input: {},
+  dropDownPicker: {},
 });
