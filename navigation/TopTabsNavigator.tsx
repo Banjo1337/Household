@@ -8,7 +8,7 @@ import { AntDesign } from "@expo/vector-icons";
 import ChoresScreen from "../screens/Chores";
 import StatisticsScreen from "../screens/StatisticsScreen";
 
-type TopTabParamsList = {
+export type TopTabParamsList = {
   Chores: undefined;
   Statistics: undefined;
 };
