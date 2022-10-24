@@ -13,26 +13,27 @@ async function getToken(): Promise<string> {
   }
 }
 
-export const getAllChores = createAsyncThunk<Chore[], string, { rejectValue : string }>(
-  "chore/getAllChores",
-  async (householdId: string, thunkApi) => {
-    try {
-      const response = await fetch(baseUrl + "Getchoresbyhouseholdid/" + householdId);
+export const hydrateChoresSliceFromBackendThunk = createAsyncThunk<
+  Chore[],
+  string,
+  { rejectValue: string }
+>("chore/getAllChores", async (householdId: string, thunkApi) => {
+  try {
+    const response = await fetch(baseUrl + "Getchoresbyhouseholdid/" + householdId);
 
-      if (response.ok) {
-        return (await response.json()) as Chore[];
-      }
+    if (response.ok) {
+      return (await response.json()) as Chore[];
+    }
 
-      return thunkApi.rejectWithValue(JSON.stringify(response.body));
-    } catch (err) {
-      if (err instanceof Error) {
-        return thunkApi.rejectWithValue(err.message);
-      } else {
-        return thunkApi.rejectWithValue("");
-      }
+    return thunkApi.rejectWithValue(JSON.stringify(response.body));
+  } catch (err) {
+    if (err instanceof Error) {
+      return thunkApi.rejectWithValue(err.message);
+    } else {
+      return thunkApi.rejectWithValue("");
     }
   }
-);
+});
 
 export const createChore = createAsyncThunk<Chore, ChoreCreateDto, { rejectValue: string }>(
   "chore/CreateChore",
@@ -142,9 +143,12 @@ const choreSlice = createSlice({
   reducers: {},
 
   extraReducers: (builder) => {
-    builder.addCase(getAllChores.fulfilled, (state, action: PayloadAction<Chore[]>) => {
-      state.chores = action.payload;
-    });
+    builder.addCase(
+      hydrateChoresSliceFromBackendThunk.fulfilled,
+      (state, action: PayloadAction<Chore[]>) => {
+        state.chores = action.payload;
+      },
+    );
     builder.addCase(createChore.fulfilled, (state, action: PayloadAction<Chore>) => {
       state.isLoading = false;
       state.chores.push(action.payload);
@@ -160,14 +164,24 @@ const choreSlice = createSlice({
       state.chores = state.chores.filter((chore) => chore.id != action.payload.id);
     });
     builder.addMatcher(
-      isAnyOf(createChore.pending, updateChore.pending, deleteChore.pending, getAllChores.pending),
+      isAnyOf(
+        createChore.pending,
+        updateChore.pending,
+        deleteChore.pending,
+        hydrateChoresSliceFromBackendThunk.pending,
+      ),
       (state) => {
         state.isLoading = true;
         state.error = "";
       },
     );
     builder.addMatcher(
-      isAnyOf(createChore.rejected, createChore.rejected, createChore.rejected, getAllChores.rejected),
+      isAnyOf(
+        createChore.rejected,
+        createChore.rejected,
+        createChore.rejected,
+        hydrateChoresSliceFromBackendThunk.rejected,
+      ),
       (state, action) => {
         if (action.payload) {
           state.error = action.payload;

@@ -31,12 +31,14 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
   } = useForm();
 
   useEffect(() => {
+    /*
     console.log(" ############## In SignInScreen##############");
     console.log("token: ", token);
     console.log("authUserId: ", authUserId);
     console.log("hasError: ", hasError);
     console.log("errorText: ", errorText);
     console.log(" ############## ##############");
+    */
   }, [token, authUserId, hasError, errorText]);
 
   const { currentTheme } = useTheme();

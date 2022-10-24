@@ -8,9 +8,9 @@ import { Profile } from "../features/profile/profileTypes";
 import { useState } from "react";
 import SelectProfileButton from "../components/SelectProfileButton";
 import { useEffect } from "react";
-import { hydrateHouseholdThunk } from "../features/household/householdSlice";
-//import { getAllChoreCompleted } from "../features/choreCompleted/choreCompletedSlice";
-//import { getAllChores } from "../features/chore/choreSlice";
+import { hydrateHouseholdSliceFromBackendThunk } from "../features/household/householdSlice";
+import { hydrateChoresSliceFromBackendThunk } from "../features/chore/choreSlice";
+
 import { selectAuthUserId } from "../features/authentication/authenticationSelectors";
 
 export default function SelectProfileScreen({
@@ -33,7 +33,9 @@ export default function SelectProfileScreen({
 
   function handleSelectUser(profile: Profile) {
     dispatch(setActiveProfile(profile));
-    dispatch(hydrateHouseholdThunk(profile.householdId));
+    dispatch(hydrateHouseholdSliceFromBackendThunk(profile.householdId));
+    dispatch(hydrateChoresSliceFromBackendThunk(profile.householdId));
+
     //dispatch(getAllChoreCompleted(profile.householdId));
     //dispatch(selectChores());
   }
