@@ -19,6 +19,8 @@ import { useTheme } from "./features/theme/ThemeContext";
 import { Provider as PaperProvider } from "react-native-paper";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
+import TopTabNavigator from "./navigation/TopTabsNavigator";
+
 
 export type RootStackParamList = {
   Chores: undefined;
@@ -53,7 +55,7 @@ export default function NavContainer() {
               component={MegaNavigationGodScreen}
               options={() => ({ title: "This is temporary" })}
             />
-            <Stack.Screen name="Chores" component={ChoresScreen} />
+            <Stack.Screen name="Chores" component={TopTabNavigator} />
             <Stack.Screen name="AddChore" component={AddChoreScreen} />
             <Stack.Screen name="ChoreDetails" component={ChoreDetailsScreen} />
             <Stack.Screen name="SignIn" component={SignInScreen} />
