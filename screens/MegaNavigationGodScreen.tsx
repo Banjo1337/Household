@@ -12,9 +12,9 @@ export default function MegaNavigationGodScreen(
         <Button
           mode="contained"
           style={styles.button}
-          onPress={() => Props.navigation.navigate("Chores")}
+          onPress={() => Props.navigation.navigate("Home")}
         >
-          Chores
+          Home
         </Button>
         <Button
           mode="contained"
