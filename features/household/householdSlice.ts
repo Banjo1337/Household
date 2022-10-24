@@ -4,11 +4,8 @@ import {
 	createSlice,
 	isAnyOf,
 	isRejectedWithValue,
-	PayloadAction,
 	Reducer,
 } from "@reduxjs/toolkit";
-import * as SecureStore from "expo-secure-store";
-import { RootStateType } from "../../app/store";
 import { Profile } from "../profile/profileTypes";
 import { Household, HouseholdCreateDto, HouseholdEditDto } from "./householdTypes";
 
@@ -195,7 +192,4 @@ const householdSlice = createSlice({
 
 
 export const householdReducer: Reducer<HouseholdState, AnyAction> = householdSlice.reducer;
-export const selectHousehold = (state: RootStateType) =>
-  state.householdReducer.household;
-export const selectProfileByHousholdId = (state: RootStateType) =>
-  state.householdReducer.profiles;
+
