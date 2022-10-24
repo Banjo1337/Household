@@ -17,7 +17,7 @@ VG: 32 (80%).
 [ ] - Designen av appen ska utgå ifrån befintliga skisser, undantag kan ges men ska diskuteras
 med produktägare, godkännas och dokumenteras. 🚨⚠🚨
 
-[ ] - Information ska kommuniceras till och från en server. (VG)
+[x] - Information ska kommuniceras till och från en server. (VG)
 
 ## Hushåll (7)
 
@@ -40,7 +40,7 @@ normaliseras.
 
 ## Konto (5)
 
-[ ] - En användare ska kunna registrera och logga in sig. 🚨⚠🚨
+[x] - En användare ska kunna registrera och logga in sig. 🚨⚠🚨
 
 [ ] - En användare ska kunna skapa ett nytt hushåll. 🚨⚠🚨
 
@@ -61,7 +61,7 @@ godkänna användaren.
 
 [ ] - Avataren ska användas i appen för att visa vad användaren har gjort. 🚨⚠🚨
 
-[ x ] - En användare ska kunna ställa in appens utseende (mörkt, ljust, auto).
+[x] - En användare ska kunna ställa in appens utseende (mörkt, ljust, auto).
 
 [ ] - Om en användare tillhör två eller fler hushåll ska denne kunna välja att byta mellan de
 olika hushållen.
@@ -70,7 +70,7 @@ olika hushållen.
 
 [ ] - En ägare ska kunna lägga till sysslor att göra i hemmet. 🚨⚠🚨
 
-[ ] - En syssla ska ha ett namn, en beskrivning (text), hur ofta den ska göras (dagar), och en
+[x] - En syssla ska ha ett namn, en beskrivning (text), hur ofta den ska göras (dagar), och en
 vikt som beskriver hur energikrävande den är. 🚨⚠🚨
 
 [ ] - En användare ska kunna lägga till en ljudinspelning och en bild för att beskriva sysslan
