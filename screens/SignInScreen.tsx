@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";
@@ -10,7 +10,12 @@ import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibilit
 import { RootStackParamList } from "../NavContainer";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { postSignInThunk, logout } from "../features/authentication/authenticationSlice";
-import { selectHasError, selectError, selectToken, selectAuthUserId } from "../features/authentication/authenticationSelectors";
+import {
+  selectHasError,
+  selectError,
+  selectToken,
+  selectAuthUserId,
+} from "../features/authentication/authenticationSelectors";
 
 export default function SignInScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
   const dispatch = useAppDispatch();
@@ -53,8 +58,8 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
   return (
     <View style={styles.container}>
       <CustomInput
-        placeholder="Username"
-        name="username"
+        placeholder='Username'
+        name='username'
         control={control}
         rules={{
           required: "Username is required",
@@ -71,7 +76,13 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
         style={[styles.passwordPosition, { zIndex: 1 }]}
         // Places the icon between the two inputs, and draws it on top of the below CustomInput because of zIndex.
       />
-      <CustomInput placeholder="Password" name="password" control={control} secureTextEntry={passwordVisibility} rules={{ required: "Password is required" }} />
+      <CustomInput
+        placeholder='Password'
+        name='password'
+        control={control}
+        secureTextEntry={passwordVisibility}
+        rules={{ required: "Password is required" }}
+      />
       <Button style={styles.button} onPress={handleSubmit(onLoginPressed)}>
         Sign In
       </Button>
