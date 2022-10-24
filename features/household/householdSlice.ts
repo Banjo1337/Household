@@ -8,22 +8,12 @@ import {
 } from "@reduxjs/toolkit";
 import { Profile } from "../profile/profileTypes";
 import { Household, HouseholdCreateDto, HouseholdEditDto } from "./householdTypes";
+import { useAppSelector } from "../../hooks/reduxHooks";
+import { selectToken } from "../authentication/authenticationSelectors";
 
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/Household/";
 
-//Behöver se över hur man hämtar token
-//const [token] = useSecureStorage("token", "");
-// async function getToken(): Promise<string> {
-// 	const token = await SecureStore.getItemAsync("token");
-// 	if (token) {
-// 		return JSON.parse(token).token;
-// 	} else {
-// 		return "";
-// 	}
-// }
-// const token = getToken();
-
-//---------------------------
+const Token = () => useAppSelector(selectToken);
 
 export const hydrateHouseholdSliceFromBackendThunk = createAsyncThunk<
   Household,
@@ -46,20 +36,31 @@ export const createHouseholdThunk = createAsyncThunk<
   HouseholdCreateDto,
   { rejectValue: string }
 >("household/CreateHousehold", async (householdCreateDto: HouseholdCreateDto, thunkApi) => {
-  const response = await fetch(baseUrl + "createHousehold", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      //authorization: "Bearer " + token,
-    },
-    body: JSON.stringify(householdCreateDto),
-  });
-
-  if (response.ok) {
-    return (await response.json()) as Household;
+  if (Token()) {
+    return thunkApi.rejectWithValue("User not logged in");
   }
+  try {
+    const response = await fetch(baseUrl + "createHousehold", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: "Bearer " + Token(),
+      },
+      body: JSON.stringify(householdCreateDto),
+    });
 
-  return thunkApi.rejectWithValue(JSON.stringify(response.body));
+    if (response.ok) {
+      return (await response.json()) as Household;
+    }
+
+    return thunkApi.rejectWithValue(JSON.stringify(response.body));
+  } catch (err) {
+    if (err instanceof Error) {
+      return thunkApi.rejectWithValue(err.message);
+    } else {
+      return thunkApi.rejectWithValue("");
+    }
+  }
 });
 
 export const editHouseholdThunk = createAsyncThunk<
@@ -67,38 +68,60 @@ export const editHouseholdThunk = createAsyncThunk<
   { householdEditDto: HouseholdEditDto; householdId: string },
   { rejectValue: string }
 >("household/EditHousehold", async ({ householdEditDto, householdId }, thunkApi) => {
-  const response = await fetch(baseUrl + "editHousehold/" + householdId, {
-    method: "PATCH",
-    headers: {
-      "content-type": "application/json",
-      //authorization: "Bearer " + token,
-    },
-    body: JSON.stringify(householdEditDto),
-  });
-
-  if (response.ok) {
-    return (await response.json()) as Household;
+  if (Token()) {
+    return thunkApi.rejectWithValue("User not logged in");
   }
+  try {
+    const response = await fetch(baseUrl + "editHousehold/" + householdId, {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+        authorization: "Bearer " + Token(),
+      },
+      body: JSON.stringify(householdEditDto),
+    });
 
-  return thunkApi.rejectWithValue(JSON.stringify(response.body));
+    if (response.ok) {
+      return (await response.json()) as Household;
+    }
+
+    return thunkApi.rejectWithValue(JSON.stringify(response.body));
+  } catch (err) {
+    if (err instanceof Error) {
+      return thunkApi.rejectWithValue(err.message);
+    } else {
+      return thunkApi.rejectWithValue("");
+    }
+  }
 });
 
 export const deleteHouseholdThunk = createAsyncThunk<Household, string, { rejectValue: string }>(
   "household/deleteHousehold",
   async (householdId: string, thunkApi) => {
-    const response = await fetch(baseUrl + "deleteHousehold/" + householdId, {
-      method: "DELETE",
-      headers: {
-        "content-type": "application/json",
-        //authorization: "Bearer " + token,
-      },
-    });
-
-    if (response.status == 204) {
-      return {} as Household;
+    if (Token()) {
+      return thunkApi.rejectWithValue("User not logged in");
     }
+    try {
+      const response = await fetch(baseUrl + "deleteHousehold/" + householdId, {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+          authorization: "Bearer " + Token(),
+        },
+      });
 
-    return thunkApi.rejectWithValue(JSON.stringify(response.body));
+      if (response.status == 204) {
+        return {} as Household;
+      }
+
+      return thunkApi.rejectWithValue(JSON.stringify(response.body));
+    } catch (err) {
+      if (err instanceof Error) {
+        return thunkApi.rejectWithValue(err.message);
+      } else {
+        return thunkApi.rejectWithValue("");
+      }
+    }
   },
 );
 
@@ -119,10 +142,10 @@ export const getProfilesByHouseholdId = createAsyncThunk<
   } catch (err) {
     if (err instanceof Error) {
       return thunkApi.rejectWithValue(err.message);
+    } else {
+      return thunkApi.rejectWithValue("Unknown error in getProfilesByHouseholdId");
     }
   }
-
-  return thunkApi.rejectWithValue("Unknown error in getProfilesByHouseholdId");
 });
 
 interface HouseholdState {
