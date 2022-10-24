@@ -7,6 +7,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Button } from "react-native-paper";
+import { useTheme } from "../features/theme/ThemeContext";
 import CustomInput from "../components/CustomInput";
 import { RootStackParamList } from "../NavContainer";
 
@@ -132,6 +133,8 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
     navigation.navigate("Chores");
   };
 
+  const { currentTheme } = useTheme();
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Add Chore</Text>
@@ -188,8 +191,7 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
             setItems={setFrequencyItems}
             closeOnBackPressed={true}
             closeAfterSelecting={true}
-            theme='DARK'
-            /* TODO:Use the above theme prop to alter theme based on devices' settings */
+            theme={currentTheme.dark ? "DARK" : "LIGHT"}
           />
         </View>
         <View
@@ -214,7 +216,7 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
             closeOnBackPressed={true}
             closeAfterSelecting={true}
             dropDownContainerStyle={{}}
-            theme='LIGHT'
+            theme={currentTheme.dark ? "DARK" : "LIGHT"}
           />
         </View>
       </View>
@@ -232,26 +234,10 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
       </View>
       <View style={{ display: "flex", flexDirection: "row" }}>
         <Button onPress={handleSubmit(onAddChorePressed)} style={styles.button}>
-          <Text
-            style={{
-              color: "black",
-              alignSelf: "center",
-              justifyContent: "center",
-            }}
-          >
-            Save
-          </Text>
+          <Text>Save</Text>
         </Button>
         <Button style={styles.button}>
-          <Text
-            style={{
-              color: "black",
-              alignSelf: "center",
-              justifyContent: "center",
-            }}
-          >
-            Close
-          </Text>
+          <Text>Close</Text>
         </Button>
       </View>
     </ScrollView>

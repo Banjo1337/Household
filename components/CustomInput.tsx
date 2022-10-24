@@ -58,7 +58,6 @@ const CustomInput = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
     justifyContent: "center",
 
     minWidth: "100%",
