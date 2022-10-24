@@ -8,11 +8,10 @@ import { Profile } from "../features/profile/profileTypes";
 import { useState } from "react";
 import SelectProfileButton from "../components/SelectProfileButton";
 import { useEffect } from "react";
-import { hydrateHouseholdThunk,  } from "../features/household/householdSlice";
-import { getAllChoreCompleted } from "../features/choreCompleted/choreCompletedSlice";
-import { getAllChores } from "../features/chore/choreSlice";
+import { hydrateHouseholdThunk } from "../features/household/householdSlice";
+//import { getAllChoreCompleted } from "../features/choreCompleted/choreCompletedSlice";
+//import { getAllChores } from "../features/chore/choreSlice";
 import { selectAuthUserId } from "../features/authentication/authenticationSelectors";
-
 
 export default function SelectProfileScreen({
   navigation,
@@ -22,19 +21,21 @@ export default function SelectProfileScreen({
   const [profiles, setProfiles] = useState<Profile[]>();
 
   useEffect(() => {
-    (async function getProfiles(){
-      const response = await fetch("https://household-backend.azurewebsites.net/api/V01/profile/GetByUserID/286c4279-bce5-4dbd-830a-10d2aab95ecd");
-      if(response.ok) {
+    (async function getProfiles() {
+      const response = await fetch(
+        "https://household-backend.azurewebsites.net/api/V01/profile/GetByUserID/286c4279-bce5-4dbd-830a-10d2aab95ecd",
+      );
+      if (response.ok) {
         setProfiles(await response.json());
       }
-    })(); 
+    })();
   }, [authUserId]);
 
   function handleSelectUser(profile: Profile) {
     dispatch(setActiveProfile(profile));
     dispatch(hydrateHouseholdThunk(profile.householdId));
-    dispatch(getAllChoreCompleted(profile.householdId));
-    dispatch(getAllChores(profile.householdId));
+    //dispatch(getAllChoreCompleted(profile.householdId));
+    //dispatch(selectChores());
   }
 
   let mockDataIfProfilesIsEmpty: Profile[];
