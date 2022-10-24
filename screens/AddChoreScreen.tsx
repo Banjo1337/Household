@@ -130,7 +130,7 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
 
   const onAddChorePressed = (data: FieldValues) => {
     console.log(data.title + data.description + frequencyValue + pointValue);
-    navigation.navigate("Chores");
+    navigation.navigate("Home", { screen: "Chores" });
   };
 
   const { currentTheme } = useTheme();

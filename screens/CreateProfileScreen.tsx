@@ -26,7 +26,7 @@ export default function CreateProfileScreen({
         data.householdname +
         data.profilename
     );
-    navigation.navigate("Chores");
+    navigation.navigate("Home", {screen: "Chores"});
   };
   const onJoinHouseholdPressed = (data: FieldValues) => {
     console.log(
