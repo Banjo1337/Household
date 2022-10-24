@@ -23,7 +23,7 @@ import TopTabNavigator from "./navigation/TopTabsNavigator";
 
 
 export type RootStackParamList = {
-  Home: undefined;
+  Home: {screen: "Chores"|"Statistics"};
   AddChore: undefined;
   ChoreDetails: undefined;
   SignIn: undefined;
