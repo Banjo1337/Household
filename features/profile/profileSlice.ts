@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, isAnyOf, PayloadAction } from "@reduxjs/
 import { Profile, ProfileCreateDto, ProfileEditDto, ProfileState } from "./profileTypes";
 import * as SecureStore from "expo-secure-store";
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/profile/";
+import Hydrate from "../../appHydrate";
 
 async function getToken(): Promise<string> {
 	const token = await SecureStore.getItemAsync("token");
@@ -120,6 +121,7 @@ const profileSlice = createSlice({
 	reducers: {
 		setActiveProfile(state, action: PayloadAction<Profile>) {
 			state.profile = action.payload;
+			Hydrate(state.profile.householdId);
 		},
 	},
 	extraReducers: (builder) => {
