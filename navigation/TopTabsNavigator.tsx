@@ -1,23 +1,33 @@
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import {NavigationContainer} from "@react-navigation/native";
+import { createMaterialTopTabNavigator, MaterialTopTabBarProps } from "@react-navigation/material-top-tabs";
+import { View } from "react-native";
+import { Button } from "react-native-paper";
 import ChoresScreen from "../screens/Chores";
-import EditHouseholdScreen from "../screens/EditHouseholdScreen";
+import StatisticsScreen from "../screens/StatisticsScreen";
 
 type TopTabParamsList = {
 Chores: undefined;
-Edit: undefined;
+Stats: undefined;
 }
 
 const Tabs = createMaterialTopTabNavigator<TopTabParamsList>();
 
 export default function TopTabNavigator(){
     return (
-      <NavigationContainer>
-        <Tabs.Navigator>
-          <Tabs.Screen name="Chores" component={ChoresScreen} />
-          <Tabs.Screen name="Edit" component={EditHouseholdScreen} />
-        </Tabs.Navigator>
-      </NavigationContainer>
+      <Tabs.Navigator tabBar={CustomTabBar}>
+        <Tabs.Screen name="Chores" component={ChoresScreen} />
+        <Tabs.Screen name="Stats" component={StatisticsScreen} />
+      </Tabs.Navigator>
     );
 }
 
+function CustomTabBar(props: MaterialTopTabBarProps){
+  const{index, routeNames} = props.state;
+  
+  console.log(props.state.index);
+  console.log(props.state.routeNames);
+  return (
+    <View>
+      <Button title=">" onPress={()=> props.navigation.navigate(routeNames[index+1])}/>
+    </View>
+  );
+}
