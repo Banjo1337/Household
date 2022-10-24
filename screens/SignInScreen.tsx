@@ -10,44 +10,25 @@ import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibilit
 import { RootStackParamList } from "../NavContainer";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { postSignInThunk, logout } from "../features/authentication/authenticationSlice";
-import {
-  selectHasError,
-  selectError,
-  selectToken,
-  selectAuthUserId,
-} from "../features/authentication/authenticationSelectors";
+import { selectToken } from "../features/authentication/authenticationSelectors";
 
 export default function SignInScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
   const dispatch = useAppDispatch();
-  const hasError = useAppSelector(selectHasError);
-  const errorText = useAppSelector(selectError);
-  const token = useAppSelector(selectToken);
-  const authUserId = useAppSelector(selectAuthUserId);
   const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
   const {
     control,
     handleSubmit,
     formState: {},
   } = useForm();
-
-  useEffect(() => {
-    /*
-    console.log(" ############## In SignInScreen##############");
-    console.log("token: ", token);
-    console.log("authUserId: ", authUserId);
-    console.log("hasError: ", hasError);
-    console.log("errorText: ", errorText);
-    console.log(" ############## ##############");
-    */
-  }, [token, authUserId, hasError, errorText]);
-
   const { currentTheme } = useTheme();
 
+  const Token = useAppSelector(selectToken);
+
   useEffect(() => {
-    if (token) {
+    if (Token) {
       navigation.navigate("SelectProfile");
     }
-  }, [navigation, token]);
+  }, [navigation, Token]);
 
   const onLoginPressed = (data: FieldValues) => {
     dispatch(postSignInThunk({ username: data.username, password: data.password }));

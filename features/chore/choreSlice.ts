@@ -1,17 +1,11 @@
 import { createAsyncThunk, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import { Chore, ChoreState, ChoreCreateDto, ChoreUpdateDto } from "./choreTypes";
+import { useAppSelector } from "../../hooks/reduxHooks";
+import { selectToken } from "../authentication/authenticationSelectors";
 
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/chore/";
-import * as SecureStore from "expo-secure-store";
 
-async function getToken(): Promise<string> {
-  const token = await SecureStore.getItemAsync("token");
-  if (token) {
-    return JSON.parse(token).token;
-  } else {
-    return "";
-  }
-}
+const Token = () => useAppSelector(selectToken);
 
 export const hydrateChoresSliceFromBackendThunk = createAsyncThunk<
   Chore[],
@@ -38,8 +32,7 @@ export const hydrateChoresSliceFromBackendThunk = createAsyncThunk<
 export const createChore = createAsyncThunk<Chore, ChoreCreateDto, { rejectValue: string }>(
   "chore/CreateChore",
   async (choreCreateDto: ChoreCreateDto, thunkApi) => {
-    const token = await getToken();
-    if (!token) {
+    if (Token()) {
       return thunkApi.rejectWithValue("User not logged in");
     }
     try {
@@ -47,7 +40,7 @@ export const createChore = createAsyncThunk<Chore, ChoreCreateDto, { rejectValue
         method: "POST",
         headers: {
           "content-type": "application/json",
-          authorization: "Bearer " + token,
+          authorization: "Bearer " + Token(),
         },
         body: JSON.stringify(choreCreateDto),
       });
@@ -72,8 +65,7 @@ export const updateChore = createAsyncThunk<
   { choreUpdateDto: ChoreUpdateDto; choreId: string },
   { rejectValue: string }
 >("chore/UpdateChore", async ({ choreUpdateDto, choreId }, thunkApi) => {
-  const token = await getToken();
-  if (!token) {
+  if (!Token) {
     return thunkApi.rejectWithValue("User not logged in");
   }
   try {
@@ -81,7 +73,7 @@ export const updateChore = createAsyncThunk<
       method: "PATCH",
       headers: {
         "content-type": "application/json",
-        authorization: "Bearer " + token,
+        authorization: "Bearer " + Token,
       },
       body: JSON.stringify(choreUpdateDto),
     });
@@ -103,8 +95,7 @@ export const updateChore = createAsyncThunk<
 export const deleteChore = createAsyncThunk<Chore, string, { rejectValue: string }>(
   "chore/deleteChore",
   async (choreId: string, thunkApi) => {
-    const token = await getToken();
-    if (!token) {
+    if (Token()) {
       return thunkApi.rejectWithValue("User not logged in");
     }
     try {
@@ -112,7 +103,7 @@ export const deleteChore = createAsyncThunk<Chore, string, { rejectValue: string
         method: "DELETE",
         headers: {
           "content-type": "application/json",
-          authorization: "Bearer " + token,
+          authorization: "Bearer " + Token(),
         },
       });
 

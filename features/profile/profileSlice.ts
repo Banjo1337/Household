@@ -1,23 +1,15 @@
 import { createAsyncThunk, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import { Profile, ProfileCreateDto, ProfileEditDto, ProfileState } from "./profileTypes";
-import * as SecureStore from "expo-secure-store";
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/profile/";
-//import { hydrateHouseholdThunk } from "../household/householdSlice";
+import { useAppSelector } from "../../hooks/reduxHooks";
+import { selectToken } from "../authentication/authenticationSelectors";
 
-async function getToken(): Promise<string> {
-  const token = await SecureStore.getItemAsync("token");
-  if (token) {
-    return JSON.parse(token).token;
-  } else {
-    return "";
-  }
-}
+const Token = () => useAppSelector(selectToken);
 
 export const createProfile = createAsyncThunk<Profile, ProfileCreateDto, { rejectValue: string }>(
   "profile/CreateProfile",
   async (profileCreateDto: ProfileCreateDto, thunkApi) => {
-    const token = await getToken();
-    if (!token) {
+    if (Token()) {
       return thunkApi.rejectWithValue("User not logged in");
     }
     try {
@@ -25,7 +17,7 @@ export const createProfile = createAsyncThunk<Profile, ProfileCreateDto, { rejec
         method: "POST",
         headers: {
           "content-type": "application/json",
-          authorization: "Bearer " + token,
+          authorization: "Bearer " + Token(),
         },
         body: JSON.stringify(profileCreateDto),
       });
@@ -50,8 +42,7 @@ export const editProfile = createAsyncThunk<
   ProfileEditDto,
   { extra: { profileId: string }; rejectValue: string }
 >("profile/EditProfile", async (profileEditDto: ProfileEditDto, thunkApi) => {
-  const token = await getToken();
-  if (!token) {
+  if (Token()) {
     return thunkApi.rejectWithValue("User not logged in");
   }
   try {
@@ -59,7 +50,7 @@ export const editProfile = createAsyncThunk<
       method: "PATCH",
       headers: {
         "content-type": "application/json",
-        authorization: "Bearer " + token,
+        authorization: "Bearer " + Token(),
       },
       body: JSON.stringify(profileEditDto),
     });
@@ -81,8 +72,7 @@ export const editProfile = createAsyncThunk<
 export const deleteProfile = createAsyncThunk<Profile, string, { rejectValue: string }>(
   "profile/deleteProfile",
   async (profileId: string, thunkApi) => {
-    const token = await getToken();
-    if (!token) {
+    if (Token()) {
       return thunkApi.rejectWithValue("User not logged in");
     }
     try {
@@ -90,7 +80,7 @@ export const deleteProfile = createAsyncThunk<Profile, string, { rejectValue: st
         method: "DELETE",
         headers: {
           "content-type": "application/json",
-          authorization: "Bearer " + token,
+          authorization: "Bearer " + Token(),
         },
       });
 
@@ -108,22 +98,6 @@ export const deleteProfile = createAsyncThunk<Profile, string, { rejectValue: st
     }
   },
 );
-
-// export const setActiveProfile = createAsyncThunk<Profile, Profile, { rejectValue: string}>(
-// 	"profile/setActiveProfile",
-// 	async(profile: Profile, thunkApi) => {
-// 		try {
-// 			thunkApi.dispatch(hydrateHouseholdThunk(profile.householdId));
-// 		} catch(err) {
-// 			if (err instanceof Error) {
-// 				return thunkApi.rejectWithValue(err.message);
-// 			} else {
-// 				return thunkApi.rejectWithValue("");
-// 			}
-// 		}
-// 		return profile;
-// 	}
-// )
 
 const initialState: ProfileState = {
   profile: {} as Profile,
