@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, isAnyOf, PayloadAction } from "@reduxjs/
 import { Profile, ProfileCreateDto, ProfileEditDto, ProfileState } from "./profileTypes";
 import * as SecureStore from "expo-secure-store";
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/profile/";
-import Hydrate from "../../appHydrate";
+import { hydrateHouseholdThunk } from "../household/householdSlice";
 
 async function getToken(): Promise<string> {
 	const token = await SecureStore.getItemAsync("token");
@@ -109,6 +109,22 @@ export const deleteProfile = createAsyncThunk<Profile, string, { rejectValue: st
 	}
 );
 
+// export const setActiveProfile = createAsyncThunk<Profile, Profile, { rejectValue: string}>(
+// 	"profile/setActiveProfile",
+// 	async(profile: Profile, thunkApi) => {
+// 		try {
+// 			thunkApi.dispatch(hydrateHouseholdThunk(profile.householdId));
+// 		} catch(err) {
+// 			if (err instanceof Error) {
+// 				return thunkApi.rejectWithValue(err.message);
+// 			} else {
+// 				return thunkApi.rejectWithValue("");
+// 			}
+// 		}
+// 		return profile;
+// 	}
+// )
+
 const initialState: ProfileState = {
 	profile: {} as Profile,
 	isLoading: false,
@@ -121,7 +137,6 @@ const profileSlice = createSlice({
 	reducers: {
 		setActiveProfile(state, action: PayloadAction<Profile>) {
 			state.profile = action.payload;
-			Hydrate(state.profile.householdId);
 		},
 	},
 	extraReducers: (builder) => {

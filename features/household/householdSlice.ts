@@ -32,7 +32,7 @@ export const hydrateHouseholdThunk = createAsyncThunk<Household, string, { rejec
 		console.log(response);
 		if (response.ok) {
 			const household = await response.json();
-			//thunkApi.dispatch(getProfilesByHouseholdId(household.id));
+			thunkApi.dispatch(getProfilesByHouseholdId(household.id));
 			return household as Household;
 		} else {
 			return thunkApi.rejectWithValue(JSON.stringify(response.body));
