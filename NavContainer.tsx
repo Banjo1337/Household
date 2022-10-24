@@ -20,7 +20,6 @@ import { useTheme } from "./features/theme/ThemeContext";
 import TopTabNavigator from "./navigation/TopTabsNavigator";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
-import TopTabNavigator from "./navigation/TopTabsNavigator";
 import { HydrateAuth } from "./appHydrate";
 
 
