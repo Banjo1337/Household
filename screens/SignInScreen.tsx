@@ -3,8 +3,9 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
 import React, { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";
+import { useTheme } from "../features/theme/ThemeContext";
 import CustomInput from "../components/CustomInput";
 import {
   logout,
@@ -31,6 +32,8 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
 
   const [token, setToken] = useState<string>("");
   const [authUserId, setAuthUserId] = useState<string>("");
+
+  const { currentTheme } = useTheme();
 
   //Im not sure where to put this useEffect. Perhaps we need to move to a new file, or change dependency array. Time will tell.
   useEffect(() => {
@@ -59,9 +62,7 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Sign In</Text>
       <CustomInput
-        style={styles.input}
         placeholder='Username'
         name='username'
         control={control}
@@ -72,20 +73,20 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
         }}
       />
 
+      <MaterialCommunityIcons
+        name={rightIcon}
+        size={32}
+        color={currentTheme.dark ? "#232323" : "#333"}
+        onPress={handlePasswordVisibility}
+        style={[styles.passwordPosition, { zIndex: 1 }]}
+        // Places the icon between the two inputs, and draws it on top of the below CustomInput because of zIndex.
+      />
       <CustomInput
-        style={styles.input}
         placeholder='Password'
         name='password'
         control={control}
         secureTextEntry={passwordVisibility}
         rules={{ required: "Password is required" }}
-      />
-      <MaterialCommunityIcons
-        name={rightIcon}
-        size={32}
-        color='#232323'
-        onPress={handlePasswordVisibility}
-        style={{ position: "relative", bottom: 47, left: 150 }}
       />
       <Button style={styles.button} onPress={handleSubmit(onLoginPressed)}>
         Sign In
@@ -99,9 +100,9 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    padding: 20,
+    paddingHorizontal: 20,
+    marginTop: 100,
   },
-  title: { fontSize: 50 },
-  button: { padding: 20 },
-  input: {},
+  button: { marginTop: 50 },
+  passwordPosition: { position: "relative", left: 150, top: 45 },
 });
