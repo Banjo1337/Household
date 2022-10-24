@@ -20,6 +20,8 @@ import { useTheme } from "./features/theme/ThemeContext";
 import TopTabNavigator from "./navigation/TopTabsNavigator";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
+import { HydrateAuth } from "./appHydrate";
+
 
 export type RootStackParamList = {
   Home: { screen: "Chores" | "Statistics" };
@@ -42,6 +44,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function NavContainer() {
   const { currentTheme } = useTheme();
+  HydrateAuth();
   return (
     <SafeAreaProvider>
       <StatusBar style={currentTheme.dark ? "light" : "dark"} />
