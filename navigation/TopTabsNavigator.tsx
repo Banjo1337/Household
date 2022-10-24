@@ -25,11 +25,7 @@ export default function TopTabNavigator() {
 }
 
 function CustomTabBar(props: MaterialTopTabBarProps) {
-  const { index, routeNames, routes } = props.state;
-
-  console.log(index);
-  console.log(routeNames);
-  console.log(routeNames.length);
+  const { index, routes } = props.state;
   return (
     <View>
       <View
@@ -52,6 +48,9 @@ function CustomTabBar(props: MaterialTopTabBarProps) {
         <Pressable onPress={(index>0)?() => props.jumpTo(routes[index - 1].key):()=>null}>
           <AntDesign name="left" size={24} color="black" />
         </Pressable>
+        <Text>
+          {props.state.routeNames[index]}
+        </Text>
         <Pressable onPress={(index<(props.state.routeNames.length-1))?() => props.jumpTo(routes[index + 1].key):()=>null}>
           <AntDesign name="right" size={24} color="black" />
         </Pressable>
