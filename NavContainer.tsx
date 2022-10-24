@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AddChoreScreen from "./screens/AddChoreScreen";
 import ChoreDetailsScreen from "./screens/ChoreDetailsScreen";
-import ChoresScreen from "./screens/Chores";
+//import ChoresScreen from "./screens/Chores";
 import CreateProfileScreen from "./screens/CreateProfileScreen";
 import FinalizeProfileScreen from "./screens/FinalizeProfileScreen";
 import MegaNavigationGodScreen from "./screens/MegaNavigationGodScreen";
@@ -13,15 +13,17 @@ import SelectProfileScreen from "./screens/SelectProfileScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import SignInScreen from "./screens/SignInScreen";
 import SignUpScreen from "./screens/SignUpScreen";
-import StatisticsScreen from "./screens/StatisticsScreen";
+//import StatisticsScreen from "./screens/StatisticsScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { useTheme } from "./features/theme/ThemeContext";
 import { Provider as PaperProvider } from "react-native-paper";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
+import TopTabNavigator from "./navigation/TopTabsNavigator";
+
 
 export type RootStackParamList = {
-  Chores: undefined;
+  Home: undefined;
   AddChore: undefined;
   ChoreDetails: undefined;
   SignIn: undefined;
@@ -34,7 +36,6 @@ export type RootStackParamList = {
   PendingRequest: undefined;
   RequestResponse: undefined;
   Settings: undefined;
-  Statistics: undefined;
   MegaNavigationGod: undefined;
 };
 
@@ -53,7 +54,7 @@ export default function NavContainer() {
               component={MegaNavigationGodScreen}
               options={() => ({ title: "This is temporary" })}
             />
-            <Stack.Screen name="Chores" component={ChoresScreen} />
+            <Stack.Screen name="Home" component={TopTabNavigator} />
             <Stack.Screen name="AddChore" component={AddChoreScreen} />
             <Stack.Screen name="ChoreDetails" component={ChoreDetailsScreen} />
             <Stack.Screen name="SignIn" component={SignInScreen} />
@@ -87,7 +88,7 @@ export default function NavContainer() {
               component={RequestResponseScreen}
             />
             <Stack.Screen name="Settings" component={SettingsScreen} />
-            <Stack.Screen name="Statistics" component={StatisticsScreen} />
+{/*             <Stack.Screen name="Statistics" component={StatisticsScreen} /> */}
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>

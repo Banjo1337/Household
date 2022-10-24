@@ -35,6 +35,8 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
 
   const { currentTheme } = useTheme();
 
+  const { currentTheme } = useTheme();
+
   useEffect(() => {
     if (token) {
       navigation.navigate("SelectProfile");

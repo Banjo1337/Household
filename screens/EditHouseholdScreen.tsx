@@ -12,10 +12,9 @@ import {
 import { Switch } from "react-native-paper";
 
 import CustomInput from "../components/CustomInput";
+import { selectHousehold, selectProfileByHousholdId } from "../features/household/householdSelectors";
 import {
   editHouseholdThunk,
-  selectHousehold,
-  selectProfileByHousholdId,
 } from "../features/household/householdSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
