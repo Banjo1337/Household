@@ -10,7 +10,7 @@ import StatisticsScreen from "../screens/StatisticsScreen";
 
 type TopTabParamsList = {
   Chores: undefined;
-  Stats: undefined;
+  Statistics: undefined;
 };
 
 const Tabs = createMaterialTopTabNavigator<TopTabParamsList>();
@@ -19,7 +19,7 @@ export default function TopTabNavigator() {
   return (
     <Tabs.Navigator tabBar={CustomTabBar}>
       <Tabs.Screen name="Chores" component={ChoresScreen} />
-      <Tabs.Screen name="Stats" component={StatisticsScreen} />
+      <Tabs.Screen name="Statistics" component={StatisticsScreen} />
     </Tabs.Navigator>
   );
 }
@@ -45,13 +45,21 @@ function CustomTabBar(props: MaterialTopTabBarProps) {
           paddingHorizontal: 30,
         }}
       >
-        <Pressable onPress={(index>0)?() => props.jumpTo(routes[index - 1].key):()=>null}>
+        <Pressable
+          onPress={
+            index > 0 ? () => props.jumpTo(routes[index - 1].key) : () => null
+          }
+        >
           <AntDesign name="left" size={24} color="black" />
         </Pressable>
-        <Text>
-          {props.state.routeNames[index]}
-        </Text>
-        <Pressable onPress={(index<(props.state.routeNames.length-1))?() => props.jumpTo(routes[index + 1].key):()=>null}>
+        <Text>{props.state.routeNames[index]}</Text>
+        <Pressable
+          onPress={
+            index < props.state.routeNames.length - 1
+              ? () => props.jumpTo(routes[index + 1].key)
+              : () => null
+          }
+        >
           <AntDesign name="right" size={24} color="black" />
         </Pressable>
       </View>
