@@ -169,8 +169,8 @@ const choreSlice = createSlice({
     builder.addMatcher(
       isAnyOf(
         createChore.rejected,
-        createChore.rejected,
-        createChore.rejected,
+        updateChore.rejected,
+        deleteChore.rejected,
         hydrateChoresSliceFromBackendThunk.rejected,
       ),
       (state, action) => {
