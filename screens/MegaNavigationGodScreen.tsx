@@ -28,7 +28,7 @@ export default function MegaNavigationGodScreen(
         <Button
           mode="contained"
           style={styles.button}
-          onPress={() => Props.navigation.navigate("ChoreDetails")}
+          onPress={() => Props.navigation.navigate("ChoreDetails", {choreId:""})}
         >
           ChoreDetails
         </Button>
