@@ -1,4 +1,4 @@
-import { Pressable, View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Profile } from "../features/profile/profileTypes";
 import { useAvatar } from "../hooks/useAvatar";
 
@@ -13,9 +13,9 @@ export default function SelectProfileButton({ profile, handleSelectUser}: Props)
 
     return (
             <View style={ [styles.profilePortrait, { backgroundColor: color }] }>
-                <Pressable onPress={() => handleSelectUser(profile)}>
+                <TouchableOpacity onPress={() => handleSelectUser(profile)}>
                     <Text style={ styles.avatar }>{emoji}</Text>
-                </Pressable>
+                </TouchableOpacity>
             </View>
     );
 }
