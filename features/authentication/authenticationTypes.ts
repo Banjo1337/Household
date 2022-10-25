@@ -3,13 +3,18 @@ export type AuthenticationCredentials = {
   password: string;
 };
 
-export type SignInReply = {
+export type AuthenticationState = {
   token: string;
   expiration: Date;
   authUserId: string;
   error: string;
   hasError: boolean;
-  dataWrittenToSecureStoreCounter?: number;
+};
+
+export type SignInReply = {
+  token: string;
+  expiration: Date;
+  authUserId: string;
 };
 
 export type SignUpReply = {

@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { Button, Title } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { RootStackParamList } from "../NavContainer";
 
 export default function MegaNavigationGodScreen(
@@ -12,7 +12,9 @@ export default function MegaNavigationGodScreen(
         <Button
           mode="contained"
           style={styles.button}
-          onPress={() => Props.navigation.navigate("Chores")}
+          onPress={() =>
+            Props.navigation.navigate("Home", { screen: "Chores" })
+          }
         >
           Chores
         </Button>
@@ -103,7 +105,9 @@ export default function MegaNavigationGodScreen(
         <Button
           mode="contained"
           style={styles.button}
-          onPress={() => Props.navigation.navigate("Statistics")}
+          onPress={() =>
+            Props.navigation.navigate("Home", { screen: "Statistics" })
+          }
         >
           Statistics
         </Button>

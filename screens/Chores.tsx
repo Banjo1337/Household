@@ -1,23 +1,20 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { FlashList } from "@shopify/flash-list";
 import React, { useState } from "react";
 import { View, StyleSheet, FlatList, TouchableHighlight } from "react-native";
 import { Title, Button, Text } from "react-native-paper";
 import ChoreListItem from "../components/ChoreListItem";
 import {
-  selectChoreById,
   selectChores,
-  selectChoresByHouseholdId,
 } from "../features/chore/choreSelectors";
-import { Chore } from "../features/chore/choreTypes";
-import { selectHousehold } from "../features/household/householdSlice";
+import { selectHousehold } from "../features/household/householdSelectors";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
+import { TopTabParamsList } from "../navigation/TopTabsNavigator";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Chores">;
+type Props = NativeStackScreenProps<RootStackParamList>;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function ChoresScreen({ navigation, route }: Props) {
+export default function ChoresScreen(Props: NativeStackScreenProps<RootStackParamList>)  {
   // const [choreId] = useState(route.params.choreId);
   const [editableMode, setEditableMode] = useState(true);
   const dispatch = useAppDispatch();
@@ -27,16 +24,17 @@ export default function ChoresScreen({ navigation, route }: Props) {
   const onEditPressed = () => {
     console.log("on edit pressed");
     console.log(chores.length);
-    navigation.navigate("EditHousehold");
+    Props.navigation.navigate("EditHousehold");
   };
   const onAddChorePressed = () => {
-    navigation.navigate("AddChore");
+    Props.navigation.navigate("AddChore");
   };
 
   const toggleIsEditable = () => {
     setEditableMode((current: boolean) => !current);
     console.log(editableMode);
   };
+
   return (
     <>
       <View>
@@ -50,7 +48,7 @@ export default function ChoresScreen({ navigation, route }: Props) {
                 <View>
                   <ChoreListItem
                     chore={item}
-                    navigation={navigation}
+                    navigation={Props.navigation}
                     editableMode={editableMode}
                     onEditPressed={onEditPressed}
                   ></ChoreListItem>
@@ -108,4 +106,4 @@ const styles = StyleSheet.create({
   card: {},
   button: { backgroundColor: "hotpink" },
   input: { backgroundColor: "brown" },
-});
+})

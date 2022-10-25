@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AddChoreScreen from "./screens/AddChoreScreen";
 import ChoreDetailsScreen from "./screens/ChoreDetailsScreen";
-import ChoresScreen from "./screens/Chores";
+//import ChoresScreen from "./screens/Chores";
 import CreateProfileScreen from "./screens/CreateProfileScreen";
 import FinalizeProfileScreen from "./screens/FinalizeProfileScreen";
 import MegaNavigationGodScreen from "./screens/MegaNavigationGodScreen";
@@ -13,15 +13,18 @@ import SelectProfileScreen from "./screens/SelectProfileScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import SignInScreen from "./screens/SignInScreen";
 import SignUpScreen from "./screens/SignUpScreen";
-import StatisticsScreen from "./screens/StatisticsScreen";
+//import StatisticsScreen from "./screens/StatisticsScreen";
 import { NavigationContainer } from "@react-navigation/native";
-import { useTheme } from "./features/theme/ThemeContext";
 import { Provider as PaperProvider } from "react-native-paper";
+import { useTheme } from "./features/theme/ThemeContext";
+import TopTabNavigator from "./navigation/TopTabsNavigator";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
+import { HydrateAuth } from "./appHydrate";
+
 
 export type RootStackParamList = {
-  Chores: undefined;
+  Home: { screen: "Chores" | "Statistics" };
   AddChore: undefined;
   ChoreDetails: { choreId: string };
   SignIn: undefined;
@@ -34,7 +37,6 @@ export type RootStackParamList = {
   PendingRequest: undefined;
   RequestResponse: undefined;
   Settings: undefined;
-  Statistics: undefined;
   MegaNavigationGod: undefined;
 };
 
@@ -42,9 +44,10 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function NavContainer() {
   const { currentTheme } = useTheme();
+  HydrateAuth();
   return (
     <SafeAreaProvider>
-      <StatusBar style={currentTheme.dark ? "dark" : "light"} />
+      <StatusBar style={currentTheme.dark ? "light" : "dark"} />
       <PaperProvider theme={currentTheme}>
         <NavigationContainer theme={currentTheme}>
           <Stack.Navigator initialRouteName='MegaNavigationGod'>
@@ -53,7 +56,7 @@ export default function NavContainer() {
               component={MegaNavigationGodScreen}
               options={() => ({ title: "This is temporary" })}
             />
-            <Stack.Screen name='Chores' component={ChoresScreen} />
+            <Stack.Screen name='Home' component={TopTabNavigator} />
             <Stack.Screen name='AddChore' component={AddChoreScreen} />
             <Stack.Screen name='ChoreDetails' component={ChoreDetailsScreen} />
             <Stack.Screen name='SignIn' component={SignInScreen} />
@@ -66,7 +69,6 @@ export default function NavContainer() {
             <Stack.Screen name='PendingRequest' component={PendingRequestScreen} />
             <Stack.Screen name='RequestResponse' component={RequestResponseScreen} />
             <Stack.Screen name='Settings' component={SettingsScreen} />
-            <Stack.Screen name='Statistics' component={StatisticsScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>

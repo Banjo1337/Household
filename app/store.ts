@@ -1,19 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { authenticateUserReducer } from "../features/authentication/authenticationSlice";
+import { authenticateReducer } from "../features/authentication/authenticationSlice";
 import { householdReducer } from "../features/household/householdSlice";
-import { profileApiSlice } from "../features/profile/profileApiSlice";
 import profileReducer from "../features/profile/profileSlice";
 import choreReducer from "../features/chore/choreSlice";
+import choreCompletedReducer from"../features/choreCompleted/choreCompletedSlice";
+//import choreCompletedReducer from "../features/choreCompleted/choreCompletedSlice";
 
 export const store = configureStore({
   reducer: {
-    authenticateUserReducer: authenticateUserReducer,
+    authenticateReducer: authenticateReducer,
     profileReducer: profileReducer,
     choreReducer: choreReducer,
-    [profileApiSlice.reducerPath]: profileApiSlice.reducer,
     householdReducer: householdReducer,
+    choreCompletedReducer: choreCompletedReducer
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(profileApiSlice.middleware),
 });
 
 export type RootStateType = ReturnType<typeof store.getState>;
