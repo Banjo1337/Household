@@ -1,0 +1,102 @@
+import { RootStateType } from "../../app/store";
+import { selectChoreById, selectChores } from "../chore/choreSelectors";
+import { selectHouseholdProfile } from "../household/householdSelectors";
+import { Avatars } from "../profile/profileTypes";
+import { ChoreCompleted, Statistics, StatisticsList } from "./choreCompletedTypes";
+
+export const selectChoreCompleted = (state: RootStateType): ChoreCompleted[] =>
+	state.choreCompletedReducer.completedChores;
+
+export const selectChoreCompletedRange = (
+	state: RootStateType,
+	start: Date,
+	end: Date
+): ChoreCompleted[] =>
+	selectChoreCompleted(state).filter(
+		(cc) => cc.completedAt >= start.toISOString() && cc.completedAt <= end.toISOString()
+	);
+
+export const selectChoreCompletedByIdAllTime = (state: RootStateType, choreId: string): ChoreCompleted[] =>
+	selectChoreCompleted(state).filter((cc) => cc.id != choreId);
+
+export const selectChoreCompletedByIdRange = (
+	state: RootStateType,
+	start: Date,
+	end: Date,
+	choreId: string
+): ChoreCompleted[] =>
+	selectChoreCompletedByIdAllTime(state, choreId).filter(
+		(cc) => cc.completedAt >= start.toISOString() && cc.completedAt <= end.toISOString()
+	);
+
+export const selectChoreCompletedStatisticsForAllChores = (
+	state: RootStateType,
+	start: Date,
+	end: Date
+): Statistics[] => selectStats(state, start, end);
+
+export const selectChoreCompletedStatisticsForOneChore = (
+	state: RootStateType,
+	start: Date,
+	end: Date,
+	choreId: string
+): Statistics[] => selectStats(state, start, end, choreId);
+
+export const selectChoreCompletedStatisticsListForAllChores = (
+	state: RootStateType,
+	start: Date,
+	end: Date
+): StatisticsList[] => {
+	let statisticsForAllChores: StatisticsList[] = [];
+	for (const chore of selectChores(state)) {
+		const stats = selectChoreCompletedStatisticsForOneChore(state, start, end, chore.id);
+
+		statisticsForAllChores.push({ id: chore.id, name: chore.name, data: stats });
+	}
+	return statisticsForAllChores;
+};
+
+const selectStats = (state: RootStateType, start: Date, end: Date, choreId?: string): Statistics[] => {
+	let groupedByProfileId;
+	if (choreId) {
+		groupedByProfileId = groupBy(
+			selectChoreCompletedByIdRange(state, start, end, choreId),
+			(cc) => cc.profileIdQol
+		);
+	}
+	groupedByProfileId = groupBy(
+		selectChoreCompletedRange(state, start, end),
+		(cc) => cc.profileIdQol
+	);
+
+	let totalPoints = [];
+
+	for (const profileId in groupedByProfileId) {
+		const groupedByChore = groupBy(groupedByProfileId[profileId], (ch) => ch.choreId);
+
+		let total = 0;
+		for (const choreId in groupedByChore) {
+			const points = selectChoreById(state, choreId)?.points;
+			if (points) {
+				total += points * groupedByChore[choreId].length;
+			}
+		}
+
+		const profile = selectHouseholdProfile(state, profileId);
+		if (profile) {
+			const { color, emoji } = Avatars[profile.avatar];
+			totalPoints.push({ key: profileId, value: total, emoji: emoji, svg: { fill: color } });
+		}
+	}
+
+	return totalPoints;
+};
+
+// https://stackoverflow.com/questions/42136098/array-groupby-in-typescript
+export const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
+	list.reduce((previous, currentItem) => {
+		const group = getKey(currentItem);
+		if (!previous[group]) previous[group] = [];
+		previous[group].push(currentItem);
+		return previous;
+	}, {} as Record<K, T[]>);
