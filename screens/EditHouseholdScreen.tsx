@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React from "react";
+import React, { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Platform } from "react-native";
 import { Switch } from "react-native-paper";
 import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
@@ -21,7 +21,7 @@ export default function EditHouseholdScreen({ route }: NativeStackScreenProps<Ro
   const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
   const members = useAppSelector(selectProfileByHousholdId);
-  
+  const [enabled, setEnabled] = useState(false);
   const {
     control,
     handleSubmit,
@@ -40,6 +40,15 @@ export default function EditHouseholdScreen({ route }: NativeStackScreenProps<Ro
 
   var householdPicture = "../assets/house-cartoon.png";
 
+  const toggleSwitch = () => {
+    setEnabled((oldValue) => !oldValue);
+  };
+
+  const thumbColorOn = Platform.OS === "android" ? "#0cd1e8" : "#f3f3f3";
+  const thumbColorOff = Platform.OS === "android" ? "#f04141" : "#f3f3f3";
+  const trackColorOn = Platform.OS === "android" ? "#98e7f0" : "#0cd1e8";
+  const trackColorOff = Platform.OS === "android" ? "#f3adad" : "#f04141";
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -50,14 +59,13 @@ export default function EditHouseholdScreen({ route }: NativeStackScreenProps<Ro
           <Text>Household's admin: </Text>
           <View style={{ flex: 1, flexDirection: "row" }}>
             {members.map((member, memberIndex) => {
-              
               if (member.isAdmin) {
                 // eslint-disable-next-line react-hooks/rules-of-hooks
                 const { emoji, color } = useAvatar(member.avatar);
                 return (
                   <View style={{ padding: 5 }} key={memberIndex}>
                     <Text style={styles.avatar}>{emoji}</Text>
-                    <Text style={{ textAlign: "center", backgroundColor: color}}>
+                    <Text style={{ textAlign: "center", backgroundColor: color }}>
                       {member.alias}
                     </Text>
                   </View>
@@ -66,7 +74,7 @@ export default function EditHouseholdScreen({ route }: NativeStackScreenProps<Ro
             })}
           </View>
 
-          {/* Conditional rendering needed here to render only i user is admin */}
+          {/* Conditional rendering needed here to render only if user is admin */}
           <Text>Change household's name: </Text>
           <CustomInput
             name='householdName'
@@ -82,7 +90,6 @@ export default function EditHouseholdScreen({ route }: NativeStackScreenProps<Ro
           <Text>Household members: </Text>
           <View style={{ flex: 1, flexDirection: "row" }}>
             {members.map((member, memberIndex) => {
-              
               // eslint-disable-next-line react-hooks/rules-of-hooks
               const { emoji, color } = useAvatar(member.avatar);
               return (
@@ -91,7 +98,13 @@ export default function EditHouseholdScreen({ route }: NativeStackScreenProps<Ro
                   <Text style={{ textAlign: "center", backgroundColor: color }}>
                     {member.alias}
                   </Text>
-                  <Switch></Switch>
+                  <Switch
+                    value={enabled}
+                    onValueChange={toggleSwitch}
+                    thumbColor={enabled ? thumbColorOn : thumbColorOff}
+                    trackColor={{ false: trackColorOff, true: trackColorOn }}
+                  />
+                  {enabled ? (member.isAdmin = true) : (member.isAdmin = false)}
                 </View>
               );
             })}
