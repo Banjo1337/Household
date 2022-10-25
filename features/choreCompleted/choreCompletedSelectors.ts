@@ -16,8 +16,10 @@ export const selectChoreCompletedRange = (
 		(cc) => cc.completedAt >= start.toISOString() && cc.completedAt <= end.toISOString()
 	);
 
-export const selectChoreCompletedByIdAllTime = (state: RootStateType, choreId: string): ChoreCompleted[] =>
-	selectChoreCompleted(state).filter((cc) => cc.id != choreId);
+export const selectChoreCompletedByIdAllTime = (
+	state: RootStateType,
+	choreId: string
+): ChoreCompleted[] => selectChoreCompleted(state).filter((cc) => cc.choreId === choreId);
 
 export const selectChoreCompletedByIdRange = (
 	state: RootStateType,
@@ -56,36 +58,43 @@ export const selectChoreCompletedStatisticsListForAllChores = (
 	return statisticsForAllChores;
 };
 
-const selectStats = (state: RootStateType, start: Date, end: Date, choreId?: string): Statistics[] => {
+const selectStats = (
+	state: RootStateType,
+	start: Date,
+	end: Date,
+	choreId?: string
+): Statistics[] => {
 	let groupedByProfileId;
 	if (choreId) {
 		groupedByProfileId = groupBy(
 			selectChoreCompletedByIdRange(state, start, end, choreId),
 			(cc) => cc.profileIdQol
 		);
+	} else {
+		groupedByProfileId = groupBy(
+			selectChoreCompletedRange(state, start, end),
+			(cc) => cc.profileIdQol
+		);
 	}
-	groupedByProfileId = groupBy(
-		selectChoreCompletedRange(state, start, end),
-		(cc) => cc.profileIdQol
-	);
 
 	let totalPoints = [];
 
 	for (const profileId in groupedByProfileId) {
-		const groupedByChore = groupBy(groupedByProfileId[profileId], (ch) => ch.choreId);
+		const choreHistory = groupedByProfileId[profileId];
+		const groupedByChore = groupBy(choreHistory, (ch) => ch.choreId);
 
 		let total = 0;
 		for (const choreId in groupedByChore) {
-			const points = selectChoreById(state, choreId)?.points;
-			if (points) {
-				total += points * groupedByChore[choreId].length;
+			let chorePoints = selectChoreById(state, choreId)?.points;
+			if (chorePoints) {
+				total += chorePoints * groupedByChore[choreId].length;
 			}
 		}
-
 		const profile = selectHouseholdProfile(state, profileId);
+
 		if (profile) {
 			const { color, emoji } = Avatars[profile.avatar];
-			totalPoints.push({ key: profileId, value: total, emoji: emoji, svg: { fill: color } });
+			totalPoints.push({ key: profileId, value: total, svg: { fill: color }, emoji: emoji });
 		}
 	}
 
