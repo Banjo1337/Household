@@ -12,6 +12,7 @@ import { hydrateHouseholdSliceFromBackendThunk } from "../features/household/hou
 import { hydrateChoresSliceFromBackendThunk } from "../features/chore/choreSlice";
 import { selectAuthUserId } from "../features/authentication/authenticationSelectors";
 import { getAllChoreCompleted } from "../features/choreCompleted/choreCompletedSlice";
+import { hydratePauseSliceFromBackendThunk } from "../features/pause/pauseSlice";
 
 export default function SelectProfileScreen({
   navigation,
@@ -36,6 +37,8 @@ export default function SelectProfileScreen({
     dispatch(hydrateHouseholdSliceFromBackendThunk(profile.householdId));
     dispatch(hydrateChoresSliceFromBackendThunk(profile.householdId));
     dispatch(getAllChoreCompleted(profile.householdId));
+    dispatch(hydratePauseSliceFromBackendThunk(profile.householdId));
+
     navigation.goBack();
   }
 
