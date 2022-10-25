@@ -23,7 +23,7 @@ import EditHouseholdScreen from "./screens/EditHouseholdScreen";
 export type RootStackParamList = {
   Chores: undefined;
   AddChore: undefined;
-  ChoreDetails: undefined;
+  ChoreDetails: { choreId: string };
   SignIn: undefined;
   SignUp: undefined;
   CreateProfile: undefined;
@@ -47,47 +47,26 @@ export default function NavContainer() {
       <StatusBar style={currentTheme.dark ? "dark" : "light"} />
       <PaperProvider theme={currentTheme}>
         <NavigationContainer theme={currentTheme}>
-          <Stack.Navigator initialRouteName="MegaNavigationGod">
+          <Stack.Navigator initialRouteName='MegaNavigationGod'>
             <Stack.Screen
-              name="MegaNavigationGod"
+              name='MegaNavigationGod'
               component={MegaNavigationGodScreen}
               options={() => ({ title: "This is temporary" })}
             />
-            <Stack.Screen name="Chores" component={ChoresScreen} />
-            <Stack.Screen name="AddChore" component={AddChoreScreen} />
-            <Stack.Screen name="ChoreDetails" component={ChoreDetailsScreen} />
-            <Stack.Screen name="SignIn" component={SignInScreen} />
-            <Stack.Screen name="SignUp" component={SignUpScreen} />
-            <Stack.Screen
-              name="CreateHousehold"
-              component={CreateHouseholdScreen}
-            />
-            <Stack.Screen
-              name="CreateProfile"
-              component={CreateProfileScreen}
-            />
-            <Stack.Screen
-              name="EditHousehold"
-              component={EditHouseholdScreen}
-            />
-            <Stack.Screen
-              name="SelectProfile"
-              component={SelectProfileScreen}
-            />
-            <Stack.Screen
-              name="FinalizeProfile"
-              component={FinalizeProfileScreen}
-            />
-            <Stack.Screen
-              name="PendingRequest"
-              component={PendingRequestScreen}
-            />
-            <Stack.Screen
-              name="RequestResponse"
-              component={RequestResponseScreen}
-            />
-            <Stack.Screen name="Settings" component={SettingsScreen} />
-            <Stack.Screen name="Statistics" component={StatisticsScreen} />
+            <Stack.Screen name='Chores' component={ChoresScreen} />
+            <Stack.Screen name='AddChore' component={AddChoreScreen} />
+            <Stack.Screen name='ChoreDetails' component={ChoreDetailsScreen} />
+            <Stack.Screen name='SignIn' component={SignInScreen} />
+            <Stack.Screen name='SignUp' component={SignUpScreen} />
+            <Stack.Screen name='CreateHousehold' component={CreateHouseholdScreen} />
+            <Stack.Screen name='CreateProfile' component={CreateProfileScreen} />
+            <Stack.Screen name='EditHousehold' component={EditHouseholdScreen} />
+            <Stack.Screen name='SelectProfile' component={SelectProfileScreen} />
+            <Stack.Screen name='FinalizeProfile' component={FinalizeProfileScreen} />
+            <Stack.Screen name='PendingRequest' component={PendingRequestScreen} />
+            <Stack.Screen name='RequestResponse' component={RequestResponseScreen} />
+            <Stack.Screen name='Settings' component={SettingsScreen} />
+            <Stack.Screen name='Statistics' component={StatisticsScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>
