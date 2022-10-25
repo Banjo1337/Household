@@ -3,6 +3,7 @@ import { authenticateReducer } from "../features/authentication/authenticationSl
 import { householdReducer } from "../features/household/householdSlice";
 import profileReducer from "../features/profile/profileSlice";
 import choreReducer from "../features/chore/choreSlice";
+import choreCompletedReducer from"../features/choreCompleted/choreCompletedSlice";
 //import choreCompletedReducer from "../features/choreCompleted/choreCompletedSlice";
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     profileReducer: profileReducer,
     choreReducer: choreReducer,
     householdReducer: householdReducer,
+    choreCompletedReducer: choreCompletedReducer
   },
 });
 
