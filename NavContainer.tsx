@@ -26,7 +26,7 @@ import { HydrateAuth } from "./appHydrate";
 export type RootStackParamList = {
   Home: { screen: "Chores" | "Statistics" };
   AddChore: undefined;
-  ChoreDetails: undefined;
+  ChoreDetails: { choreId: string };
   SignIn: undefined;
   SignUp: undefined;
   CreateProfile: undefined;
@@ -69,7 +69,6 @@ export default function NavContainer() {
             <Stack.Screen name='PendingRequest' component={PendingRequestScreen} />
             <Stack.Screen name='RequestResponse' component={RequestResponseScreen} />
             <Stack.Screen name='Settings' component={SettingsScreen} />
-            {/*             <Stack.Screen name="Statistics" component={StatisticsScreen} /> */}
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>
