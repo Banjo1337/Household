@@ -1,44 +1,38 @@
 import { createAsyncThunk, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import { Chore, ChoreState, ChoreCreateDto, ChoreUpdateDto } from "./choreTypes";
+import { useAppSelector } from "../../hooks/reduxHooks";
+import { selectToken } from "../authentication/authenticationSelectors";
 
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/chore/";
-import * as SecureStore from "expo-secure-store";
 
-async function getToken(): Promise<string> {
-  const token = await SecureStore.getItemAsync("token");
-  if (token) {
-    return JSON.parse(token).token;
-  } else {
-    return "";
-  }
-}
+const Token = () => useAppSelector(selectToken);
 
-export const getAllChores = createAsyncThunk<Chore[], string, { rejectValue : string }>(
-  "chore/getAllChores",
-  async (householdId: string, thunkApi) => {
-    try {
-      const response = await fetch(baseUrl + "Getchoresbyhouseholdid/" + householdId);
+export const hydrateChoresSliceFromBackendThunk = createAsyncThunk<
+  Chore[],
+  string,
+  { rejectValue: string }
+>("chore/getAllChores", async (householdId: string, thunkApi) => {
+  try {
+    const response = await fetch(baseUrl + "Getchoresbyhouseholdid/" + householdId);
 
-      if (response.ok) {
-        return (await response.json()) as Chore[];
-      }
+    if (response.ok) {
+      return (await response.json()) as Chore[];
+    }
 
-      return thunkApi.rejectWithValue(JSON.stringify(response.body));
-    } catch (err) {
-      if (err instanceof Error) {
-        return thunkApi.rejectWithValue(err.message);
-      } else {
-        return thunkApi.rejectWithValue("");
-      }
+    return thunkApi.rejectWithValue(JSON.stringify(response.body));
+  } catch (err) {
+    if (err instanceof Error) {
+      return thunkApi.rejectWithValue(err.message);
+    } else {
+      return thunkApi.rejectWithValue("");
     }
   }
-);
+});
 
 export const createChore = createAsyncThunk<Chore, ChoreCreateDto, { rejectValue: string }>(
   "chore/CreateChore",
   async (choreCreateDto: ChoreCreateDto, thunkApi) => {
-    const token = await getToken();
-    if (!token) {
+    if (Token()) {
       return thunkApi.rejectWithValue("User not logged in");
     }
     try {
@@ -46,7 +40,7 @@ export const createChore = createAsyncThunk<Chore, ChoreCreateDto, { rejectValue
         method: "POST",
         headers: {
           "content-type": "application/json",
-          authorization: "Bearer " + token,
+          authorization: "Bearer " + Token(),
         },
         body: JSON.stringify(choreCreateDto),
       });
@@ -71,8 +65,7 @@ export const updateChore = createAsyncThunk<
   { choreUpdateDto: ChoreUpdateDto; choreId: string },
   { rejectValue: string }
 >("chore/UpdateChore", async ({ choreUpdateDto, choreId }, thunkApi) => {
-  const token = await getToken();
-  if (!token) {
+  if (!Token) {
     return thunkApi.rejectWithValue("User not logged in");
   }
   try {
@@ -80,7 +73,7 @@ export const updateChore = createAsyncThunk<
       method: "PATCH",
       headers: {
         "content-type": "application/json",
-        authorization: "Bearer " + token,
+        authorization: "Bearer " + Token,
       },
       body: JSON.stringify(choreUpdateDto),
     });
@@ -102,8 +95,7 @@ export const updateChore = createAsyncThunk<
 export const deleteChore = createAsyncThunk<Chore, string, { rejectValue: string }>(
   "chore/deleteChore",
   async (choreId: string, thunkApi) => {
-    const token = await getToken();
-    if (!token) {
+    if (Token()) {
       return thunkApi.rejectWithValue("User not logged in");
     }
     try {
@@ -111,7 +103,7 @@ export const deleteChore = createAsyncThunk<Chore, string, { rejectValue: string
         method: "DELETE",
         headers: {
           "content-type": "application/json",
-          authorization: "Bearer " + token,
+          authorization: "Bearer " + Token(),
         },
       });
 
@@ -142,9 +134,12 @@ const choreSlice = createSlice({
   reducers: {},
 
   extraReducers: (builder) => {
-    builder.addCase(getAllChores.fulfilled, (state, action: PayloadAction<Chore[]>) => {
-      state.chores = action.payload;
-    });
+    builder.addCase(
+      hydrateChoresSliceFromBackendThunk.fulfilled,
+      (state, action: PayloadAction<Chore[]>) => {
+        state.chores = action.payload;
+      },
+    );
     builder.addCase(createChore.fulfilled, (state, action: PayloadAction<Chore>) => {
       state.isLoading = false;
       state.chores.push(action.payload);
@@ -160,14 +155,24 @@ const choreSlice = createSlice({
       state.chores = state.chores.filter((chore) => chore.id != action.payload.id);
     });
     builder.addMatcher(
-      isAnyOf(createChore.pending, updateChore.pending, deleteChore.pending, getAllChores.pending),
+      isAnyOf(
+        createChore.pending,
+        updateChore.pending,
+        deleteChore.pending,
+        hydrateChoresSliceFromBackendThunk.pending,
+      ),
       (state) => {
         state.isLoading = true;
         state.error = "";
       },
     );
     builder.addMatcher(
-      isAnyOf(createChore.rejected, createChore.rejected, createChore.rejected, getAllChores.rejected),
+      isAnyOf(
+        createChore.rejected,
+        createChore.rejected,
+        createChore.rejected,
+        hydrateChoresSliceFromBackendThunk.rejected,
+      ),
       (state, action) => {
         if (action.payload) {
           state.error = action.payload;

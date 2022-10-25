@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";
@@ -10,37 +10,25 @@ import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibilit
 import { RootStackParamList } from "../NavContainer";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { postSignInThunk, logout } from "../features/authentication/authenticationSlice";
-import { selectHasError, selectError, selectToken, selectAuthUserId } from "../features/authentication/authenticationSelectors";
+import { selectToken } from "../features/authentication/authenticationSelectors";
 
 export default function SignInScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
   const dispatch = useAppDispatch();
-  const hasError = useAppSelector(selectHasError);
-  const errorText = useAppSelector(selectError);
-  const token = useAppSelector(selectToken);
-  const authUserId = useAppSelector(selectAuthUserId);
   const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
   const {
     control,
     handleSubmit,
     formState: {},
   } = useForm();
-
-  useEffect(() => {
-    console.log(" ############## In SignInScreen##############");
-    console.log("token: ", token);
-    console.log("authUserId: ", authUserId);
-    console.log("hasError: ", hasError);
-    console.log("errorText: ", errorText);
-    console.log(" ############## ##############");
-  }, [token, authUserId, hasError, errorText]);
-
   const { currentTheme } = useTheme();
 
+  const Token = useAppSelector(selectToken);
+
   useEffect(() => {
-    if (token) {
+    if (Token) {
       navigation.navigate("SelectProfile");
     }
-  }, [navigation, token]);
+  }, [navigation, Token]);
 
   const onLoginPressed = (data: FieldValues) => {
     dispatch(postSignInThunk({ username: data.username, password: data.password }));
@@ -53,8 +41,8 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
   return (
     <View style={styles.container}>
       <CustomInput
-        placeholder="Username"
-        name="username"
+        placeholder='Username'
+        name='username'
         control={control}
         rules={{
           required: "Username is required",
@@ -71,7 +59,13 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
         style={[styles.passwordPosition, { zIndex: 1 }]}
         // Places the icon between the two inputs, and draws it on top of the below CustomInput because of zIndex.
       />
-      <CustomInput placeholder="Password" name="password" control={control} secureTextEntry={passwordVisibility} rules={{ required: "Password is required" }} />
+      <CustomInput
+        placeholder='Password'
+        name='password'
+        control={control}
+        secureTextEntry={passwordVisibility}
+        rules={{ required: "Password is required" }}
+      />
       <Button style={styles.button} onPress={handleSubmit(onLoginPressed)}>
         Sign In
       </Button>
