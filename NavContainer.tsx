@@ -88,7 +88,7 @@ export default function NavContainer() {
               component={RequestResponseScreen}
             />
             <Stack.Screen name="Settings" component={SettingsScreen} />
-{/*             <Stack.Screen name="Statistics" component={StatisticsScreen} /> */}
+            {/* <Stack.Screen name="Statistics" component={StatisticsScreen} /> */}
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>

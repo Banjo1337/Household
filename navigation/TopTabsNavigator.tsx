@@ -6,20 +6,26 @@ import { View, Pressable, Text } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
 import ChoresScreen from "../screens/Chores";
-import StatisticsScreen from "../screens/StatisticsScreen";
+import StatisticsCurrentWeekScreen from "../screens/StatisticsCurrentWeekScreen";
+import StatisticsPreviousWeekScreen from "../screens/StatisticsPreviousWeekScreen";
+import StatisticsPreviousMonthScreen from "../screens/StatisticsPreviousMonthScreen";
 
 export type TopTabParamsList = {
   Chores: undefined;
-  Statistics: undefined;
+  StatisticsCurrentWeek: undefined;
+  StatisticsPreviousWeek: undefined;
+  StatisticsPreviousMonth: undefined;
 };
 
 const Tabs = createMaterialTopTabNavigator<TopTabParamsList>();
 
 export default function TopTabNavigator() {
   return (
-    <Tabs.Navigator tabBar={CustomTabBar}>
+    <Tabs.Navigator tabBar={CustomTabBar} >
       <Tabs.Screen name="Chores" component={ChoresScreen} />
-      <Tabs.Screen name="Statistics" component={StatisticsScreen} />
+      <Tabs.Screen name="StatisticsCurrentWeek" component={StatisticsCurrentWeekScreen} />
+      <Tabs.Screen name="StatisticsPreviousWeek" component={StatisticsPreviousWeekScreen} />
+      <Tabs.Screen name="StatisticsPreviousMonth" component={StatisticsPreviousMonthScreen} />
     </Tabs.Navigator>
   );
 }
