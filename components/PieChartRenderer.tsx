@@ -1,15 +1,13 @@
 import { View, StyleSheet, FlatList } from "react-native";
 import PieChartCustom from "../components/PieChartCustom";
-import { Text, Button } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { useAppSelector } from "../hooks/reduxHooks";
 import {
 	selectChoreCompletedStatisticsListForAllChores,
 	selectChoreCompletedStatisticsForAllChores,
-	selectChoreCompletedStatisticsForOneChore,
-	selectChoreCompleted,
 } from "../features/choreCompleted/choreCompletedSelectors";
 import { StatisticsList } from "../features/choreCompleted/choreCompletedTypes";
-import { selectChores } from "../features/chore/choreSelectors";
+
 
 interface Props {
 	start: Date;
