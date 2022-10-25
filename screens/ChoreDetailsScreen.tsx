@@ -8,6 +8,7 @@ import { RootStackParamList } from "../NavContainer";
 
 type Props = NativeStackScreenProps<RootStackParamList, "ChoreDetails">;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ChoreDetailsScreen({ route, navigation }: Props) {
   const [routeId] = useState(route.params.choreId);
   const chore = useAppSelector((state) => selectChoreById(state, routeId));

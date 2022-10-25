@@ -3,21 +3,19 @@ import React, { useState } from "react";
 import { View, StyleSheet, FlatList, TouchableHighlight } from "react-native";
 import { Title, Button, Text } from "react-native-paper";
 import ChoreListItem from "../components/ChoreListItem";
-import {
-  selectChores,
-} from "../features/chore/choreSelectors";
+import { selectChores } from "../features/chore/choreSelectors";
 import { selectHousehold } from "../features/household/householdSelectors";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
-import { TopTabParamsList } from "../navigation/TopTabsNavigator";
+//import { TopTabParamsList } from "../navigation/TopTabsNavigator";
 
-type Props = NativeStackScreenProps<RootStackParamList>;
+//type Props = NativeStackScreenProps<RootStackParamList>;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function ChoresScreen(Props: NativeStackScreenProps<RootStackParamList>)  {
+export default function ChoresScreen(Props: NativeStackScreenProps<RootStackParamList>) {
   // const [choreId] = useState(route.params.choreId);
   const [editableMode, setEditableMode] = useState(true);
-  const dispatch = useAppDispatch();
+  //  const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
   const chores = useAppSelector(selectChores);
 
@@ -106,4 +104,4 @@ const styles = StyleSheet.create({
   card: {},
   button: { backgroundColor: "hotpink" },
   input: { backgroundColor: "brown" },
-})
+});

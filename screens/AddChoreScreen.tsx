@@ -48,7 +48,7 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
 
   const [recording, setRecording] = useState<Audio.Recording | any>();
   const [recordings, setRecordings] = useState([]);
-  const [message, setMessage] = useState("");
+  const [, setMessage] = useState("");
   const [image, setImage] = useState<string | null>(null);
 
   async function startRecording() {
