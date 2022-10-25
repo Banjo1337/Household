@@ -1,25 +1,21 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
-import { setActiveProfile } from "../features/profile/profileSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 import { Profile } from "../features/profile/profileTypes";
 import { useState } from "react";
 import SelectProfileButton from "../components/SelectProfileButton";
 import { useEffect } from "react";
-import { hydrateHouseholdSliceFromBackendThunk } from "../features/household/householdSlice";
-import { hydrateChoresSliceFromBackendThunk } from "../features/chore/choreSlice";
 import { selectAuthUserId } from "../features/authentication/authenticationSelectors";
-import { getAllChoreCompleted } from "../features/choreCompleted/choreCompletedSlice";
-import { hydratePauseSliceFromBackendThunk } from "../features/pause/pauseSlice";
+import { useSetAndHydrateProfile } from "../hooks/useSetAndHydrateProfile";
 
 export default function SelectProfileScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "SelectProfile">) {
-  const dispatch = useAppDispatch();
   const authUserId = useAppSelector(selectAuthUserId);
   const [profiles, setProfiles] = useState<Profile[]>();
+  const setAndHydrateProfile = useSetAndHydrateProfile();
 
   useEffect(() => {
     (async function getProfiles() {
@@ -33,12 +29,7 @@ export default function SelectProfileScreen({
   }, [authUserId]);
 
   function handleSelectUser(profile: Profile) {
-    dispatch(setActiveProfile(profile));
-    dispatch(hydrateHouseholdSliceFromBackendThunk(profile.householdId));
-    dispatch(hydrateChoresSliceFromBackendThunk(profile.householdId));
-    dispatch(getAllChoreCompleted(profile.householdId));
-    dispatch(hydratePauseSliceFromBackendThunk(profile.householdId));
-
+    setAndHydrateProfile(profile);
     navigation.goBack();
   }
 
