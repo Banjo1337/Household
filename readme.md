@@ -10,11 +10,11 @@ VG: 32 (80%).
 
 ## Kravlista (4)
 
-- [ ] En logga, splashscreen och appikon ska designas och användas. 🚨⚠🚨
+- [x] En logga, splashscreen och appikon ska designas och användas. 🚨⚠🚨
 
-- [ ] Applikationen ska byggas med RN, Expo & TS. 🚨⚠🚨
+- [x] Applikationen ska byggas med RN, Expo & TS. 🚨⚠🚨
 
-- [ ] Designen av appen ska utgå ifrån befintliga skisser, undantag kan ges men ska diskuteras
+- [x] Designen av appen ska utgå ifrån befintliga skisser, undantag kan ges men ska diskuteras
 med produktägare, godkännas och dokumenteras. 🚨⚠🚨
 
 - [x] Information ska kommuniceras till och från en server. (VG)
@@ -24,7 +24,7 @@ med produktägare, godkännas och dokumenteras. 🚨⚠🚨
 - [ ] Ett hushåll ska ha ett namn och en genererad (enkel) kod så andra kan gå med i hushållet,
 namnet ska gå att ändra. 🚨⚠🚨
 
-- [ ] Alla användare i ett hushåll ska kunna se vilka som tillhör ett hushåll.
+- [x] Alla användare i ett hushåll ska kunna se vilka som tillhör ett hushåll.
 
 - [ ] En ägare av ett hushåll ska kunna se förfrågningar om att gå med i hushållet.
 
@@ -68,7 +68,7 @@ olika hushållen.
 
 ## Sysslor (6)
 
-- [ ] En ägare ska kunna lägga till sysslor att göra i hemmet. 🚨⚠🚨
+- [x] En ägare ska kunna lägga till sysslor att göra i hemmet. 🚨⚠🚨
 
 - [x] En syssla ska ha ett namn, en beskrivning (text), hur ofta den ska göras (dagar), och en
 vikt som beskriver hur energikrävande den är. 🚨⚠🚨
