@@ -14,8 +14,6 @@ export const hydratePauseSliceFromBackendThunk = createAsyncThunk<
 >("pause/GetPauseByHouseholdId", async (householdId: string, thunkApi) => {
   try {
     const response = await fetch(baseUrl + "GetPauseByHouseholdId/" + householdId);
-    console.log(householdId);
-    console.log("response", response);
     if (response.ok) {
       return (await response.json()) as Pause[];
     }

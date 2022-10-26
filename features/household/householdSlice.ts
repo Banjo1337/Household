@@ -21,7 +21,6 @@ export const hydrateHouseholdSliceFromBackendThunk = createAsyncThunk<
   { rejectValue: string }
 >("household/getHousehold", async (householdId: string, thunkApi) => {
   const response = await fetch(baseUrl + "GetHouseholdById/" + householdId);
-  console.log(response);
   if (response.ok) {
     const household = await response.json();
     thunkApi.dispatch(getProfilesByHouseholdId(household.id));
