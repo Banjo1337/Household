@@ -5,6 +5,7 @@ import { TextInput } from "react-native-paper";
 
 interface Props {
   control: Control;
+  defaultValue?: string;
   name: string;
   rules?: Partial<RegisterOptions>;
   placeholder: string;
@@ -23,6 +24,7 @@ const CustomInput = ({
   rules = {},
   placeholder,
   secureTextEntry,
+  defaultValue,
   maxLength,
   keyboardType,
   multiline,
@@ -47,6 +49,7 @@ const CustomInput = ({
               style={style}
               multiline={multiline}
               numberOfLines={numOfLines}
+              defaultValue={defaultValue}
             />
           </View>
           {error && <Text style={{ color: "red", alignSelf: "stretch" }}>{error.message}</Text>}
