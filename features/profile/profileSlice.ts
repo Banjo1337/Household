@@ -39,18 +39,18 @@ export const createProfile = createAsyncThunk<Profile, ProfileCreateDto, { rejec
 
 export const editProfile = createAsyncThunk<
   Profile,
-  ProfileEditDto,
-  { extra: { profileId: string }; rejectValue: string }
->("profile/EditProfile", async (profileEditDto: ProfileEditDto, thunkApi) => {
-  if (Token()) {
+  { profileEditDto: ProfileEditDto; profileId: string },
+  { rejectValue: string }
+>("profile/EditProfile", async ({profileEditDto, profileId}, thunkApi) => {
+   if (Token()) {
     return thunkApi.rejectWithValue("User not logged in");
-  }
+  } 
   try {
-    const response = await fetch(baseUrl + "editProfile/" + thunkApi.extra.profileId, {
+    const response = await fetch(baseUrl + "editProfile/" + profileId, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
-        authorization: "Bearer " + Token(),
+       /*  authorization: "Bearer " + Token(), */
       },
       body: JSON.stringify(profileEditDto),
     });

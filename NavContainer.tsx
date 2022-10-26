@@ -22,6 +22,7 @@ import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
 import { useAppDispatch } from "./hooks/reduxHooks";
 import { hydrateAuthenticationSliceFromSecureStorageThunk } from "./features/authentication/authenticationSlice";
+import HouseholdDetailsScreen from "./screens/HouseholdDetailsScreen";
 
 export type RootStackParamList = {
   Home: { screen: "Chores" | "Statistics" };
@@ -32,6 +33,7 @@ export type RootStackParamList = {
   CreateProfile: undefined;
   CreateHousehold: undefined;
   EditHousehold: undefined;
+  HouseholdDetails: undefined;
   SelectProfile: undefined;
   FinalizeProfile: undefined;
   PendingRequest: undefined;
@@ -65,6 +67,7 @@ export default function NavContainer() {
             <Stack.Screen name='CreateHousehold' component={CreateHouseholdScreen} />
             <Stack.Screen name='CreateProfile' component={CreateProfileScreen} />
             <Stack.Screen name='EditHousehold' component={EditHouseholdScreen} />
+            <Stack.Screen name='HouseholdDetails' component={HouseholdDetailsScreen} />
             <Stack.Screen name='SelectProfile' component={SelectProfileScreen} />
             <Stack.Screen name='FinalizeProfile' component={FinalizeProfileScreen} />
             <Stack.Screen name='PendingRequest' component={PendingRequestScreen} />
