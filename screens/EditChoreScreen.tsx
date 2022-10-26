@@ -12,7 +12,7 @@ import { useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 type Props = NativeStackScreenProps<RootStackParamList, "EditChore">;
 
-export default function EditChoreScreen({ route }: Props) {
+export default function EditChoreScreen({ route, navigation }: Props) {
     const { currentTheme } = useTheme();
     const [routeId] = useState(route.params.choreId);
     const chore = useAppSelector((state) => selectChoreById(state, routeId));
@@ -37,6 +37,10 @@ export default function EditChoreScreen({ route }: Props) {
     const onOpenPoint = useCallback(() => {
         setOpenFrequency(false);
     }, []);
+
+    const onClosePressed = () => {
+        navigation.navigate("Home", { screen: "Chores" });
+    }
 
     const {
         control,
@@ -141,10 +145,12 @@ export default function EditChoreScreen({ route }: Props) {
                 <Button onPress={handleSubmit(onEditChorePressed)} style={styles.button}>
                     <Text>Save</Text>
                 </Button>
-
+                <Button onPress={onClosePressed} style={styles.button}>
+                    <Text>Close</Text>
+                </Button>
             </View>
 
-        </View>
+        </View >
     );
 }
 const styles = StyleSheet.create({
