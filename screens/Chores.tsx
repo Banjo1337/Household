@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { View, StyleSheet, FlatList, TouchableHighlight } from "react-native";
-import { Title, Button, Text } from "react-native-paper";
+import { FlatList, StyleSheet, TouchableHighlight, View } from "react-native";
+import { Button, Text, Title } from "react-native-paper";
 import ChoreListItem from "../components/ChoreListItem";
 import { selectChores } from "../features/chore/choreSelectors";
 import { selectHousehold } from "../features/household/householdSelectors";
@@ -13,17 +13,11 @@ import { RootStackParamList } from "../NavContainer";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ChoresScreen(Props: NativeStackScreenProps<RootStackParamList>) {
-  // const [choreId] = useState(route.params.choreId);
   const [editableMode, setEditableMode] = useState(true);
-  //  const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
   const chores = useAppSelector(selectChores);
 
-  const onEditPressed = () => {
-    console.log("on edit pressed");
-    console.log(chores.length);
-    Props.navigation.navigate("EditHousehold");
-  };
+
   const onAddChorePressed = () => {
     Props.navigation.navigate("AddChore");
   };
@@ -48,7 +42,6 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
                     chore={item}
                     navigation={Props.navigation}
                     editableMode={editableMode}
-                    onEditPressed={onEditPressed}
                   ></ChoreListItem>
                 </View>
               </TouchableHighlight>
