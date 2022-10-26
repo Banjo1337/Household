@@ -23,8 +23,6 @@ import TopTabNavigator from "./navigation/TopTabsNavigator";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
 import EditChoreScreen from "./screens/EditChoreScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
-import { useAppDispatch } from "./hooks/reduxHooks";
-import { hydrateAuthenticationSliceFromSecureStorageThunk } from "./features/authentication/authenticationSlice";
 import HouseholdDetailsScreen from "./screens/HouseholdDetailsScreen";
 
 export type RootStackParamList = {
