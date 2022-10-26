@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { View, StyleSheet, FlatList, TouchableHighlight } from "react-native";
-import { Title, Button, Text } from "react-native-paper";
+import { FlatList, StyleSheet, TouchableHighlight, View } from "react-native";
+import { Button, Text, Title } from "react-native-paper";
 import ChoreListItem from "../components/ChoreListItem";
 import { selectChores } from "../features/chore/choreSelectors";
 import { selectHousehold } from "../features/household/householdSelectors";
@@ -22,7 +22,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
   const onEditPressed = () => {
     console.log("on edit pressed");
     console.log(chores.length);
-    Props.navigation.navigate("EditHousehold");
+    // Props.navigation.navigate("EditChore", choreId);
   };
   const onAddChorePressed = () => {
     Props.navigation.navigate("AddChore");
@@ -48,7 +48,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
                     chore={item}
                     navigation={Props.navigation}
                     editableMode={editableMode}
-                    onEditPressed={onEditPressed}
+                  // onEditPressed={onEditPressed}
                   ></ChoreListItem>
                 </View>
               </TouchableHighlight>
