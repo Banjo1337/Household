@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { RootStackParamList } from "../NavContainer";
@@ -102,7 +102,8 @@ export default function CreateProfileScreen({
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    height: "100%",
+    height: Dimensions.get("window").height - 100,
+    // The above equaction will have to be adjusted based on if we're gonna use the toptabs bar. Keep this in mind.
   },
   container: {
     alignItems: "center",
