@@ -10,8 +10,8 @@ import {
   selectProfileByHousholdId,
 } from "../features/household/householdSelectors";
 import { useAppSelector } from "../hooks/reduxHooks";
-import { useAvatar } from "../hooks/useAvatar";
 import { RootStackParamList } from "../NavContainer";
+import ProfileListItem from "../components/ProfileListItem";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function HouseholdDetailsScreen({
@@ -53,19 +53,11 @@ export default function HouseholdDetailsScreen({
                       Are you sure you want to leave the household?
                     </Text>
                     <View style={{ flexDirection: "row" }}>
-                      {members.map((member, memberIndex) => {
-                        if (member.id == 2) {
-                          // eslint-disable-next-line react-hooks/rules-of-hooks
-                          const { emoji, color } = useAvatar(member.avatar);
-                          return (
-                            <View style={{ padding: 5 }} key={memberIndex}>
-                              <Text style={styles.avatar}>{emoji}</Text>
-                              <Text style={{ textAlign: "center", backgroundColor: color }}>
-                                {member.alias}
-                              </Text>
-                            </View>
-                          );
-                        }
+                      {members.map((member) => {
+                        // Osäker på vad nästa rad är till för
+                      // if (member.id == 2) {
+                          return <ProfileListItem profile={member} />;
+                        //}
                       })}
                     </View>
                     <View style={{flexDirection: "row", justifyContent: "space-around"}}>
@@ -103,18 +95,9 @@ export default function HouseholdDetailsScreen({
 
           <Text>Household's admin: </Text>
           <View style={{ flex: 1, flexDirection: "row" }}>
-            {members.map((member, memberIndex) => {
+            {members.map((member) => {
               if (member.isAdmin) {
-                // eslint-disable-next-line react-hooks/rules-of-hooks
-                const { emoji, color } = useAvatar(member.avatar);
-                return (
-                  <View style={{ padding: 5 }} key={memberIndex}>
-                    <Text style={styles.avatar}>{emoji}</Text>
-                    <Text style={{ textAlign: "center", backgroundColor: color }}>
-                      {member.alias}
-                    </Text>
-                  </View>
-                );
+                return <ProfileListItem profile={member} />;
               }
             })}
           </View>
@@ -123,17 +106,8 @@ export default function HouseholdDetailsScreen({
           <Text style={styles.showProperty}>{household.code}</Text>
           <Text>Household members: </Text>
           <View style={{ flex: 1, flexDirection: "row" }}>
-            {members.map((member, memberIndex) => {
-              // eslint-disable-next-line react-hooks/rules-of-hooks
-              const { emoji, color } = useAvatar(member.avatar);
-              return (
-                <View style={{ padding: 5 }} key={memberIndex}>
-                  <Text style={styles.avatar}>{emoji}</Text>
-                  <Text style={{ textAlign: "center", backgroundColor: color }}>
-                    {member.alias}
-                  </Text>
-                </View>
-              );
+            {members.map((member) => {
+              return <ProfileListItem profile={member} />;
             })}
           </View>
         </View>
@@ -164,10 +138,6 @@ const styles = StyleSheet.create({
     height: 50,
     margin: 0,
     borderRadius: 20,
-  },
-  avatar: {
-    fontSize: 50,
-    textAlign: "center",
   },
   centeredView: {
     flex: 1,
