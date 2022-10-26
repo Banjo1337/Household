@@ -4,22 +4,25 @@ import { Text, Switch } from "react-native-paper";
 import { useTheme } from "../features/theme/ThemeContext";
 import { RootStackParamList } from "../NavContainer";
 
-export default function SettingsScreen(Props: NativeStackScreenProps<RootStackParamList, "Settings">) {
-    const { darkmode, setDarkmode, systemTheme, setSystemTheme} = useTheme();
-    
-    return (
-        <View>
-            <View style={styles.switchContainer}>
-                <Text variant='titleMedium'>System theme</Text>
-                <Switch value={systemTheme} onValueChange={setSystemTheme} />
-            </View>
+export default function SettingsScreen(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  Props: NativeStackScreenProps<RootStackParamList, "Settings">,
+) {
+  const { darkmode, setDarkmode, systemTheme, setSystemTheme } = useTheme();
 
-            <View style={styles.switchContainer}>
-                <Text variant='titleMedium'>Darkmode</Text>
-                <Switch value={darkmode} onValueChange={setDarkmode} disabled={systemTheme} />
-            </View>
-        </View>
-    );
+  return (
+    <View>
+      <View style={styles.switchContainer}>
+        <Text variant='titleMedium'>System theme</Text>
+        <Switch value={systemTheme} onValueChange={setSystemTheme} />
+      </View>
+
+      <View style={styles.switchContainer}>
+        <Text variant='titleMedium'>Darkmode</Text>
+        <Switch value={darkmode} onValueChange={setDarkmode} disabled={systemTheme} />
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

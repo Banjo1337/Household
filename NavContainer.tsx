@@ -20,13 +20,13 @@ import { useTheme } from "./features/theme/ThemeContext";
 import TopTabNavigator from "./navigation/TopTabsNavigator";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
-import { HydrateAuth } from "./appHydrate";
-
+import { useAppDispatch } from "./hooks/reduxHooks";
+import { hydrateAuthenticationSliceFromSecureStorageThunk } from "./features/authentication/authenticationSlice";
 
 export type RootStackParamList = {
   Home: { screen: "Chores" | "Statistics" };
   AddChore: undefined;
-  ChoreDetails: undefined;
+  ChoreDetails: { choreId: string };
   SignIn: undefined;
   SignUp: undefined;
   CreateProfile: undefined;
@@ -44,7 +44,8 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function NavContainer() {
   const { currentTheme } = useTheme();
-  HydrateAuth();
+  const dispatch = useAppDispatch();
+  dispatch(hydrateAuthenticationSliceFromSecureStorageThunk());
   return (
     <SafeAreaProvider>
       <StatusBar style={currentTheme.dark ? "light" : "dark"} />
@@ -69,7 +70,6 @@ export default function NavContainer() {
             <Stack.Screen name='PendingRequest' component={PendingRequestScreen} />
             <Stack.Screen name='RequestResponse' component={RequestResponseScreen} />
             <Stack.Screen name='Settings' component={SettingsScreen} />
-            {/*             <Stack.Screen name="Statistics" component={StatisticsScreen} /> */}
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>

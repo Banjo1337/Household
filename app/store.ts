@@ -3,8 +3,8 @@ import { authenticateReducer } from "../features/authentication/authenticationSl
 import { householdReducer } from "../features/household/householdSlice";
 import profileReducer from "../features/profile/profileSlice";
 import choreReducer from "../features/chore/choreSlice";
-import choreCompletedReducer from"../features/choreCompleted/choreCompletedSlice";
-//import choreCompletedReducer from "../features/choreCompleted/choreCompletedSlice";
+import choreCompletedReducer from "../features/choreCompleted/choreCompletedSlice";
+import pauseReducer from "../features/pause/pauseSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,7 +12,8 @@ export const store = configureStore({
     profileReducer: profileReducer,
     choreReducer: choreReducer,
     householdReducer: householdReducer,
-    choreCompletedReducer: choreCompletedReducer
+    choreCompletedReducer: choreCompletedReducer,
+    pauseReducer: pauseReducer,
   },
 });
 

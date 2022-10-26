@@ -3,7 +3,7 @@ import React from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import { Switch } from "react-native-paper";
-import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
+//import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 import CustomInput from "../components/CustomInput";
 import {
@@ -15,13 +15,14 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { useAvatar } from "../hooks/useAvatar";
 import { RootStackParamList } from "../NavContainer";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function EditHouseholdScreen({ route }: NativeStackScreenProps<RootStackParamList>) {
   //add route.params for householdId instead of "stringPlaceholder";
   const householdId = "stringPlaceholder";
   const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
   const members = useAppSelector(selectProfileByHousholdId);
-  
+
   const {
     control,
     handleSubmit,
@@ -50,14 +51,13 @@ export default function EditHouseholdScreen({ route }: NativeStackScreenProps<Ro
           <Text>Household's admin: </Text>
           <View style={{ flex: 1, flexDirection: "row" }}>
             {members.map((member, memberIndex) => {
-              
               if (member.isAdmin) {
                 // eslint-disable-next-line react-hooks/rules-of-hooks
                 const { emoji, color } = useAvatar(member.avatar);
                 return (
                   <View style={{ padding: 5 }} key={memberIndex}>
                     <Text style={styles.avatar}>{emoji}</Text>
-                    <Text style={{ textAlign: "center", backgroundColor: color}}>
+                    <Text style={{ textAlign: "center", backgroundColor: color }}>
                       {member.alias}
                     </Text>
                   </View>
@@ -82,7 +82,6 @@ export default function EditHouseholdScreen({ route }: NativeStackScreenProps<Ro
           <Text>Household members: </Text>
           <View style={{ flex: 1, flexDirection: "row" }}>
             {members.map((member, memberIndex) => {
-              
               // eslint-disable-next-line react-hooks/rules-of-hooks
               const { emoji, color } = useAvatar(member.avatar);
               return (
