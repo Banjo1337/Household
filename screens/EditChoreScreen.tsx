@@ -5,17 +5,20 @@ import { StyleSheet, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Text } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
+import { selectChoreById } from "../features/chore/choreSelectors";
 import { useTheme } from "../features/theme/ThemeContext";
+import { useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 type Props = NativeStackScreenProps<RootStackParamList, "EditChore">;
 
 export default function EditChoreScreen({ route }: Props) {
     const { currentTheme } = useTheme();
     const [routeId] = useState(route.params.choreId);
+    const chore = useAppSelector((state) => selectChoreById(state, routeId));
     const [openPoint, setOpenPoint] = useState(false);
     const [openFrequency, setOpenFrequency] = useState(false);
-    const [frequencyValue, setFrequencyValue] = useState(1);
-    const [pointValue, setPointValue] = useState(2);
+    const [frequencyValue, setFrequencyValue] = useState(chore.frequency);
+    const [pointValue, setPointValue] = useState(chore.points);
 
 
     const onOpenFrequency = useCallback(() => {
@@ -41,8 +44,7 @@ export default function EditChoreScreen({ route }: Props) {
         { label: "6", value: 6 },
         { label: "8", value: 8 },
     ]);
-    // const chore = useAppSelector((state) => selectChoreById(state, routeId));
-    const chore = { name: "hello", description: "helo" }
+
     const {
         control,
         handleSubmit,
