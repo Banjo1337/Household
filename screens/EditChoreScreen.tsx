@@ -23,11 +23,11 @@ export default function EditChoreScreen({ route }: Props) {
 
     const dropDownFrequencyValues = [...Array(30)].map((_, i) => {
         i++;
-        return { label: String(i), value: i }
+        return { label: String(i), value: i };
     });
     const dropDownPointValues = [...Array(5)].map((_, i) => {
         i++;
-        return { label: String(i), value: i }
+        return { label: String(i), value: i };
     });
 
     const onOpenFrequency = useCallback(() => {
@@ -37,12 +37,6 @@ export default function EditChoreScreen({ route }: Props) {
     const onOpenPoint = useCallback(() => {
         setOpenFrequency(false);
     }, []);
-    const [setFrequencyItems] = useState([
-        dropDownFrequencyValues
-    ]);
-    const [setPointItems] = useState([
-        dropDownPointValues
-    ]);
 
     const {
         control,
@@ -57,7 +51,7 @@ export default function EditChoreScreen({ route }: Props) {
     };
 
     return (
-        <View >
+        <View style={styles.container}>
             <Text style={styles.title}>Edit Chore</Text>
             <View>
                 <CustomInput
@@ -155,8 +149,9 @@ export default function EditChoreScreen({ route }: Props) {
 }
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         alignItems: "center",
-        paddingHorizontal: 30,
+        paddingHorizontal: 20,
     },
     title: {
         fontSize: 50,
@@ -172,7 +167,9 @@ const styles = StyleSheet.create({
     sectionDark: {
         backgroundColor: "#333",
     },
-    button: {},
+    button: {
+        backgroundColor: "lightgrey", paddingHorizontal: 30, marginTop: 40,
+    },
     input: {},
     dropDownPicker: {},
 });
