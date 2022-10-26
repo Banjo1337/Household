@@ -40,7 +40,7 @@ export default function EditChoreScreen({ route, navigation }: Props) {
 
     const onClosePressed = () => {
         navigation.navigate("Home", { screen: "Chores" });
-    }
+    };
 
     const {
         control,
@@ -123,9 +123,8 @@ export default function EditChoreScreen({ route, navigation }: Props) {
                 >
                     <Text>Difficulty of chore</Text>
                     <DropDownPicker
-                        style={styles.dropDownPicker}
                         placeholder={String(chore.points)}
-                        modalTitle='Select how difficult this task is'
+                        style={styles.dropDownPicker}
                         listMode='SCROLLVIEW'
                         open={openPoint}
                         onOpen={onOpenPoint}
