@@ -11,7 +11,6 @@ import {
   Platform,
   Modal,
   Pressable,
-  Alert,
 } from "react-native";
 import { Switch } from "react-native-paper";
 //import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
@@ -207,7 +206,6 @@ export default function EditHouseholdScreen({
             </Pressable>
           </View>
 
-          {/* Conditional rendering needed here to render only if user is admin */}
           <Text>Change household's name: </Text>
           <CustomInput
             name='householdName'
