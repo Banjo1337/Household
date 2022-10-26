@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Platform } from "react-native";
 import { Switch } from "react-native-paper";
-import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
+//import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 import CustomInput from "../components/CustomInput";
 import {
@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { useAvatar } from "../hooks/useAvatar";
 import { RootStackParamList } from "../NavContainer";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function EditHouseholdScreen({ route }: NativeStackScreenProps<RootStackParamList>) {
   //add route.params for householdId instead of "stringPlaceholder";
   const householdId = "stringPlaceholder";
