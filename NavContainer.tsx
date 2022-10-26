@@ -16,9 +16,12 @@ import SignUpScreen from "./screens/SignUpScreen";
 //import StatisticsScreen from "./screens/StatisticsScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider as PaperProvider } from "react-native-paper";
+import { hydrateAuthenticationSliceFromSecureStorageThunk } from "./features/authentication/authenticationSlice";
 import { useTheme } from "./features/theme/ThemeContext";
+import { useAppDispatch } from "./hooks/reduxHooks";
 import TopTabNavigator from "./navigation/TopTabsNavigator";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
+import EditChoreScreen from "./screens/EditChoreScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
 import { useAppDispatch } from "./hooks/reduxHooks";
 import { hydrateAuthenticationSliceFromSecureStorageThunk } from "./features/authentication/authenticationSlice";
@@ -28,6 +31,7 @@ export type RootStackParamList = {
   Home: { screen: "Chores" | "Statistics" };
   AddChore: undefined;
   ChoreDetails: { choreId: string };
+  EditChore: { choreId: string }
   SignIn: undefined;
   SignUp: undefined;
   CreateProfile: undefined;
@@ -62,6 +66,7 @@ export default function NavContainer() {
             <Stack.Screen name='Home' component={TopTabNavigator} />
             <Stack.Screen name='AddChore' component={AddChoreScreen} />
             <Stack.Screen name='ChoreDetails' component={ChoreDetailsScreen} />
+            <Stack.Screen name="EditChore" component={EditChoreScreen} />
             <Stack.Screen name='SignIn' component={SignInScreen} />
             <Stack.Screen name='SignUp' component={SignUpScreen} />
             <Stack.Screen name='CreateHousehold' component={CreateHouseholdScreen} />

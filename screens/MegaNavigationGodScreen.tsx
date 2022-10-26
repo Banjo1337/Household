@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";
 import { RootStackParamList } from "../NavContainer";
 
@@ -27,8 +27,14 @@ export default function MegaNavigationGodScreen(
           mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("ChoreDetails", { choreId: "" })}
+        >ChoreDetails
+        </Button>
+        <Button
+          mode="contained"
+          style={styles.button}
+          onPress={() => Props.navigation.navigate("EditChore", { choreId: "" })}
         >
-          ChoreDetails
+          EditChore
         </Button>
         <Button
           mode='contained'

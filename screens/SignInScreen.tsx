@@ -5,14 +5,8 @@ import { FieldValues, useForm } from "react-hook-form";
 import { Image, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { Button } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
-import {
-  logout,
-  postSignInThunk,
-  selectAuthUserId,
-  selectError,
-  selectHasError,
-  selectToken,
-} from "../features/authentication/authenticationSlice";
+import { selectToken } from "../features/authentication/authenticationSelectors";
+import { logout, postSignInThunk } from "../features/authentication/authenticationSlice";
 import { useTheme } from "../features/theme/ThemeContext";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
