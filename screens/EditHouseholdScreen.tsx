@@ -11,6 +11,7 @@ import {
   selectProfileByHousholdId,
 } from "../features/household/householdSelectors";
 import { editHouseholdThunk } from "../features/household/householdSlice";
+import { selectPauses } from "../features/pause/pauseSelectors";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { useAvatar } from "../hooks/useAvatar";
 import { RootStackParamList } from "../NavContainer";
@@ -21,6 +22,9 @@ export default function EditHouseholdScreen({ route }: NativeStackScreenProps<Ro
   const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
   const members = useAppSelector(selectProfileByHousholdId);
+  const membersOnPause = useAppSelector(selectPauses);
+  console.log(members);
+  console.log(membersOnPause);
   const [enabled, setEnabled] = useState(false);
   const {
     control,
