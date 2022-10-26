@@ -124,7 +124,7 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
 
   const onAddChorePressed = (data: FieldValues) => {
 
-    const signUpDto: ChoreCreateDto = {
+    const choreCreateDto: ChoreCreateDto = {
       name: data.name,
       description: data.description,
       pictureUrl: "",
@@ -134,7 +134,7 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
       householdId: "",
       points: pointValue,
     };
-    console.log(signUpDto);
+    console.log(choreCreateDto);
     navigation.navigate("Home", { screen: "Chores" });
   };
 
