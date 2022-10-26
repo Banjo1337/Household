@@ -13,17 +13,11 @@ import { RootStackParamList } from "../NavContainer";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ChoresScreen(Props: NativeStackScreenProps<RootStackParamList>) {
-  // const [choreId] = useState(route.params.choreId);
   const [editableMode, setEditableMode] = useState(true);
-  //  const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
   const chores = useAppSelector(selectChores);
 
-  const onEditPressed = () => {
-    console.log("on edit pressed");
-    console.log(chores.length);
-    // Props.navigation.navigate("EditChore", choreId);
-  };
+
   const onAddChorePressed = () => {
     Props.navigation.navigate("AddChore");
   };
@@ -48,7 +42,6 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
                     chore={item}
                     navigation={Props.navigation}
                     editableMode={editableMode}
-                  // onEditPressed={onEditPressed}
                   ></ChoreListItem>
                 </View>
               </TouchableHighlight>

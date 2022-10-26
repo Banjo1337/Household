@@ -4,7 +4,7 @@ import { KeyboardTypeOptions, StyleSheet, Text, View } from "react-native";
 import { TextInput } from "react-native-paper";
 
 interface Props {
-  control: Control;
+  control: Control<any, any>;
   defaultValue?: string;
   name: string;
   rules?: Partial<RegisterOptions>;
@@ -39,7 +39,7 @@ const CustomInput = ({
         <>
           <View style={[styles.container, { borderColor: error ? "red" : "white" }]}>
             <TextInput
-              value={value}
+              value={value ? value : defaultValue}
               onChangeText={onChange}
               onBlur={onBlur}
               maxLength={maxLength}
@@ -50,6 +50,7 @@ const CustomInput = ({
               multiline={multiline}
               numberOfLines={numOfLines}
               defaultValue={defaultValue}
+
             />
           </View>
           {error && <Text style={{ color: "red", alignSelf: "stretch" }}>{error.message}</Text>}

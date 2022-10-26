@@ -3,9 +3,10 @@ import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import { Text } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { selectChoreById } from "../features/chore/choreSelectors";
+import { ChoreUpdateDto } from "../features/chore/choreTypes";
 import { useTheme } from "../features/theme/ThemeContext";
 import { useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
@@ -20,6 +21,14 @@ export default function EditChoreScreen({ route }: Props) {
     const [frequencyValue, setFrequencyValue] = useState(chore.frequency);
     const [pointValue, setPointValue] = useState(chore.points);
 
+    const dropDownFrequencyValues = [...Array(30)].map((_, i) => {
+        i++;
+        return { label: String(i), value: i }
+    });
+    const dropDownPointValues = [...Array(5)].map((_, i) => {
+        i++;
+        return { label: String(i), value: i }
+    });
 
     const onOpenFrequency = useCallback(() => {
         setOpenPoint(false);
@@ -28,31 +37,23 @@ export default function EditChoreScreen({ route }: Props) {
     const onOpenPoint = useCallback(() => {
         setOpenFrequency(false);
     }, []);
-    const [frequencyItems, setFrequencyItems] = useState([
-        { label: "1", value: 1 },
-        { label: "2", value: 2 },
-        { label: "3", value: 3 },
-        { label: "4", value: 4 },
-        { label: "5", value: 5 },
-        { label: "6", value: 6 },
-        { label: "7", value: 7 },
+    const [setFrequencyItems] = useState([
+        dropDownFrequencyValues
     ]);
-    const [pointItems, setPointItems] = useState([
-        { label: "1", value: 1 },
-        { label: "2", value: 2 },
-        { label: "4", value: 4 },
-        { label: "6", value: 6 },
-        { label: "8", value: 8 },
+    const [setPointItems] = useState([
+        dropDownPointValues
     ]);
 
     const {
         control,
         handleSubmit,
         formState: { },
-    } = useForm();
+    } = useForm({ defaultValues: chore });
 
-    const onEditPressed = () => {
-        console.log("hello")
+    const onEditChorePressed = (data: ChoreUpdateDto) => {
+        data.frequency = frequencyValue;
+        data.points = pointValue;
+        console.log(data);
     };
 
     return (
@@ -62,8 +63,8 @@ export default function EditChoreScreen({ route }: Props) {
                 <CustomInput
                     style={styles.input}
                     defaultValue={chore?.name}
-                    placeholder='Title'
-                    name='title'
+                    placeholder='Name'
+                    name='name'
                     control={control}
                     rules={{
                         required: "Title of chore is required",
@@ -101,16 +102,16 @@ export default function EditChoreScreen({ route }: Props) {
                 >
                     <Text>Frequency of chore</Text>
                     <DropDownPicker
+                        placeholder={String(chore.frequency)}
                         style={styles.dropDownPicker}
                         listMode='SCROLLVIEW'
                         open={openFrequency}
                         onOpen={onOpenFrequency}
                         itemKey='value'
                         value={frequencyValue}
-                        items={frequencyItems}
+                        items={dropDownFrequencyValues}
                         setOpen={setOpenFrequency}
                         setValue={setFrequencyValue}
-                        setItems={setFrequencyItems}
                         closeOnBackPressed={true}
                         closeAfterSelecting={true}
                         theme={currentTheme.dark ? "DARK" : "LIGHT"}
@@ -125,16 +126,16 @@ export default function EditChoreScreen({ route }: Props) {
                     <Text>Difficulty of chore</Text>
                     <DropDownPicker
                         style={styles.dropDownPicker}
+                        placeholder={String(chore.points)}
                         modalTitle='Select how difficult this task is'
                         listMode='SCROLLVIEW'
                         open={openPoint}
                         onOpen={onOpenPoint}
                         value={pointValue}
                         itemKey='value'
-                        items={pointItems}
+                        items={dropDownPointValues}
                         setOpen={setOpenPoint}
                         setValue={setPointValue}
-                        setItems={setPointItems}
                         closeOnBackPressed={true}
                         closeAfterSelecting={true}
                         dropDownContainerStyle={{}}
@@ -142,6 +143,13 @@ export default function EditChoreScreen({ route }: Props) {
                     />
                 </View>
             </View>
+            <View style={{ display: "flex", flexDirection: "row" }}>
+                <Button onPress={handleSubmit(onEditChorePressed)} style={styles.button}>
+                    <Text>Save</Text>
+                </Button>
+
+            </View>
+
         </View>
     );
 }
