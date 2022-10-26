@@ -5,107 +5,110 @@ import { Avatars } from "../profile/profileTypes";
 import { ChoreCompleted, Statistics, StatisticsList } from "./choreCompletedTypes";
 
 export const selectChoreCompleted = (state: RootStateType): ChoreCompleted[] =>
-	state.choreCompletedReducer.completedChores;
+  state.choreCompletedReducer.completedChores;
 
 export const selectChoreCompletedRange = (
-	state: RootStateType,
-	start: Date,
-	end: Date
+  state: RootStateType,
+  start: Date,
+  end: Date,
 ): ChoreCompleted[] =>
-	selectChoreCompleted(state).filter(
-		(cc) => cc.completedAt >= start.toISOString() && cc.completedAt <= end.toISOString()
-	);
+  selectChoreCompleted(state).filter(
+    (cc) => cc.completedAt >= start.toISOString() && cc.completedAt <= end.toISOString(),
+  );
 
 export const selectChoreCompletedByIdAllTime = (
-	state: RootStateType,
-	choreId: string
+  state: RootStateType,
+  choreId: string,
 ): ChoreCompleted[] => selectChoreCompleted(state).filter((cc) => cc.choreId === choreId);
 
 export const selectChoreCompletedByIdRange = (
-	state: RootStateType,
-	start: Date,
-	end: Date,
-	choreId: string
+  state: RootStateType,
+  start: Date,
+  end: Date,
+  choreId: string,
 ): ChoreCompleted[] =>
-	selectChoreCompletedByIdAllTime(state, choreId).filter(
-		(cc) => cc.completedAt >= start.toISOString() && cc.completedAt <= end.toISOString()
-	);
+  selectChoreCompletedByIdAllTime(state, choreId).filter(
+    (cc) => cc.completedAt >= start.toISOString() && cc.completedAt <= end.toISOString(),
+  );
 
 export const selectChoreCompletedStatisticsForAllChores = (
-	state: RootStateType,
-	start: Date,
-	end: Date
+  state: RootStateType,
+  start: Date,
+  end: Date,
 ): Statistics[] => selectStats(state, start, end);
 
 export const selectChoreCompletedStatisticsForOneChore = (
-	state: RootStateType,
-	start: Date,
-	end: Date,
-	choreId: string
+  state: RootStateType,
+  start: Date,
+  end: Date,
+  choreId: string,
 ): Statistics[] => selectStats(state, start, end, choreId);
 
 export const selectChoreCompletedStatisticsListForAllChores = (
-	state: RootStateType,
-	start: Date,
-	end: Date
+  state: RootStateType,
+  start: Date,
+  end: Date,
 ): StatisticsList[] => {
-	let statisticsForAllChores: StatisticsList[] = [];
-	for (const chore of selectChores(state)) {
-		const stats = selectChoreCompletedStatisticsForOneChore(state, start, end, chore.id);
+  let statisticsForAllChores: StatisticsList[] = [];
+  const chores = selectChores(state);
+  if (chores.length) {
+    for (const chore of selectChores(state)) {
+      const stats = selectChoreCompletedStatisticsForOneChore(state, start, end, chore.id);
 
-		statisticsForAllChores.push({ id: chore.id, name: chore.name, data: stats });
-	}
-	return statisticsForAllChores;
+      statisticsForAllChores.push({ id: chore.id, name: chore.name, data: stats });
+    }
+  }
+  return statisticsForAllChores;
 };
 
 const selectStats = (
-	state: RootStateType,
-	start: Date,
-	end: Date,
-	choreId?: string
+  state: RootStateType,
+  start: Date,
+  end: Date,
+  choreId?: string,
 ): Statistics[] => {
-	let groupedByProfileId;
-	if (choreId) {
-		groupedByProfileId = groupBy(
-			selectChoreCompletedByIdRange(state, start, end, choreId),
-			(cc) => cc.profileIdQol
-		);
-	} else {
-		groupedByProfileId = groupBy(
-			selectChoreCompletedRange(state, start, end),
-			(cc) => cc.profileIdQol
-		);
-	}
+  let groupedByProfileId;
+  if (choreId) {
+    groupedByProfileId = groupBy(
+      selectChoreCompletedByIdRange(state, start, end, choreId),
+      (cc) => cc.profileIdQol,
+    );
+  } else {
+    groupedByProfileId = groupBy(
+      selectChoreCompletedRange(state, start, end),
+      (cc) => cc.profileIdQol,
+    );
+  }
 
-	let totalPoints = [];
+  let totalPoints = [];
 
-	for (const profileId in groupedByProfileId) {
-		const choreHistory = groupedByProfileId[profileId];
-		const groupedByChore = groupBy(choreHistory, (ch) => ch.choreId);
+  for (const profileId in groupedByProfileId) {
+    const choreHistory = groupedByProfileId[profileId];
+    const groupedByChore = groupBy(choreHistory, (ch) => ch.choreId);
 
-		let total = 0;
-		for (const choreId in groupedByChore) {
-			let chorePoints = selectChoreById(state, choreId)?.points;
-			if (chorePoints) {
-				total += chorePoints * groupedByChore[choreId].length;
-			}
-		}
-		const profile = selectHouseholdProfile(state, profileId);
+    let total = 0;
+    for (const choreId in groupedByChore) {
+      let chorePoints = selectChoreById(state, choreId)?.points;
+      if (chorePoints) {
+        total += chorePoints * groupedByChore[choreId].length;
+      }
+    }
+    const profile = selectHouseholdProfile(state, profileId);
 
-		if (profile) {
-			const { color, emoji } = Avatars[profile.avatar];
-			totalPoints.push({ key: profileId, value: total, svg: { fill: color }, emoji: emoji });
-		}
-	}
+    if (profile) {
+      const { color, emoji } = Avatars[profile.avatar];
+      totalPoints.push({ key: profileId, value: total, svg: { fill: color }, emoji: emoji });
+    }
+  }
 
-	return totalPoints;
+  return totalPoints;
 };
 
 // https://stackoverflow.com/questions/42136098/array-groupby-in-typescript
 export const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
-	list.reduce((previous, currentItem) => {
-		const group = getKey(currentItem);
-		if (!previous[group]) previous[group] = [];
-		previous[group].push(currentItem);
-		return previous;
-	}, {} as Record<K, T[]>);
+  list.reduce((previous, currentItem) => {
+    const group = getKey(currentItem);
+    if (!previous[group]) previous[group] = [];
+    previous[group].push(currentItem);
+    return previous;
+  }, {} as Record<K, T[]>);
