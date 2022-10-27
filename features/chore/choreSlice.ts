@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
-import { Chore, ChoreState, ChoreCreateDto, ChoreUpdateDto } from "./choreTypes";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { selectToken } from "../authentication/authenticationSelectors";
+import { Chore, ChoreCreateDto, ChoreState, ChoreUpdateDto } from "./choreTypes";
 
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/chore/";
 
@@ -32,15 +32,15 @@ export const hydrateChoresSliceFromBackendThunk = createAsyncThunk<
 export const createChore = createAsyncThunk<Chore, ChoreCreateDto, { rejectValue: string }>(
   "chore/CreateChore",
   async (choreCreateDto: ChoreCreateDto, thunkApi) => {
-    if (Token()) {
-      return thunkApi.rejectWithValue("User not logged in");
-    }
+    // if (Token()) {
+    //   return thunkApi.rejectWithValue("User not logged in");
+    // }
     try {
       const response = await fetch(baseUrl + "AddChore", {
         method: "POST",
         headers: {
           "content-type": "application/json",
-          authorization: "Bearer " + Token(),
+          // authorization: "Bearer " + Token(),
         },
         body: JSON.stringify(choreCreateDto),
       });

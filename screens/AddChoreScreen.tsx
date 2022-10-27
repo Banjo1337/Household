@@ -8,48 +8,47 @@ import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "rea
 import DropDownPicker from "react-native-dropdown-picker";
 import { Button } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
+import { createChore } from "../features/chore/choreSlice";
+import { ChoreCreateDto } from "../features/chore/choreTypes";
 import { useTheme } from "../features/theme/ThemeContext";
+import { useAppDispatch } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
+
 
 export default function AddChoreScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
   const {
     control,
     handleSubmit,
-    formState: {},
+    formState: { },
   } = useForm();
 
   const [openPoint, setOpenPoint] = useState(false);
   const [openFrequency, setOpenFrequency] = useState(false);
   const [frequencyValue, setFrequencyValue] = useState(1);
   const [pointValue, setPointValue] = useState(2);
+  const dispatch = useAppDispatch();
+
   const onOpenFrequency = useCallback(() => {
     setOpenPoint(false);
   }, []);
-
   const onOpenPoint = useCallback(() => {
     setOpenFrequency(false);
   }, []);
-  const [frequencyItems, setFrequencyItems] = useState([
-    { label: "1", value: 1 },
-    { label: "2", value: 2 },
-    { label: "3", value: 3 },
-    { label: "4", value: 4 },
-    { label: "5", value: 5 },
-    { label: "6", value: 6 },
-    { label: "7", value: 7 },
-  ]);
-  const [pointItems, setPointItems] = useState([
-    { label: "1", value: 1 },
-    { label: "2", value: 2 },
-    { label: "4", value: 4 },
-    { label: "6", value: 6 },
-    { label: "8", value: 8 },
-  ]);
+
+  const dropDownFrequencyValues = [...Array(31)].map((_, i) => {
+    i++;
+    return { label: String(i - 1), value: i - 1 };
+  });
+  const dropDownPointValues = [...Array(5)].map((_, i) => {
+    i++;
+    return { label: String(i), value: i };
+  });
 
   const [recording, setRecording] = useState<Audio.Recording | any>();
   const [recordings, setRecordings] = useState([]);
   const [, setMessage] = useState("");
   const [image, setImage] = useState<string | null>(null);
+  const { currentTheme } = useTheme();
 
   async function startRecording() {
     try {
@@ -129,11 +128,19 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
   };
 
   const onAddChorePressed = (data: FieldValues) => {
-    console.log(data.title + data.description + frequencyValue + pointValue);
+    const choreCreateDto: ChoreCreateDto = {
+      name: data.name,
+      points: pointValue,
+      description: data.description,
+      frequency: frequencyValue,
+      pictureUrl: "",
+      audioUrl: "",
+      isArchived: false,
+      householdId: "C0000000-0000-0000-0000-000000000003"
+    };
+    dispatch(createChore(choreCreateDto));
     navigation.navigate("Home", { screen: "Chores" });
   };
-
-  const { currentTheme } = useTheme();
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -141,15 +148,15 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
       <View>
         <CustomInput
           style={styles.input}
-          placeholder='Title'
-          name='title'
+          placeholder='Name'
+          name='name'
           control={control}
           rules={{
-            required: "Title of chore is required",
+            required: "Name of chore is required",
             minLength: { value: 2, message: "Must be 2 or more letters." },
             maxLength: {
               value: 100,
-              message: "Title can be maximum 100 letters.",
+              message: "Name can be maximum 100 letters.",
             },
           }}
         />
@@ -185,10 +192,9 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
             onOpen={onOpenFrequency}
             itemKey='value'
             value={frequencyValue}
-            items={frequencyItems}
+            items={dropDownFrequencyValues}
             setOpen={setOpenFrequency}
             setValue={setFrequencyValue}
-            setItems={setFrequencyItems}
             closeOnBackPressed={true}
             closeAfterSelecting={true}
             theme={currentTheme.dark ? "DARK" : "LIGHT"}
@@ -209,10 +215,9 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
             onOpen={onOpenPoint}
             value={pointValue}
             itemKey='value'
-            items={pointItems}
+            items={dropDownPointValues}
             setOpen={setOpenPoint}
             setValue={setPointValue}
-            setItems={setPointItems}
             closeOnBackPressed={true}
             closeAfterSelecting={true}
             dropDownContainerStyle={{}}

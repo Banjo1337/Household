@@ -20,19 +20,23 @@ import { useAppDispatch } from "./hooks/reduxHooks";
 import TopTabNavigator from "./navigation/TopTabsNavigator";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
 import CreateProfileScreen from "./screens/CreateProfileScreen";
-import EditHouseholdScreen from "./screens/EditHouseholdScreen";
 import ParsingJoinHouseholdScreen from "./screens/ParsingJoinHouseholdScreen";
+import EditChoreScreen from "./screens/EditChoreScreen";
+import EditHouseholdScreen from "./screens/EditHouseholdScreen";
+import HouseholdDetailsScreen from "./screens/HouseholdDetailsScreen";
 
 export type RootStackParamList = {
   Home: { screen: "Chores" | "Statistics" };
   AddChore: undefined;
   ChoreDetails: { choreId: string };
+  EditChore: { choreId: string }
   SignIn: undefined;
   SignUp: undefined;
   CreateProfile: { householdId: string | undefined };
   CreateHousehold: undefined;
   JoinOrCreateHouseholdPrompt: undefined;
   EditHousehold: undefined;
+  HouseholdDetails: undefined;
   SelectProfile: undefined;
   FinalizeProfile: undefined;
   PendingRequest: undefined;
@@ -58,9 +62,12 @@ export default function NavContainer() {
               component={MegaNavigationGodScreen}
               options={() => ({ title: "This is temporary" })}
             />
-            <Stack.Screen name='Home' component={TopTabNavigator} />
+            <Stack.Screen name='Home' component={TopTabNavigator} options={() => ({
+              headerShown: false
+            })} />
             <Stack.Screen name='AddChore' component={AddChoreScreen} />
             <Stack.Screen name='ChoreDetails' component={ChoreDetailsScreen} />
+            <Stack.Screen name="EditChore" component={EditChoreScreen} />
             <Stack.Screen name='SignIn' component={SignInScreen} />
             <Stack.Screen name='SignUp' component={SignUpScreen} />
             <Stack.Screen name='CreateHousehold' component={CreateHouseholdScreen} />
@@ -70,6 +77,7 @@ export default function NavContainer() {
               component={JoinOrCreateHouseholdPromptScreen}
             />
             <Stack.Screen name='EditHousehold' component={EditHouseholdScreen} />
+            <Stack.Screen name='HouseholdDetails' component={HouseholdDetailsScreen} />
             <Stack.Screen name='SelectProfile' component={SelectProfileScreen} />
             <Stack.Screen name='PendingRequest' component={PendingRequestScreen} />
             <Stack.Screen

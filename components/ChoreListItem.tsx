@@ -1,16 +1,15 @@
+import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { Surface, Text } from "react-native-paper";
-import React from "react";
 import { Chore } from "../features/chore/choreTypes";
 
 interface Props {
   chore: Chore;
   navigation: any;
-  onEditPressed: () => void;
   editableMode: boolean;
 }
 
-export default function ChoreListItem({ chore, navigation, onEditPressed, editableMode }: Props) {
+export default function ChoreListItem({ chore, navigation, editableMode }: Props) {
   return (
     <View style={{ alignItems: "center" }}>
       <Surface style={styles.surface}>
@@ -36,7 +35,7 @@ export default function ChoreListItem({ chore, navigation, onEditPressed, editab
         >
           {editableMode && (
             <Pressable
-              onPress={onEditPressed}
+              onPress={() => navigation.navigate("EditChore", { choreId: chore.id })}
               style={{
                 zIndex: 1,
                 position: "absolute",
@@ -46,7 +45,8 @@ export default function ChoreListItem({ chore, navigation, onEditPressed, editab
               <Text>Edit</Text>
             </Pressable>
           )}
-          <Text style={{ textAlign: "right", marginRight: 5 }}>Frekvens: {chore.frequency}</Text>
+
+          <Text style={{ textAlign: "right", marginRight: 5, alignContent: "center" }}>Frekvens: {chore.frequency}  </Text>
         </Pressable>
       </Surface>
     </View>

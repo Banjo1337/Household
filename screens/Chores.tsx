@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { View, StyleSheet, FlatList, TouchableHighlight } from "react-native";
-import { Title, Button, Text } from "react-native-paper";
+import { FlatList, StyleSheet, TouchableHighlight, View } from "react-native";
+import { Button, Text, Title } from "react-native-paper";
 import ChoreListItem from "../components/ChoreListItem";
 import { selectChores } from "../features/chore/choreSelectors";
 import { selectHousehold } from "../features/household/householdSelectors";
@@ -13,17 +13,11 @@ import { RootStackParamList } from "../NavContainer";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ChoresScreen(Props: NativeStackScreenProps<RootStackParamList>) {
-  // const [choreId] = useState(route.params.choreId);
   const [editableMode, setEditableMode] = useState(true);
-  //  const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
   const chores = useAppSelector(selectChores);
 
-  const onEditPressed = () => {
-    console.log("on edit pressed");
-    console.log(chores.length);
-    Props.navigation.navigate("EditHousehold");
-  };
+
   const onAddChorePressed = () => {
     Props.navigation.navigate("AddChore");
   };
@@ -35,10 +29,12 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
 
   return (
     <>
-      <View>
-        <Title>Chore Screen</Title>
-        <Text>{household.name}</Text>
-        <View style={{ justifyContent: "center", height: 200 }}>
+      <View style={{ justifyContent: "center" }}>
+        <View style={{ alignItems: "center" }}>
+          <Title style={{ textAlign: "center", backgroundColor: "gray", width: 250 }}>Household:{household.name} </Title>
+          <Title style={{ textAlign: "center", backgroundColor: "lightblue" }}>Code: {household.code}</Title>
+        </View>
+        <View style={{ justifyContent: "center", height: 350 }}>
           <FlatList
             data={chores}
             renderItem={({ item }) => (
@@ -48,7 +44,6 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
                     chore={item}
                     navigation={Props.navigation}
                     editableMode={editableMode}
-                    onEditPressed={onEditPressed}
                   ></ChoreListItem>
                 </View>
               </TouchableHighlight>
@@ -59,6 +54,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
         <View style={styles.container}></View>
         <View style={{ flexDirection: "row" }}>
           <Button
+            mode="contained"
             style={{
               width: "50%",
               alignSelf: "flex-end",
@@ -70,6 +66,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
             <Text>Add Chore</Text>
           </Button>
           <Button
+            mode="contained"
             style={{
               width: "50%",
               alignSelf: "flex-end",
@@ -97,6 +94,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     padding: 20,
+    justifyContent: "center"
   },
   title: {
     backgroundColor: "white",

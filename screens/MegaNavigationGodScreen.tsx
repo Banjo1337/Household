@@ -27,8 +27,14 @@ export default function MegaNavigationGodScreen(
           mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("ChoreDetails", { choreId: "" })}
+        >ChoreDetails
+        </Button>
+        <Button
+          mode="contained"
+          style={styles.button}
+          onPress={() => Props.navigation.navigate("EditChore", { choreId: "" })}
         >
-          ChoreDetails
+          EditChore
         </Button>
         <Button
           mode='contained'
@@ -78,6 +84,13 @@ export default function MegaNavigationGodScreen(
           onPress={() => Props.navigation.navigate("EditHousehold")}
         >
           EditHousehold
+        </Button>
+        <Button
+          mode='contained'
+          style={styles.button}
+          onPress={() => Props.navigation.navigate("HouseholdDetails")}
+        >
+          HouseholdDetails
         </Button>
         <Button
           mode='contained'

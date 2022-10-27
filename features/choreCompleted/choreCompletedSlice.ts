@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import {
   ChoreCompleted,
   ChoreCompletedCreateDto,
-  ChoreCompletedState,
+  ChoreCompletedState
 } from "./choreCompletedTypes";
 
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/chorecompleted/";
@@ -20,7 +20,7 @@ export const addChoreCompleted = createAsyncThunk<
   { rejectValue: string }
 >("choreCompleted/addChoreCompleted", async (choreCompleted: ChoreCompletedCreateDto, thunkApi) => {
   try {
-    await fetch(baseUrl, {
+    await fetch(baseUrl + "addChoreCompleted", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -40,7 +40,7 @@ export const hydrateChoresCompletedSliceFromBackendThunk = createAsyncThunk<
   { rejectValue: string }
 >("choreCompleted/getAllChores", async (householdId: string, thunkApi) => {
   try {
-    const response = await fetch(baseUrl + "GetAllChoreCompleted/" + householdId);
+    const response = await fetch(baseUrl + "GetAllChoreCompletedByHouseholdId/" + householdId);
 
     if (response.ok) {
       return await response.json();
