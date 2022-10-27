@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView, Pressable, Modal } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, Pressable, Modal, Dimensions } from "react-native";
 //import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 import { Feather } from "@expo/vector-icons";
@@ -15,14 +15,12 @@ import ProfileListItem from "../components/ProfileListItem";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function HouseholdDetailsScreen({
-  route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList>) {
-  //add route.params for householdId instead of "stringPlaceholder";
-  const householdId = "stringPlaceholder";
+  const currentProfileId = useAppSelector((state)=> state.profileReducer.profile).id;
   const household = useAppSelector(selectHousehold);
   const members = useAppSelector(selectProfileByHousholdId);
-  //console.log(members);
+  console.log(members);
   //console.log(membersOnPause);
   const [modalLeaveVisible, setModalLeaveVisible] = useState(false);
 
@@ -34,9 +32,12 @@ export default function HouseholdDetailsScreen({
         <View>
           <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <Image source={require(householdPicture)} style={styles.householdPicture} />
-            <View>
-              <Pressable onPress={() => navigation.navigate("EditHousehold")}>
-                <Feather name='settings' size={24} color='black' />
+            <View style={{ alignItems: "flex-end", padding: 10 }}>
+              <Pressable
+                onPress={() => navigation.navigate("EditHousehold")}
+                style={{ padding: 10 }}
+              >
+                <Feather name='settings' size={35} color='black' />
               </Pressable>
 
               <Modal
@@ -53,19 +54,19 @@ export default function HouseholdDetailsScreen({
                       Are you sure you want to leave the household?
                     </Text>
                     <View style={{ flexDirection: "row" }}>
-                      {members.map((member) => {
-                        // Osäker på vad nästa rad är till för
-                      // if (member.id == 2) {
-                          return <ProfileListItem profile={member} />;
-                        //}
+                      {members.map((member, memberindex) => {
+                        if (member.id == currentProfileId) {
+                          return <ProfileListItem profile={member} key={memberindex} />;
+                        }
                       })}
                     </View>
-                    <View style={{flexDirection: "row", justifyContent: "space-around"}}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
                       <Pressable
                         style={[styles.button, styles.buttonClose]}
                         onPress={() => {
                           setModalLeaveVisible(!modalLeaveVisible);
-                          navigation.navigate("MegaNavigationGod");
+                          navigation.navigate("SelectProfile");
+                          //Add logic to remove member from household. If member is the last admin the household will be deleted
                         }}
                       >
                         <Text style={styles.textStyle}>Yes</Text>
@@ -95,9 +96,9 @@ export default function HouseholdDetailsScreen({
 
           <Text>Household's admin: </Text>
           <View style={{ flex: 1, flexDirection: "row" }}>
-            {members.map((member) => {
+            {members.map((member, memberindex) => {
               if (member.isAdmin) {
-                return <ProfileListItem profile={member} />;
+                return <ProfileListItem profile={member} key={memberindex} />;
               }
             })}
           </View>
@@ -106,8 +107,8 @@ export default function HouseholdDetailsScreen({
           <Text style={styles.showProperty}>{household.code}</Text>
           <Text>Household members: </Text>
           <View style={{ flex: 1, flexDirection: "row" }}>
-            {members.map((member) => {
-              return <ProfileListItem profile={member} />;
+            {members.map((member, memberindex) => {
+              return <ProfileListItem profile={member} key={memberindex} />;
             })}
           </View>
         </View>
@@ -119,6 +120,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     padding: 20,
+    width: Dimensions.get("window").width * 0.9,
   },
   showProperty: {
     alignItems: "center",
