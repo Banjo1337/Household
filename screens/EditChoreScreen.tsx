@@ -60,7 +60,7 @@ export default function EditChoreScreen({ route, navigation }: Props) {
             <View>
                 <CustomInput
                     style={styles.input}
-                    defaultValue={chore?.name}
+                    defaultValue={chore?.name && ""}
                     placeholder='Name'
                     name='name'
                     control={control}
@@ -75,7 +75,7 @@ export default function EditChoreScreen({ route, navigation }: Props) {
                 />
                 <CustomInput
                     style={styles.input}
-                    defaultValue={chore?.description}
+                    defaultValue={chore?.description && ""}
                     placeholder='Description'
                     name='description'
                     control={control}
