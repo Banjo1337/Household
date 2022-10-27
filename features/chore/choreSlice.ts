@@ -32,15 +32,15 @@ export const hydrateChoresSliceFromBackendThunk = createAsyncThunk<
 export const createChore = createAsyncThunk<Chore, ChoreCreateDto, { rejectValue: string }>(
   "chore/CreateChore",
   async (choreCreateDto: ChoreCreateDto, thunkApi) => {
-    // if (Token()) {
-    //   return thunkApi.rejectWithValue("User not logged in");
-    // }
+    if (!Token) {
+      return thunkApi.rejectWithValue("User not logged in");
+    }
     try {
       const response = await fetch(baseUrl + "AddChore", {
         method: "POST",
         headers: {
           "content-type": "application/json",
-          // authorization: "Bearer " + Token(),
+          authorization: "Bearer " + Token(),
         },
         body: JSON.stringify(choreCreateDto),
       });
@@ -92,23 +92,22 @@ export const updateChore = createAsyncThunk<
   }
 });
 
-export const deleteChore = createAsyncThunk<Chore, string, { rejectValue: string }>(
+export const deleteChore = createAsyncThunk<string, string, { rejectValue: string }>(
   "chore/deleteChore",
   async (choreId: string, thunkApi) => {
-    if (Token()) {
+    if (!Token) {
       return thunkApi.rejectWithValue("User not logged in");
     }
     try {
       const response = await fetch(baseUrl + "DeleteChore/" + choreId, {
         method: "DELETE",
         headers: {
-          "content-type": "application/json",
           authorization: "Bearer " + Token(),
         },
       });
 
       if (response.status == 204) {
-        return {} as Chore;
+        return choreId;
       }
 
       return thunkApi.rejectWithValue(JSON.stringify(response.body));
@@ -150,9 +149,9 @@ const choreSlice = createSlice({
         chore.id == action.payload.id ? action.payload : chore,
       );
     });
-    builder.addCase(deleteChore.fulfilled, (state, action: PayloadAction<Chore>) => {
+    builder.addCase(deleteChore.fulfilled, (state, action: PayloadAction<string>) => {
       state.isLoading = false;
-      state.chores = state.chores.filter((chore) => chore.id != action.payload.id);
+      state.chores = state.chores.filter((chore) => chore.id != action.payload);
     });
     builder.addMatcher(
       isAnyOf(
