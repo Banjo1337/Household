@@ -12,7 +12,7 @@ VG: 32 (80%).
 
 [ ] - En logga, splashscreen och appikon ska designas och användas. 🚨⚠🚨
 
-[ ] - Applikationen ska byggas med RN, Expo & TS. 🚨⚠🚨
+[X] - Applikationen ska byggas med RN, Expo & TS. 🚨⚠🚨
 
 [ ] - Designen av appen ska utgå ifrån befintliga skisser, undantag kan ges men ska diskuteras
 med produktägare, godkännas och dokumenteras. 🚨⚠🚨
