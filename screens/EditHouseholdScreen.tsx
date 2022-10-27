@@ -2,30 +2,30 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import {
-  View,
-  Text,
-  StyleSheet,
   Image,
-  TouchableOpacity,
-  ScrollView,
-  Platform,
   Modal,
+  Platform,
   Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { Switch } from "react-native-paper";
 //import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 import CustomInput from "../components/CustomInput";
+import ProfileListItem from "../components/ProfileListItem";
 import {
   selectHousehold,
   selectProfileByHousholdId,
 } from "../features/household/householdSelectors";
 import { editHouseholdThunk } from "../features/household/householdSlice";
-import { editProfile } from "../features/profile/profileSlice";
 import { selectPauses } from "../features/pause/pauseSelectors";
+import { editProfile } from "../features/profile/profileSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
-import ProfileListItem from "../components/ProfileListItem";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function EditHouseholdScreen({
@@ -216,36 +216,8 @@ export default function EditHouseholdScreen({
                   {enabled ? (member.isAdmin = true) : (member.isAdmin = false)}
                 </View>
               );
-            }
-          })}
-        </View>
-
-        {/* Conditional rendering needed here to render only i user is admin */}
-        <Text>Change household's name: </Text>
-        <CustomInput
-          name='householdName'
-          placeholder='Enter a new household name'
-          control={control}
-        ></CustomInput>
-        <TouchableOpacity style={styles.pressable} onPress={handleSubmit(onEditHouseholdPressed)}>
-          <Text>Submit</Text>
-        </TouchableOpacity>
-
-        <Text>Household code: </Text>
-        <Text style={styles.showProperty}>{household.code}</Text>
-        <Text>Household members: </Text>
-        <View style={{ flex: 1, flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
-          {members.map((member, memberIndex) => {
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            const { emoji, color } = useAvatar(member.avatar);
-            return (
-              <View style={{ padding: 5 }} key={memberIndex}>
-                <Text style={styles.avatar}>{emoji}</Text>
-                <Text style={{ textAlign: "center", backgroundColor: color }}>{member.alias}</Text>
-                <Switch></Switch>
-              </View>
-            );
-          })}
+            })}
+          </View>
         </View>
       </View>
     </ScrollView>
