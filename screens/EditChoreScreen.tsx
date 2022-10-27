@@ -6,9 +6,10 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { Button, Text } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { selectChoreById } from "../features/chore/choreSelectors";
+import { updateChore } from "../features/chore/choreSlice";
 import { ChoreUpdateDto } from "../features/chore/choreTypes";
 import { useTheme } from "../features/theme/ThemeContext";
-import { useAppSelector } from "../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 type Props = NativeStackScreenProps<RootStackParamList, "EditChore">;
 
@@ -20,6 +21,7 @@ export default function EditChoreScreen({ route, navigation }: Props) {
     const [openFrequency, setOpenFrequency] = useState(false);
     const [frequencyValue, setFrequencyValue] = useState(chore.frequency);
     const [pointValue, setPointValue] = useState(chore.points);
+    const dispatch = useAppDispatch();
 
     const dropDownFrequencyValues = [...Array(30)].map((_, i) => {
         i++;
@@ -51,7 +53,8 @@ export default function EditChoreScreen({ route, navigation }: Props) {
     const onEditChorePressed = (data: ChoreUpdateDto) => {
         data.frequency = frequencyValue;
         data.points = pointValue;
-        console.log(data);
+        dispatch(updateChore({ choreUpdateDto: data, choreId: chore.id }))
+        navigation.goBack();
     };
 
     return (
