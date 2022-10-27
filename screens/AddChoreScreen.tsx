@@ -8,9 +8,12 @@ import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "rea
 import DropDownPicker from "react-native-dropdown-picker";
 import { Button } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
+import { createChore } from "../features/chore/choreSlice";
 import { ChoreCreateDto } from "../features/chore/choreTypes";
 import { useTheme } from "../features/theme/ThemeContext";
+import { useAppDispatch } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
+
 
 export default function AddChoreScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
   const {
@@ -23,6 +26,7 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
   const [openFrequency, setOpenFrequency] = useState(false);
   const [frequencyValue, setFrequencyValue] = useState(1);
   const [pointValue, setPointValue] = useState(2);
+  const dispatch = useAppDispatch();
 
   const onOpenFrequency = useCallback(() => {
     setOpenPoint(false);
@@ -44,6 +48,7 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
   const [recordings, setRecordings] = useState([]);
   const [, setMessage] = useState("");
   const [image, setImage] = useState<string | null>(null);
+  const { currentTheme } = useTheme();
 
   async function startRecording() {
     try {
@@ -123,22 +128,19 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
   };
 
   const onAddChorePressed = (data: FieldValues) => {
-
     const choreCreateDto: ChoreCreateDto = {
       name: data.name,
+      points: pointValue,
       description: data.description,
+      frequency: frequencyValue,
       pictureUrl: "",
       audioUrl: "",
-      frequency: frequencyValue,
       isArchived: false,
-      householdId: "",
-      points: pointValue,
+      householdId: "C0000000-0000-0000-0000-000000000003"
     };
-    console.log(choreCreateDto);
+    dispatch(createChore(choreCreateDto));
     navigation.navigate("Home", { screen: "Chores" });
   };
-
-  const { currentTheme } = useTheme();
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
