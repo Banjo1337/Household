@@ -10,6 +10,7 @@ import { Profile } from "../profile/profileTypes";
 import { Household, HouseholdCreateDto, HouseholdEditDto } from "./householdTypes";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { selectToken } from "../authentication/authenticationSelectors";
+import { editProfile } from "../profile/profileSlice";
 
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/Household/";
 
@@ -181,6 +182,9 @@ const householdSlice = createSlice({
       }),
       builder.addCase(getProfilesByHouseholdId.fulfilled, (state, action) => {
         state.profiles = action.payload;
+      }),
+      builder.addCase(editProfile.fulfilled, (state, action) => {
+        state.profiles = state.profiles.map(p => p.id === action.payload.id ? action.payload : p);
       }),
       builder.addMatcher(
         isAnyOf(
