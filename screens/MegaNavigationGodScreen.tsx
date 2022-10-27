@@ -93,13 +93,13 @@ export default function MegaNavigationGodScreen(
         >
           PendingRequest
         </Button>
-        <Button
+        {/* <Button
           mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("RequestToJoinHousehold")}
         >
           RequestToJoinHouseholdScreen(param)
-        </Button>
+        </Button> */}
         <Button
           mode='contained'
           style={styles.button}
