@@ -1,6 +1,6 @@
 import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
-import { Checkbox, Surface, Text } from "react-native-paper";
+import { Surface, Text } from "react-native-paper";
 import { Chore } from "../features/chore/choreTypes";
 
 interface Props {
@@ -46,11 +46,7 @@ export default function ChoreListItem({ chore, navigation, editableMode }: Props
             </Pressable>
           )}
 
-          <Text style={{ textAlign: "right", marginRight: 5, alignContent: "center" }}>Frekvens: {chore.frequency} <Checkbox
-            status={chore.isArchived ? 'checked' : 'unchecked'}
-
-          /></Text>
-
+          <Text style={{ textAlign: "right", marginRight: 5, alignContent: "center" }}>Frekvens: {chore.frequency}  </Text>
         </Pressable>
       </Surface>
     </View>

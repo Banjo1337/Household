@@ -35,9 +35,9 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
     setOpenFrequency(false);
   }, []);
 
-  const dropDownFrequencyValues = [...Array(30)].map((_, i) => {
+  const dropDownFrequencyValues = [...Array(31)].map((_, i) => {
     i++;
-    return { label: String(i), value: i };
+    return { label: String(i - 1), value: i - 1 };
   });
   const dropDownPointValues = [...Array(5)].map((_, i) => {
     i++;

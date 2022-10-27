@@ -1,9 +1,12 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Checkbox, Text, Title } from "react-native-paper";
 import { selectChoreById } from "../features/chore/choreSelectors";
+import { addChoreCompleted } from "../features/choreCompleted/choreCompletedSlice";
+import { ChoreCompletedCreateDto } from "../features/choreCompleted/choreCompletedTypes";
 import { selectHousehold } from "../features/household/householdSelectors";
+import { selectActiveProfile } from "../features/profile/profileSelector";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 
@@ -15,36 +18,23 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
   const household = useAppSelector(selectHousehold);
   const [routeId] = useState(route.params.choreId);
   const chore = useAppSelector((state) => selectChoreById(state, routeId));
-  const [checked, setChecked] = useState(chore.isArchived);
+  const [checked, setChecked] = useState(false);
+  const profile = useAppSelector(selectActiveProfile);
   const dispatch = useAppDispatch();
-  const [currentDate, setCurrentDate] = useState('');
-
-  useEffect(() => {
-    var date = new Date().getDate();
-    var month = new Date().getMonth() + 1;
-    var year = new Date().getFullYear();
-    var hours = new Date().getHours();
-    var min = new Date().getMinutes();
-    var sec = new Date().getSeconds();
-    setCurrentDate(
-      year + '/' + month + '/' + date
-      + ' ' + hours + ':' + min + ':' + sec
-    );
-  }, []);
 
   const onSavePressed = () => {
-    var today = new Date();
-    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    var dateTime = date + ' ' + time;
-    // const choreCompleted: ChoreCompletedCreateDto = {
-    //   completedAt: dateTime,
-    //   profileIdQol: profile.i,
-    //   choreId: chore.id,
-    //   householdId: household.id,
-    // }
-    console.log(dateTime);
-    // dispatch(addChoreCompleted(choreCompleted))
+    if (checked) {
+      var dateTime = new Date();
+      const choreCompleted: ChoreCompletedCreateDto = {
+        completedAt: dateTime.toISOString(),
+        profileIdQol: profile.id,
+        choreId: chore.id,
+        householdId: household.id,
+      };
+      dispatch(addChoreCompleted(choreCompleted));
+      navigation.navigate("Home", { screen: "Chores" });
+    }
+    else console.log("not changed");
   };
   const onBackPressed = () => {
     navigation.navigate("Home", { screen: "Chores" });
@@ -52,7 +42,6 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
   const onEditPressed = () => {
     navigation.navigate("EditChore", { choreId: chore.id });
   };
-
   return (
     <>
       <ScrollView >
