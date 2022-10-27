@@ -49,7 +49,10 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
           <Title>{chore.name}</Title>
           <Text>{chore.description}</Text>
           <Text>The chore is worth <Title>{chore.points}</Title> points.</Text>
-          {chore.frequency == 0 ? <Text>This task is do be done once</Text> : <Text>It should be done every <Title>{chore.frequency}</Title> day.</Text>}
+          {chore.frequency == 0 ? <Text>This task is do be done once</Text>
+            : chore.frequency == 1 ? <Text>It should be done every other <Title>{chore.frequency}</Title> day.</Text>
+              : <Text>It should be done every <Title>{chore.frequency}</Title> days.</Text>
+          }
         </View>
         <View style={styles.container}>
           <Button onPress={onBackPressed} mode="contained" style={styles.button}>Go back</Button>
