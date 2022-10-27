@@ -61,7 +61,9 @@ export default function NavContainer() {
               component={MegaNavigationGodScreen}
               options={() => ({ title: "This is temporary" })}
             />
-            <Stack.Screen name='Home' component={TopTabNavigator} />
+            <Stack.Screen name='Home' component={TopTabNavigator} options={() => ({
+              headerShown: false
+            })} />
             <Stack.Screen name='AddChore' component={AddChoreScreen} />
             <Stack.Screen name='ChoreDetails' component={ChoreDetailsScreen} />
             <Stack.Screen name="EditChore" component={EditChoreScreen} />
