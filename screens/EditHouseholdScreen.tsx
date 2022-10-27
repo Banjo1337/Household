@@ -202,7 +202,6 @@ export default function EditHouseholdScreen({
           <Text>Household members: </Text>
           <View style={{ flex: 1, flexDirection: "row" }}>
             {members.map((member) => {
-              if (member.isAdmin) {
                 return (
                   <View>
                     <ProfileListItem profile={member} />
@@ -215,7 +214,6 @@ export default function EditHouseholdScreen({
                     {enabled ? (member.isAdmin = true) : (member.isAdmin = false)}
                   </View>
                 );
-              }
             })}
           </View>
         </View>
