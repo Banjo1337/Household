@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Button } from "react-native-paper";
-import { useAppDispatch } from "../hooks/reduxHooks";
+import { StyleSheet, View } from "react-native";
+import { Button, ProgressBar, Text } from "react-native-paper";
+import { Household } from "../features/household/householdTypes";
 import { RootStackParamList } from "../NavContainer";
 
 export default function ParsingJoinHouseholdScreen({
@@ -10,10 +10,11 @@ export default function ParsingJoinHouseholdScreen({
   navigation,
 }: // eslint-disable-next-line @typescript-eslint/no-unused-vars
 NativeStackScreenProps<RootStackParamList, "ParsingJoinHouseholdScreen">) {
-  const dispatch = useAppDispatch();
-
-  const [household, setHousehold] = useState();
+  const [household, setHousehold] = useState<Household>();
   const [foundHouseholdBool, setHouseholdFound] = useState(false);
+  const [searching, setSearching] = useState(true);
+
+  let result: Household;
 
   useEffect(() => {
     (async function getHousehold() {
@@ -22,68 +23,74 @@ NativeStackScreenProps<RootStackParamList, "ParsingJoinHouseholdScreen">) {
         "https://household-backend.azurewebsites.net/api/V01/household/GetHouseholdByHouseholdCode/" +
           route.params.householdCode,
       );
-      console.log("Fetch complete?");
+      console.log("Fetch complete");
       if (response.ok) {
         console.log("Response OK. Setting values...");
+        setSearching(false);
         setHousehold(await response.json());
         setHouseholdFound(true);
+      } else {
+        console.log("Fetch failed.");
+        setSearching(false);
       }
     })();
-  });
+  }, []);
 
   return (
     <View style={styles.container}>
-      {!foundHouseholdBool ? (
+      {!foundHouseholdBool && searching && (
+        <>
+          <Text>Searching...</Text>
+          <ProgressBar indeterminate={true} style={{ width: "50%" }} />
+        </>
+      )}
+      {!foundHouseholdBool && !searching && (
         <>
           <Text style={styles.title}>
-            A notification to join has been sent to household owner(s) of (householdname)
+            No household by the code {route.params.householdCode} was found!
           </Text>
-          <Text style={styles.bread}>Please wait...</Text>
 
           <Button
+            mode='contained'
             style={styles.cancelBtn}
             onPress={() => {
               navigation.goBack();
             }}
           >
-            Cancel
-          </Button>
-          <Button
-            style={[styles.cancelBtn, { bottom: 100 }]}
-            onPress={() => {
-              console.log(foundHouseholdBool);
-            }}
-          >
-            Found it?
+            Return & Try Again
           </Button>
         </>
-      ) : (
+      )}
+      {foundHouseholdBool && !searching && (
         <>
-          <Text>You have successfully joined </Text>
+          <Text variant='titleMedium'>You have successfully joined</Text>
+          <Text variant='headlineMedium' style={{ textAlign: "center" }}>
+            {household?.name}
+          </Text>
+
+          <Button
+            mode='contained'
+            onPress={() => navigation.navigate("CreateProfile", { householdId: household?.id })}
+            style={{ marginTop: 100 }}
+          >
+            Awesome!
+          </Button>
         </>
       )}
     </View>
   );
-  /* return (
-    <View>
-      <Text>(admin) has accepted your invitation!</Text>
-    </View>
-  ); */
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
   },
   title: {
-    marginTop: 100,
     fontSize: 26,
     textAlign: "center",
-  },
-  bread: {
-    marginTop: 25,
-    fontSize: 16,
   },
   cancelBtn: {
     position: "absolute",

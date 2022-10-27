@@ -19,6 +19,7 @@ import { useTheme } from "./features/theme/ThemeContext";
 import { useAppDispatch } from "./hooks/reduxHooks";
 import TopTabNavigator from "./navigation/TopTabsNavigator";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
+import CreateProfileScreen from "./screens/CreateProfileScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
 import ParsingJoinHouseholdScreen from "./screens/ParsingJoinHouseholdScreen";
 
@@ -28,7 +29,7 @@ export type RootStackParamList = {
   ChoreDetails: { choreId: string };
   SignIn: undefined;
   SignUp: undefined;
-  CreateProfile: undefined;
+  CreateProfile: { householdId: string | undefined };
   CreateHousehold: undefined;
   JoinOrCreateHouseholdPrompt: undefined;
   EditHousehold: undefined;
@@ -63,6 +64,7 @@ export default function NavContainer() {
             <Stack.Screen name='SignIn' component={SignInScreen} />
             <Stack.Screen name='SignUp' component={SignUpScreen} />
             <Stack.Screen name='CreateHousehold' component={CreateHouseholdScreen} />
+            <Stack.Screen name='CreateProfile' component={CreateProfileScreen} />
             <Stack.Screen
               name='JoinOrCreateHouseholdPrompt'
               component={JoinOrCreateHouseholdPromptScreen}

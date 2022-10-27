@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+/* import { useDispatch } from "react-redux";
 import { RootStateType } from "../../app/store";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { getProfilesByHouseholdId } from "../household/householdSlice";
@@ -10,3 +10,4 @@ export const returnAvailableAvatars = (householdId: string) => {
 
   let availableAvatars;
 };
+ */
