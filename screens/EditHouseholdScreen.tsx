@@ -21,11 +21,11 @@ import {
   selectProfileByHousholdId,
 } from "../features/household/householdSelectors";
 import { editHouseholdThunk } from "../features/household/householdSlice";
-import {editProfile} from "../features/profile/profileSlice"
+import { editProfile } from "../features/profile/profileSlice";
 import { selectPauses } from "../features/pause/pauseSelectors";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { useAvatar } from "../hooks/useAvatar";
 import { RootStackParamList } from "../NavContainer";
+import ProfileListItem from "../components/ProfileListItem";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function EditHouseholdScreen({
@@ -38,7 +38,7 @@ export default function EditHouseholdScreen({
   const household = useAppSelector(selectHousehold);
   const members = useAppSelector(selectProfileByHousholdId);
   const membersOnPause = useAppSelector(selectPauses);
-  //console.log(members);
+  console.log(members);
   //console.log(membersOnPause);
   const [enabled, setEnabled] = useState(false);
   const [modalAddAdminVisible, setModalAddAdminVisible] = useState(false);
@@ -81,18 +81,9 @@ export default function EditHouseholdScreen({
 
           <Text>Household's admin: </Text>
           <View style={{ flex: 1, flexDirection: "row" }}>
-            {members.map((member, memberIndex) => {
+            {members.map((member) => {
               if (member.isAdmin) {
-                // eslint-disable-next-line react-hooks/rules-of-hooks
-                const { emoji, color } = useAvatar(member.avatar);
-                return (
-                  <View style={{ padding: 5 }} key={memberIndex}>
-                    <Text style={styles.avatar}>{emoji}</Text>
-                    <Text style={{ textAlign: "center", backgroundColor: color }}>
-                      {member.alias}
-                    </Text>
-                  </View>
-                );
+                return <ProfileListItem profile={member} />;
               }
             })}
           </View>
@@ -109,28 +100,21 @@ export default function EditHouseholdScreen({
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>Click profile to add as admin</Text>
                 <View style={{ flexDirection: "row" }}>
-                  {members.map((member, memberIndex) => {
+                  {members.map((member) => {
                     if (member.isAdmin == false) {
-                      // eslint-disable-next-line react-hooks/rules-of-hooks
-                      const { emoji, color } = useAvatar(member.avatar);
                       return (
-                        <View style={{ padding: 5 }} key={memberIndex}>
-                          <Pressable
-                            onPress={() =>
-                              dispatch(
-                                editProfile({
-                                  profileEditDto: { isAdmin: true },
-                                  profileId: member.id,
-                                }),
-                              )
-                            }
-                          >
-                            <Text style={styles.avatar}>{emoji}</Text>
-                            <Text style={{ textAlign: "center", backgroundColor: color }}>
-                              {member.alias}
-                            </Text>
-                          </Pressable>
-                        </View>
+                        <Pressable
+                          onPress={() =>
+                            dispatch(
+                              editProfile({
+                                profileEditDto: { isAdmin: true },
+                                profileId: member.id,
+                              }),
+                            )
+                          }
+                        >
+                          <ProfileListItem profile={member} />
+                        </Pressable>
                       );
                     }
                   })}
@@ -156,28 +140,25 @@ export default function EditHouseholdScreen({
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>Click admin profile to remove</Text>
                 <View style={{ flexDirection: "row" }}>
-                  {members.map((member, memberIndex) => {
-                    if (member.isAdmin == true) {
-                      // eslint-disable-next-line react-hooks/rules-of-hooks
-                      const { emoji, color } = useAvatar(member.avatar);
+                  {members.map((member) => {
+                    if (member.isAdmin) {
                       return (
-                        <View style={{ padding: 5 }} key={memberIndex}>
-                          <Pressable
-                            onPress={() =>
-                              dispatch(
-                                editProfile({
-                                  profileEditDto: { isAdmin: false, avatar: member.avatar, alias: member.alias },
-                                  profileId: member.id,
-                                }),
-                              )
-                            }
-                          >
-                            <Text style={styles.avatar}>{emoji}</Text>
-                            <Text style={{ textAlign: "center", backgroundColor: color }}>
-                              {member.alias}
-                            </Text>
-                          </Pressable>
-                        </View>
+                        <Pressable
+                          onPress={() =>
+                            dispatch(
+                              editProfile({
+                                profileEditDto: {
+                                  isAdmin: false,
+                                  avatar: member.avatar,
+                                  alias: member.alias,
+                                },
+                                profileId: member.id,
+                              }),
+                            )
+                          }
+                        >
+                          <ProfileListItem profile={member} />
+                        </Pressable>
                       );
                     }
                   })}
@@ -220,24 +201,21 @@ export default function EditHouseholdScreen({
           <Text style={styles.showProperty}>{household.code}</Text>
           <Text>Household members: </Text>
           <View style={{ flex: 1, flexDirection: "row" }}>
-            {members.map((member, memberIndex) => {
-              // eslint-disable-next-line react-hooks/rules-of-hooks
-              const { emoji, color } = useAvatar(member.avatar);
-              return (
-                <View style={{ padding: 5 }} key={memberIndex}>
-                  <Text style={styles.avatar}>{emoji}</Text>
-                  <Text style={{ textAlign: "center", backgroundColor: color }}>
-                    {member.alias}
-                  </Text>
-                  <Switch
-                    value={enabled}
-                    onValueChange={toggleSwitch}
-                    thumbColor={enabled ? thumbColorOn : thumbColorOff}
-                    trackColor={{ false: trackColorOff, true: trackColorOn }}
-                  />
-                  {enabled ? (member.isAdmin = true) : (member.isAdmin = false)}
-                </View>
-              );
+            {members.map((member) => {
+              if (member.isAdmin) {
+                return (
+                  <View>
+                    <ProfileListItem profile={member} />
+                    <Switch
+                      value={enabled}
+                      onValueChange={toggleSwitch}
+                      thumbColor={enabled ? thumbColorOn : thumbColorOff}
+                      trackColor={{ false: trackColorOff, true: trackColorOn }}
+                    />
+                    {enabled ? (member.isAdmin = true) : (member.isAdmin = false)}
+                  </View>
+                );
+              }
             })}
           </View>
         </View>
