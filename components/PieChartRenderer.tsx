@@ -1,4 +1,4 @@
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import PieChartCustom from "../components/PieChartCustom";
 import { Text } from "react-native-paper";
 import { useAppSelector } from "../hooks/reduxHooks";
@@ -7,14 +7,18 @@ import {
 	selectChoreCompletedStatisticsForAllChores,
 } from "../features/choreCompleted/choreCompletedSelectors";
 import { StatisticsList } from "../features/choreCompleted/choreCompletedTypes";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../NavContainer";
 
 
 interface Props {
 	start: Date;
 	end: Date;
+	navigation: NativeStackNavigationProp<RootStackParamList>;
 }
 
-export default function PieChartRenderer({ start, end }: Props) {
+export default function PieChartRenderer({ start, end, navigation }: Props) {
+
 	const statsForEachChore = useAppSelector((state) =>
 		selectChoreCompletedStatisticsListForAllChores(state, start, end)
 	);
@@ -24,10 +28,13 @@ export default function PieChartRenderer({ start, end }: Props) {
 	);
 
 	function renderItem(item: StatisticsList) {
+		const name = item.name.split(" ");
 		return item.data.length ? (
 			<View style={styles.pieContainerContainer}>
-				<PieChartCustom data={item.data} subtitle={item.name} isSmall={true} />
-				<Text style={styles.miniPieTitle}>{item.name}</Text>
+				<TouchableOpacity onPress={() => navigation.navigate("ChoreDetails", { choreId: item.id })}>
+					<PieChartCustom data={item.data} subtitle={item.name} isSmall={true} />
+					<Text style={styles.miniPieTitle}>{name.length > 1 ? name[0] + "..." : name[0]}</Text>
+				</TouchableOpacity>
 			</View>
 		) : (
 			<></>
@@ -38,7 +45,9 @@ export default function PieChartRenderer({ start, end }: Props) {
 		<View>
 			{statsAllChores && (
 				<View style={styles.bigPieContainer}>
-					<PieChartCustom data={statsAllChores} subtitle='Total' isSmall={false} />
+					<TouchableOpacity onPress={() => navigation.navigate("Home", { screen: "Chores" })}>
+						<PieChartCustom data={statsAllChores} subtitle='Total' isSmall={false} />
+					</TouchableOpacity>
 				</View>
 			)}
 			{statsForEachChore && (
