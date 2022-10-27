@@ -6,4 +6,3 @@ export const selectHousehold = (state: RootStateType) =>
 export const selectProfileByHousholdId = (state: RootStateType) =>
   state.householdReducer.profiles;
 export const selectHouseholdProfile = (state: RootStateType, profileId: string): Profile | undefined => selectProfileByHousholdId(state).find(p => p.id === profileId);
-// export const selectHouseholdProfiles = (state: RootStateType): Profile[] => selectProfileByHousholdId(state);
