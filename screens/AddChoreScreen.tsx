@@ -136,7 +136,7 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
       pictureUrl: "",
       audioUrl: "",
       isArchived: false,
-      householdId: "C0000000-0000-0000-0000-000000000001"
+      householdId: "C0000000-0000-0000-0000-000000000003"
     };
     dispatch(createChore(choreCreateDto));
 
