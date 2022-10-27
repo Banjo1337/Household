@@ -15,14 +15,12 @@ import ProfileListItem from "../components/ProfileListItem";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function HouseholdDetailsScreen({
-  route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList>) {
-  //add route.params for householdId instead of "stringPlaceholder";
-  const householdId = "stringPlaceholder";
+  const currentProfileId = useAppSelector((state)=> state.profileReducer.profile).id;
   const household = useAppSelector(selectHousehold);
   const members = useAppSelector(selectProfileByHousholdId);
-  //console.log(members);
+  console.log(members);
   //console.log(membersOnPause);
   const [modalLeaveVisible, setModalLeaveVisible] = useState(false);
 
@@ -54,10 +52,9 @@ export default function HouseholdDetailsScreen({
                     </Text>
                     <View style={{ flexDirection: "row" }}>
                       {members.map((member) => {
-                        // Osäker på vad nästa rad är till för
-                      // if (member.id == 2) {
-                          return <ProfileListItem profile={member} />;
-                        //}
+                        if (member.id == currentProfileId) {
+                        return <ProfileListItem profile={member} />;
+                        }
                       })}
                     </View>
                     <View style={{flexDirection: "row", justifyContent: "space-around"}}>
@@ -66,6 +63,7 @@ export default function HouseholdDetailsScreen({
                         onPress={() => {
                           setModalLeaveVisible(!modalLeaveVisible);
                           navigation.navigate("MegaNavigationGod");
+                          //Add logic to remove member from household. If member is the last admin the household will be deleted
                         }}
                       >
                         <Text style={styles.textStyle}>Yes</Text>
