@@ -42,9 +42,9 @@ export const editProfile = createAsyncThunk<
   { profileEditDto: ProfileEditDto; profileId: string },
   { rejectValue: string }
 >("profile/EditProfile", async ({profileEditDto, profileId}, thunkApi) => {
-   if (Token()) {
+/*    if (Token()) {
     return thunkApi.rejectWithValue("User not logged in");
-  } 
+  } */ 
   try {
     const response = await fetch(baseUrl + "editProfile/" + profileId, {
       method: "PATCH",

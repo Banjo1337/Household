@@ -40,7 +40,7 @@ export const hydrateChoresCompletedSliceFromBackendThunk = createAsyncThunk<
   { rejectValue: string }
 >("choreCompleted/getAllChores", async (householdId: string, thunkApi) => {
   try {
-    const response = await fetch(baseUrl + "GetAllChoreCompleted/" + householdId);
+    const response = await fetch(baseUrl + "GetAllChoreCompletedByHouseholdId/" + householdId);
 
     if (response.ok) {
       return await response.json();
