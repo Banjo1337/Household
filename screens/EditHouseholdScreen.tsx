@@ -11,7 +11,6 @@ import {
   Platform,
   Modal,
   Pressable,
-  Dimensions,
 } from "react-native";
 import { Switch } from "react-native-paper";
 //import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
@@ -81,7 +80,7 @@ export default function EditHouseholdScreen({
           <Text style={styles.showProperty}>{household.name}</Text>
 
           <Text>Household's admin: </Text>
-          <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={styles.avatarIcon}>
             {members.map((member, memberindex) => {
               if (member.isAdmin) {
                 return <ProfileListItem profile={member} key={memberindex} />;
@@ -100,7 +99,7 @@ export default function EditHouseholdScreen({
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>Click profile to add as admin</Text>
-                <View style={{ flexDirection: "row" }}>
+                <View style={styles.avatarIcon}>
                   {members.map((member, memberindex) => {
                     if (member.isAdmin == false) {
                       return (
@@ -108,7 +107,7 @@ export default function EditHouseholdScreen({
                           onPress={() =>
                             dispatch(
                               editProfile({
-                                profileEditDto: { isAdmin: true, alias:member.alias },
+                                profileEditDto: { isAdmin: true, alias: member.alias },
                                 profileId: member.id,
                               }),
                             )
@@ -141,7 +140,7 @@ export default function EditHouseholdScreen({
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>Click admin profile to remove</Text>
-                <View style={{ flexDirection: "row" }}>
+                <View style={styles.avatarIcon}>
                   {members.map((member, memberindex) => {
                     if (member.isAdmin) {
                       return (
@@ -175,7 +174,7 @@ export default function EditHouseholdScreen({
               </View>
             </View>
           </Modal>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
             <Pressable
               style={[styles.button, styles.buttonOpen]}
               onPress={() => setModalAddAdminVisible(true)}
@@ -203,20 +202,20 @@ export default function EditHouseholdScreen({
           <Text>Household code: </Text>
           <Text style={styles.showProperty}>{household.code}</Text>
           <Text>Household members: </Text>
-          <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={styles.avatarIcon}>
             {members.map((member, memberindex) => {
-                return (
-                  <View key={memberindex}>
-                    <ProfileListItem profile={member}  />
-                    <Switch
-                      value={enabled}
-                      onValueChange={toggleSwitch}
-                      thumbColor={enabled ? thumbColorOn : thumbColorOff}
-                      trackColor={{ false: trackColorOff, true: trackColorOn }}
-                    />
-                    {enabled ? (member.isAdmin = true) : (member.isAdmin = false)}
-                  </View>
-                );
+              return (
+                <View key={memberindex}>
+                  <ProfileListItem profile={member} />
+                  <Switch
+                    value={enabled}
+                    onValueChange={toggleSwitch}
+                    thumbColor={enabled ? thumbColorOn : thumbColorOff}
+                    trackColor={{ false: trackColorOff, true: trackColorOn }}
+                  />
+                  {enabled ? (member.isAdmin = true) : (member.isAdmin = false)}
+                </View>
+              );
             })}
           </View>
         </View>
@@ -226,7 +225,6 @@ export default function EditHouseholdScreen({
 }
 const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get("window").width * 0.9,
     alignItems: "center",
     padding: 20,
   },
@@ -259,6 +257,12 @@ const styles = StyleSheet.create({
     height: 50,
     margin: 0,
     borderRadius: 20,
+  },
+  avatarIcon: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
   },
   avatar: {
     fontSize: 50,

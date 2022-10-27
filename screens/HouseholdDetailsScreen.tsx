@@ -1,6 +1,14 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView, Pressable, Modal, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  Pressable,
+  Modal,
+} from "react-native";
 //import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 import { Feather } from "@expo/vector-icons";
@@ -17,7 +25,7 @@ import ProfileListItem from "../components/ProfileListItem";
 export default function HouseholdDetailsScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList>) {
-  const currentProfileId = useAppSelector((state)=> state.profileReducer.profile).id;
+  const currentProfileId = useAppSelector((state) => state.profileReducer.profile).id;
   const household = useAppSelector(selectHousehold);
   const members = useAppSelector(selectProfileByHousholdId);
   console.log(members);
@@ -53,7 +61,7 @@ export default function HouseholdDetailsScreen({
                     <Text style={styles.modalText}>
                       Are you sure you want to leave the household?
                     </Text>
-                    <View style={{ flexDirection: "row" }}>
+                    <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
                       {members.map((member, memberindex) => {
                         if (member.id == currentProfileId) {
                           return <ProfileListItem profile={member} key={memberindex} />;
@@ -95,10 +103,12 @@ export default function HouseholdDetailsScreen({
           <Text style={styles.showProperty}>{household.name}</Text>
 
           <Text>Household's admin: </Text>
-          <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={styles.avatarIcon}>
             {members.map((member, memberindex) => {
               if (member.isAdmin) {
-                return <ProfileListItem profile={member} key={memberindex} />;
+                return (
+                    <ProfileListItem profile={member} key={memberindex} />
+                );
               }
             })}
           </View>
@@ -106,7 +116,7 @@ export default function HouseholdDetailsScreen({
           <Text>Household code: </Text>
           <Text style={styles.showProperty}>{household.code}</Text>
           <Text>Household members: </Text>
-          <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={styles.avatarIcon}>
             {members.map((member, memberindex) => {
               return <ProfileListItem profile={member} key={memberindex} />;
             })}
@@ -120,7 +130,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     padding: 20,
-    width: Dimensions.get("window").width * 0.9,
   },
   showProperty: {
     alignItems: "center",
@@ -140,6 +149,13 @@ const styles = StyleSheet.create({
     height: 50,
     margin: 0,
     borderRadius: 20,
+  },
+  avatarIcon: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
   },
   centeredView: {
     flex: 1,
