@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Switch } from "react-native-paper";
 //import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
@@ -44,44 +44,13 @@ export default function EditHouseholdScreen({ route }: NativeStackScreenProps<Ro
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View>
-          <Image source={require(householdPicture)} style={styles.householdPicture} />
-          <Text>Household's name: </Text>
-          <Text style={styles.showProperty}>{household.name}</Text>
-          <Text>Household's admin: </Text>
-          <View style={{ flex: 1, flexDirection: "row" }}>
-            {members.map((member, memberIndex) => {
-              if (member.isAdmin) {
-                // eslint-disable-next-line react-hooks/rules-of-hooks
-                const { emoji, color } = useAvatar(member.avatar);
-                return (
-                  <View style={{ padding: 5 }} key={memberIndex}>
-                    <Text style={styles.avatar}>{emoji}</Text>
-                    <Text style={{ textAlign: "center", backgroundColor: color }}>
-                      {member.alias}
-                    </Text>
-                  </View>
-                );
-              }
-            })}
-          </View>
-
-          {/* Conditional rendering needed here to render only i user is admin */}
-          <Text>Change household's name: </Text>
-          <CustomInput
-            name='householdName'
-            placeholder='Enter a new household name'
-            control={control}
-          ></CustomInput>
-          <TouchableOpacity style={styles.pressable} onPress={handleSubmit(onEditHouseholdPressed)}>
-            <Text>Submit</Text>
-          </TouchableOpacity>
-
-          <Text>Household code: </Text>
-          <Text style={styles.showProperty}>{household.code}</Text>
-          <Text>Household members: </Text>
-          <View style={{ flex: 1, flexDirection: "row" }}>
-            {members.map((member, memberIndex) => {
+        <Image source={require(householdPicture)} style={styles.householdPicture} />
+        <Text>Household's name: </Text>
+        <Text style={styles.showProperty}>{household.name}</Text>
+        <Text>Household's admin: </Text>
+        <View style={{ flex: 1, flexDirection: "row" }}>
+          {members.map((member, memberIndex) => {
+            if (member.isAdmin) {
               // eslint-disable-next-line react-hooks/rules-of-hooks
               const { emoji, color } = useAvatar(member.avatar);
               return (
@@ -90,11 +59,38 @@ export default function EditHouseholdScreen({ route }: NativeStackScreenProps<Ro
                   <Text style={{ textAlign: "center", backgroundColor: color }}>
                     {member.alias}
                   </Text>
-                  <Switch></Switch>
                 </View>
               );
-            })}
-          </View>
+            }
+          })}
+        </View>
+
+        {/* Conditional rendering needed here to render only i user is admin */}
+        <Text>Change household's name: </Text>
+        <CustomInput
+          name='householdName'
+          placeholder='Enter a new household name'
+          control={control}
+        ></CustomInput>
+        <TouchableOpacity style={styles.pressable} onPress={handleSubmit(onEditHouseholdPressed)}>
+          <Text>Submit</Text>
+        </TouchableOpacity>
+
+        <Text>Household code: </Text>
+        <Text style={styles.showProperty}>{household.code}</Text>
+        <Text>Household members: </Text>
+        <View style={{ flex: 1, flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
+          {members.map((member, memberIndex) => {
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            const { emoji, color } = useAvatar(member.avatar);
+            return (
+              <View style={{ padding: 5 }} key={memberIndex}>
+                <Text style={styles.avatar}>{emoji}</Text>
+                <Text style={{ textAlign: "center", backgroundColor: color }}>{member.alias}</Text>
+                <Switch></Switch>
+              </View>
+            );
+          })}
         </View>
       </View>
     </ScrollView>

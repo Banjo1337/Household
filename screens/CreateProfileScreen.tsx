@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
-import { Button } from "react-native-paper";
+import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
+import { Button, Text } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { RootStackParamList } from "../NavContainer";
 
@@ -14,11 +14,13 @@ export default function CreateProfileScreen({
     handleSubmit,
     formState: {},
   } = useForm();
+
   const toggleInput = () => {
     setInput((joinHousehold) => !joinHousehold);
-    console.log("toggle pressed" + joinAsUser);
+    console.log("toggle pressed" + joinAsAdmin);
   };
-  const [joinAsUser, setInput] = useState(false);
+
+  const [joinAsAdmin, setInput] = useState(false);
 
   const onCreateHouseholdPressed = (data: FieldValues) => {
     console.log("you have pressed create household" + data.householdname + data.profilename);
@@ -26,8 +28,9 @@ export default function CreateProfileScreen({
   };
   const onJoinHouseholdPressed = (data: FieldValues) => {
     console.log("you have pressed join household" + data.householdname + data.profilename);
-    navigation.navigate("PendingRequest");
+    navigation.navigate("RequestToJoinHousehold", { householdId: data.householdcode });
   };
+
   return (
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
@@ -48,13 +51,13 @@ export default function CreateProfileScreen({
         <View style={{ marginTop: "15%" }}>
           <Button style={styles.button} onPress={toggleInput}>
             <Text>
-              {joinAsUser
+              {joinAsAdmin
                 ? "Got a household code already?"
                 : "Dont have a household yet? Create one"}
             </Text>
           </Button>
           <View style={{ marginTop: "5%" }}>
-            {joinAsUser ? (
+            {joinAsAdmin ? (
               <CustomInput
                 style={styles.input}
                 name='householdname'
@@ -88,12 +91,12 @@ export default function CreateProfileScreen({
         <Button
           style={styles.joinButton}
           onPress={
-            joinAsUser
+            joinAsAdmin
               ? handleSubmit(onCreateHouseholdPressed)
               : handleSubmit(onJoinHouseholdPressed)
           }
         >
-          Create profile and {joinAsUser ? "Household" : "join household"}
+          Create profile and {joinAsAdmin ? "Household" : "join household"}
         </Button>
       </View>
     </ScrollView>
@@ -118,7 +121,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#5553",
     borderRadius: 50,
   },
-  button: { backgroundColor: "#ccc" },
+  button: { backgroundColor: "#aaa" },
   joinButton: {
     position: "absolute",
     bottom: 5,

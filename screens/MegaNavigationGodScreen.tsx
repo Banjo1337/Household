@@ -4,110 +4,106 @@ import { Button } from "react-native-paper";
 import { RootStackParamList } from "../NavContainer";
 
 export default function MegaNavigationGodScreen(
-  Props: NativeStackScreenProps<RootStackParamList, "MegaNavigationGod">
+  Props: NativeStackScreenProps<RootStackParamList, "MegaNavigationGod">,
 ) {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollview}>
         <Button
-          mode="contained"
+          mode='contained'
           style={styles.button}
-          onPress={() =>
-            Props.navigation.navigate("Home", { screen: "Chores" })
-          }
+          onPress={() => Props.navigation.navigate("Home", { screen: "Chores" })}
         >
           Chores
         </Button>
         <Button
-          mode="contained"
+          mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("AddChore")}
         >
           AddChore
         </Button>
         <Button
-          mode="contained"
+          mode='contained'
           style={styles.button}
-          onPress={() => Props.navigation.navigate("ChoreDetails", {choreId:""})}
+          onPress={() => Props.navigation.navigate("ChoreDetails", { choreId: "" })}
         >
           ChoreDetails
         </Button>
         <Button
-          mode="contained"
+          mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("SignIn")}
         >
           SignIn
         </Button>
         <Button
-          mode="contained"
+          mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("SignUp")}
         >
           SignUp
         </Button>
         <Button
-          mode="contained"
+          mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("CreateProfile")}
         >
           CreateProfile
         </Button>
         <Button
-          mode="contained"
+          mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("CreateHousehold")}
         >
           CreateHousehold
         </Button>
         <Button
-          mode="contained"
+          mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("EditHousehold")}
         >
           EditHousehold
         </Button>
         <Button
-          mode="contained"
+          mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("SelectProfile")}
         >
           SelectProfile
         </Button>
         <Button
-          mode="contained"
+          mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("FinalizeProfile")}
         >
           FinalizeProfile
         </Button>
         <Button
-          mode="contained"
+          mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("PendingRequest")}
         >
           PendingRequest
         </Button>
         <Button
-          mode="contained"
+          mode='contained'
           style={styles.button}
-          onPress={() => Props.navigation.navigate("RequestResponse")}
+          onPress={() => Props.navigation.navigate("RequestToJoinHousehold")}
         >
-          RequestResponse
+          RequestToJoinHouseholdScreen
         </Button>
         <Button
-          mode="contained"
+          mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("Settings")}
         >
           Settings
         </Button>
         <Button
-          mode="contained"
+          mode='contained'
           style={styles.button}
-          onPress={() =>
-            Props.navigation.navigate("Home", { screen: "Statistics" })
-          }
+          onPress={() => Props.navigation.navigate("Home", { screen: "Statistics" })}
         >
           Statistics
         </Button>

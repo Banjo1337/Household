@@ -8,7 +8,6 @@ import CreateProfileScreen from "./screens/CreateProfileScreen";
 import FinalizeProfileScreen from "./screens/FinalizeProfileScreen";
 import MegaNavigationGodScreen from "./screens/MegaNavigationGodScreen";
 import PendingRequestScreen from "./screens/PendingRequest";
-import RequestResponseScreen from "./screens/RequestResponseScreen";
 import SelectProfileScreen from "./screens/SelectProfileScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import SignInScreen from "./screens/SignInScreen";
@@ -16,12 +15,13 @@ import SignUpScreen from "./screens/SignUpScreen";
 //import StatisticsScreen from "./screens/StatisticsScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider as PaperProvider } from "react-native-paper";
+import { hydrateAuthenticationSliceFromSecureStorageThunk } from "./features/authentication/authenticationSlice";
 import { useTheme } from "./features/theme/ThemeContext";
+import { useAppDispatch } from "./hooks/reduxHooks";
 import TopTabNavigator from "./navigation/TopTabsNavigator";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
-import { useAppDispatch } from "./hooks/reduxHooks";
-import { hydrateAuthenticationSliceFromSecureStorageThunk } from "./features/authentication/authenticationSlice";
+import RequestToJoinHouseholdScreen from "./screens/RequestToJoinHouseholdScreen";
 
 export type RootStackParamList = {
   Home: { screen: "Chores" | "Statistics" };
@@ -35,7 +35,7 @@ export type RootStackParamList = {
   SelectProfile: undefined;
   FinalizeProfile: undefined;
   PendingRequest: undefined;
-  RequestResponse: undefined;
+  RequestToJoinHousehold: { householdId: string };
   Settings: undefined;
   MegaNavigationGod: undefined;
 };
@@ -68,7 +68,7 @@ export default function NavContainer() {
             <Stack.Screen name='SelectProfile' component={SelectProfileScreen} />
             <Stack.Screen name='FinalizeProfile' component={FinalizeProfileScreen} />
             <Stack.Screen name='PendingRequest' component={PendingRequestScreen} />
-            <Stack.Screen name='RequestResponse' component={RequestResponseScreen} />
+            <Stack.Screen name='RequestToJoinHousehold' component={RequestToJoinHouseholdScreen} />
             <Stack.Screen name='Settings' component={SettingsScreen} />
           </Stack.Navigator>
         </NavigationContainer>
