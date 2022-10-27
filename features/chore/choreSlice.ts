@@ -45,9 +45,9 @@ export const createChore = createAsyncThunk<Chore, ChoreCreateDto, { rejectValue
         body: JSON.stringify(choreCreateDto),
       });
 
-      // if (response.ok) {
-      //   return (await response.json()) as Chore;
-      // }
+      if (response.ok) {
+        return (await response.json()) as Chore;
+      }
 
       return thunkApi.rejectWithValue(JSON.stringify(response.body));
     } catch (err) {
