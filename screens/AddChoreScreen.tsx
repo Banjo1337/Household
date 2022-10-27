@@ -139,8 +139,7 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
       householdId: "C0000000-0000-0000-0000-000000000003"
     };
     dispatch(createChore(choreCreateDto));
-
-    return;
+    navigation.navigate("Home", { screen: "Chores" });
   };
 
   return (
