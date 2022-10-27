@@ -32,9 +32,12 @@ export default function HouseholdDetailsScreen({
         <View>
           <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <Image source={require(householdPicture)} style={styles.householdPicture} />
-            <View>
-              <Pressable onPress={() => navigation.navigate("EditHousehold")}>
-                <Feather name='settings' size={24} color='black' />
+            <View style={{ alignItems: "flex-end", padding: 10 }}>
+              <Pressable
+                onPress={() => navigation.navigate("EditHousehold")}
+                style={{ padding: 10 }}
+              >
+                <Feather name='settings' size={35} color='black' />
               </Pressable>
 
               <Modal
@@ -53,16 +56,16 @@ export default function HouseholdDetailsScreen({
                     <View style={{ flexDirection: "row" }}>
                       {members.map((member) => {
                         if (member.id == currentProfileId) {
-                        return <ProfileListItem profile={member} />;
+                          return <ProfileListItem profile={member} />;
                         }
                       })}
                     </View>
-                    <View style={{flexDirection: "row", justifyContent: "space-around"}}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
                       <Pressable
                         style={[styles.button, styles.buttonClose]}
                         onPress={() => {
                           setModalLeaveVisible(!modalLeaveVisible);
-                          navigation.navigate("MegaNavigationGod");
+                          navigation.navigate("SelectProfile");
                           //Add logic to remove member from household. If member is the last admin the household will be deleted
                         }}
                       >
