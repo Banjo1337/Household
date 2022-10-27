@@ -11,6 +11,7 @@ import {
   Platform,
   Modal,
   Pressable,
+  Dimensions,
 } from "react-native";
 import { Switch } from "react-native-paper";
 //import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
@@ -81,9 +82,9 @@ export default function EditHouseholdScreen({
 
           <Text>Household's admin: </Text>
           <View style={{ flex: 1, flexDirection: "row" }}>
-            {members.map((member) => {
+            {members.map((member, memberindex) => {
               if (member.isAdmin) {
-                return <ProfileListItem profile={member} />;
+                return <ProfileListItem profile={member} key={memberindex} />;
               }
             })}
           </View>
@@ -100,18 +101,19 @@ export default function EditHouseholdScreen({
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>Click profile to add as admin</Text>
                 <View style={{ flexDirection: "row" }}>
-                  {members.map((member) => {
+                  {members.map((member, memberindex) => {
                     if (member.isAdmin == false) {
                       return (
                         <Pressable
                           onPress={() =>
                             dispatch(
                               editProfile({
-                                profileEditDto: { isAdmin: true },
+                                profileEditDto: { isAdmin: true, alias:member.alias },
                                 profileId: member.id,
                               }),
                             )
                           }
+                          key={memberindex}
                         >
                           <ProfileListItem profile={member} />
                         </Pressable>
@@ -140,7 +142,7 @@ export default function EditHouseholdScreen({
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>Click admin profile to remove</Text>
                 <View style={{ flexDirection: "row" }}>
-                  {members.map((member) => {
+                  {members.map((member, memberindex) => {
                     if (member.isAdmin) {
                       return (
                         <Pressable
@@ -156,6 +158,7 @@ export default function EditHouseholdScreen({
                               }),
                             )
                           }
+                          key={memberindex}
                         >
                           <ProfileListItem profile={member} />
                         </Pressable>
@@ -201,10 +204,10 @@ export default function EditHouseholdScreen({
           <Text style={styles.showProperty}>{household.code}</Text>
           <Text>Household members: </Text>
           <View style={{ flex: 1, flexDirection: "row" }}>
-            {members.map((member) => {
+            {members.map((member, memberindex) => {
                 return (
-                  <View>
-                    <ProfileListItem profile={member} />
+                  <View key={memberindex}>
+                    <ProfileListItem profile={member}  />
                     <Switch
                       value={enabled}
                       onValueChange={toggleSwitch}
@@ -223,6 +226,7 @@ export default function EditHouseholdScreen({
 }
 const styles = StyleSheet.create({
   container: {
+    width: Dimensions.get("window").width * 0.9,
     alignItems: "center",
     padding: 20,
   },
