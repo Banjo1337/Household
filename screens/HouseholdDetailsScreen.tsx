@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView, Pressable, Modal } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, Pressable, Modal, Dimensions } from "react-native";
 //import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 import { Feather } from "@expo/vector-icons";
