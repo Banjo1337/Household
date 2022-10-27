@@ -54,9 +54,9 @@ export default function HouseholdDetailsScreen({
                       Are you sure you want to leave the household?
                     </Text>
                     <View style={{ flexDirection: "row" }}>
-                      {members.map((member) => {
+                      {members.map((member, memberindex) => {
                         if (member.id == currentProfileId) {
-                          return <ProfileListItem profile={member} />;
+                          return <ProfileListItem profile={member} key={memberindex} />;
                         }
                       })}
                     </View>
@@ -96,9 +96,9 @@ export default function HouseholdDetailsScreen({
 
           <Text>Household's admin: </Text>
           <View style={{ flex: 1, flexDirection: "row" }}>
-            {members.map((member) => {
+            {members.map((member, memberindex) => {
               if (member.isAdmin) {
-                return <ProfileListItem profile={member} />;
+                return <ProfileListItem profile={member} key={memberindex} />;
               }
             })}
           </View>
@@ -107,8 +107,8 @@ export default function HouseholdDetailsScreen({
           <Text style={styles.showProperty}>{household.code}</Text>
           <Text>Household members: </Text>
           <View style={{ flex: 1, flexDirection: "row" }}>
-            {members.map((member) => {
-              return <ProfileListItem profile={member} />;
+            {members.map((member, memberindex) => {
+              return <ProfileListItem profile={member} key={memberindex} />;
             })}
           </View>
         </View>
@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     padding: 20,
+    width: Dimensions.get("window").width * 0.9,
   },
   showProperty: {
     alignItems: "center",
