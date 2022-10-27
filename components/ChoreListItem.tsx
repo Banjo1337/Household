@@ -6,7 +6,6 @@ import { Chore } from "../features/chore/choreTypes";
 interface Props {
   chore: Chore;
   navigation: any;
-  // onEditPressed: () => void;
   editableMode: boolean;
 }
 
@@ -46,7 +45,8 @@ export default function ChoreListItem({ chore, navigation, editableMode }: Props
               <Text>Edit</Text>
             </Pressable>
           )}
-          <Text style={{ textAlign: "right", marginRight: 5 }}>Frekvens: {chore.frequency}</Text>
+
+          <Text style={{ textAlign: "right", marginRight: 5, alignContent: "center" }}>Frekvens: {chore.frequency}  </Text>
         </Pressable>
       </Surface>
     </View>

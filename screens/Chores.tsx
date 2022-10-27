@@ -29,9 +29,11 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
 
   return (
     <>
-      <View>
-        <Title>Chore Screen</Title>
-        <Text>{household.name}</Text>
+      <View style={{ justifyContent: "center" }}>
+        <View style={{ alignItems: "center" }}>
+          <Title style={{ textAlign: "center", backgroundColor: "gray", width: 250 }}>Household:{household.name} </Title>
+          <Title style={{ textAlign: "center", backgroundColor: "lightblue" }}>Code: {household.code}</Title>
+        </View>
         <View style={{ justifyContent: "center", height: 350 }}>
           <FlatList
             data={chores}
@@ -52,6 +54,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
         <View style={styles.container}></View>
         <View style={{ flexDirection: "row" }}>
           <Button
+            mode="contained"
             style={{
               width: "50%",
               alignSelf: "flex-end",
@@ -63,6 +66,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
             <Text>Add Chore</Text>
           </Button>
           <Button
+            mode="contained"
             style={{
               width: "50%",
               alignSelf: "flex-end",
@@ -90,6 +94,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     padding: 20,
+    justifyContent: "center"
   },
   title: {
     backgroundColor: "white",
