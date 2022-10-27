@@ -32,7 +32,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
       <View>
         <Title>Chore Screen</Title>
         <Text>{household.name}</Text>
-        <View style={{ justifyContent: "center", height: "auto" }}>
+        <View style={{ justifyContent: "center", height: 200 }}>
           <FlatList
             data={chores}
             renderItem={({ item }) => (
