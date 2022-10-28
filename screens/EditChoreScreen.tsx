@@ -14,6 +14,7 @@ import { RootStackParamList } from "../NavContainer";
 type Props = NativeStackScreenProps<RootStackParamList, "EditChore">;
 
 export default function EditChoreScreen({ route, navigation }: Props) {
+    console.log(route.params.choreId);
     const { currentTheme } = useTheme();
     const [routeId] = useState(route.params.choreId);
     const chore = useAppSelector((state) => selectChoreById(state, routeId));
@@ -61,7 +62,7 @@ export default function EditChoreScreen({ route, navigation }: Props) {
             "Delete",
             "Are you sure??",
             [
-                { text: "Cancel", onPress: () => console.log("Cancel pressed.") },
+                { text: "Cancel", onPress: () => console.log(route.params.choreId) },
                 {
                     text: "Archive it instead.", onPress: () => {
                         const choreUpdateDto: ChoreUpdateDto = {
@@ -74,8 +75,9 @@ export default function EditChoreScreen({ route, navigation }: Props) {
                             isArchived: true,
                             householdId: "c0000000-0000-0000-0000-000000000003"
                         };
+                        console.log(route.params.choreId)
                         console.log(choreUpdateDto);
-                        dispatch(updateChore({ choreUpdateDto: choreUpdateDto, choreId: chore.id }));
+                        dispatch(updateChore({ choreUpdateDto: choreUpdateDto, choreId: route.params.choreId }));
                         navigation.goBack();
                     }
                 },

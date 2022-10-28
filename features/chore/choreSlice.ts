@@ -77,7 +77,7 @@ export const updateChore = createAsyncThunk<
       },
       body: JSON.stringify(choreUpdateDto),
     });
-
+    console.log(response)
     if (response.ok) {
       return (await response.json()) as Chore;
     }
