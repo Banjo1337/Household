@@ -1,5 +1,5 @@
 import { Text } from "react-native-paper";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { useAvatar } from "../hooks/useAvatar";
 import { Avatar } from "../features/profile/profileTypes";
 
@@ -9,13 +9,15 @@ interface Props {
   selectedAvatar: Avatar;
 }
 export default function AvatarSelectorItem({ avatar, handlePress, selectedAvatar }: Props) {
-  const { emoji, color } = useAvatar(avatar);
+  // Lite fult men ternaryn är bara så komponenten inte crashar efter man deletat sin profil och innan navigatorn hunnit backa ut
+  const { emoji, color } = useAvatar(avatar ? avatar : "unicorn");
+  
   return (
     <TouchableOpacity
       onPress={() => handlePress(avatar)}
       style={[styles.bubble, selectedAvatar === avatar && styles.selectedAvatar, { backgroundColor: color }]}
     >
-      <Text style={styles.avatar}>{emoji}</Text>
+    <Text style={styles.avatar}>{emoji}</Text>
     </TouchableOpacity>
   );
 }

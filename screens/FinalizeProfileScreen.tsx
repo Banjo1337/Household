@@ -5,16 +5,15 @@ import { RootStackParamList } from "../NavContainer";
 import { View, StyleSheet, Modal } from "react-native";
 import { Title, Button, Text } from "react-native-paper";
 import { styles as modalStyles } from "./EditHouseholdScreen";
-import { editProfile } from "../features/profile/profileSlice";
 import AvatarSelectorItem from "../components/AvatarSelectorItem";
 import { Avatar, Avatars } from "../features/profile/profileTypes";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { selectActiveProfile } from "../features/profile/profileSelector";
+import { deleteProfile, editProfile } from "../features/profile/profileSlice";
 import { selectProfileByHousholdId } from "../features/household/householdSelectors";
 
 export default function FinalizeProfileScreen(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Props: NativeStackScreenProps<RootStackParamList, "FinalizeProfile">,
 ) {
   const dispatch = useAppDispatch();
@@ -56,7 +55,8 @@ export default function FinalizeProfileScreen(
   }
 
   function handleDelete() {
-    console.log("deleting");
+    dispatch(deleteProfile(profile.id));
+    Props.navigation.navigate("SelectProfile");
   }
 
   return (

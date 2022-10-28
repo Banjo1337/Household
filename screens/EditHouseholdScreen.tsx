@@ -224,7 +224,7 @@ export default function EditHouseholdScreen({
     </ScrollView>
   );
 }
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     width: Dimensions.get("window").width * 0.9,
     alignItems: "center",

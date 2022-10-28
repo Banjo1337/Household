@@ -9,11 +9,13 @@ import SelectProfileButton from "../components/SelectProfileButton";
 import { useEffect } from "react";
 import { selectAuthUserId } from "../features/authentication/authenticationSelectors";
 import { useSetAndHydrateProfile } from "../hooks/useSetAndHydrateProfile";
+import { selectActiveProfile } from "../features/profile/profileSelector";
 
 export default function SelectProfileScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "SelectProfile">) {
   const authUserId = useAppSelector(selectAuthUserId);
+  const profile = useAppSelector(selectActiveProfile);
   const [profiles, setProfiles] = useState<Profile[]>();
   const setAndHydrateProfile = useSetAndHydrateProfile();
 
@@ -26,7 +28,7 @@ export default function SelectProfileScreen({
         setProfiles(await response.json());
       }
     })();
-  }, [authUserId]);
+  }, [authUserId, profile]);
 
   function handleSelectUser(profile: Profile) {
     setAndHydrateProfile(profile);
