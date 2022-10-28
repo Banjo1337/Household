@@ -1,9 +1,9 @@
-import { createAsyncThunk, createSlice, isAnyOf } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 
 import {
   ChoreCompleted,
   ChoreCompletedCreateDto,
-  ChoreCompletedState
+  ChoreCompletedState,
 } from "./choreCompletedTypes";
 
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/chorecompleted/";
@@ -15,23 +15,30 @@ const initialState: ChoreCompletedState = {
 };
 
 export const addChoreCompleted = createAsyncThunk<
-  void,
+  ChoreCompleted,
   ChoreCompletedCreateDto,
   { rejectValue: string }
 >("choreCompleted/addChoreCompleted", async (choreCompleted: ChoreCompletedCreateDto, thunkApi) => {
   try {
-    await fetch(baseUrl + "addChoreCompleted", {
+    const response = await fetch(baseUrl + "addChoreCompleted", {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify(choreCompleted),
     });
+    
+    if(response.ok) {
+      return (await response.json()) as ChoreCompleted;
+    }
+
+    return thunkApi.rejectWithValue(response.statusText);
   } catch (err) {
     if (err instanceof Error) {
       thunkApi.rejectWithValue(err.message);
-    }
+    } 
   }
+  return thunkApi.rejectWithValue("Something went wrong when posting choreCompleted");
 });
 
 export const hydrateChoresCompletedSliceFromBackendThunk = createAsyncThunk<
@@ -45,7 +52,7 @@ export const hydrateChoresCompletedSliceFromBackendThunk = createAsyncThunk<
     if (response.ok) {
       return await response.json();
     } else {
-      return thunkApi.rejectWithValue("something went wrong when fetching choreCompleted");
+      return thunkApi.rejectWithValue(response.statusText);
     }
   } catch (err) {
     if (err instanceof Error) {
@@ -59,7 +66,8 @@ const choreCompletedSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(addChoreCompleted.fulfilled, (state, _) => {
+    builder.addCase(addChoreCompleted.fulfilled, (state, action: PayloadAction<ChoreCompleted>) => {
+      state.completedChores.push(action.payload);
       state.isLoading = false;
     }),
       builder.addCase(hydrateChoresCompletedSliceFromBackendThunk.fulfilled, (state, action) => {
