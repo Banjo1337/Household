@@ -10,7 +10,6 @@ interface Props {
 }
 
 export default function ChoreListItem({ chore, navigation, editableMode }: Props) {
-  console.log(chore)
 
   return (
     <View style={{ alignItems: "center" }}>
