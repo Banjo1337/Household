@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Button, Text } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
@@ -53,13 +53,42 @@ export default function EditChoreScreen({ route, navigation }: Props) {
     const onEditChorePressed = (data: ChoreUpdateDto) => {
         data.frequency = frequencyValue;
         data.points = pointValue;
-        dispatch(updateChore({ choreUpdateDto: data, choreId: chore.id }))
+        dispatch(updateChore({ choreUpdateDto: data, choreId: chore.id }));
         navigation.goBack();
     };
-    const onDeleteChorePressed = () => {
-        dispatch(deleteChore(chore.id));
-        navigation.goBack();
-    };
+    const createThreeButtonAlert = () =>
+        Alert.alert(
+            "Delete",
+            "Are you sure??",
+            [
+                { text: "Cancel", onPress: () => console.log("Cancel pressed.") },
+                {
+                    text: "Archive it instead.", onPress: () => {
+                        const choreUpdateDto: ChoreUpdateDto = {
+                            name: chore.name,
+                            points: chore.points,
+                            description: chore.description,
+                            frequency: chore.frequency,
+                            pictureUrl: chore.pictureUrl,
+                            audioUrl: chore.audioUrl,
+                            isArchived: true,
+                            householdId: "c0000000-0000-0000-0000-000000000003"
+                        };
+                        console.log(choreUpdateDto);
+                        dispatch(updateChore({ choreUpdateDto: choreUpdateDto, choreId: chore.id }));
+                        navigation.goBack();
+                    }
+                },
+                {
+                    text: "Delete the chore!",
+                    onPress: () => {
+                        dispatch(deleteChore(chore.id));
+                        navigation.goBack();
+
+                    }
+                },
+            ]
+        );
 
     return (
         <View style={styles.container}>
@@ -155,9 +184,11 @@ export default function EditChoreScreen({ route, navigation }: Props) {
                     <Text>Close</Text>
                 </Button>
             </View>
-            <Button style={{ backgroundColor: "red" }} onPress={onDeleteChorePressed}>
+            <Button style={{ backgroundColor: "red" }} onPress={createThreeButtonAlert}>
                 <Text>Delete the chore</Text>
             </Button>
+
+
         </View >
     );
 }
@@ -181,9 +212,11 @@ const styles = StyleSheet.create({
     sectionDark: {
         backgroundColor: "#333",
     },
-    button: {
-        backgroundColor: "lightgrey", paddingHorizontal: 30, marginTop: 40,
-    },
     input: {},
     dropDownPicker: {},
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+    }
 });
