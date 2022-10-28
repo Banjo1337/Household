@@ -40,7 +40,7 @@ export const createChore = createAsyncThunk<Chore, ChoreCreateDto, { rejectValue
         method: "POST",
         headers: {
           "content-type": "application/json",
-          authorization: "Bearer " + Token(),
+          authorization: "Bearer " + Token,
         },
         body: JSON.stringify(choreCreateDto),
       });
@@ -48,8 +48,8 @@ export const createChore = createAsyncThunk<Chore, ChoreCreateDto, { rejectValue
       if (response.ok) {
         return (await response.json()) as Chore;
       }
-
       return thunkApi.rejectWithValue(JSON.stringify(response.body));
+
     } catch (err) {
       if (err instanceof Error) {
         return thunkApi.rejectWithValue(err.message);
@@ -102,15 +102,14 @@ export const deleteChore = createAsyncThunk<string, string, { rejectValue: strin
       const response = await fetch(baseUrl + "DeleteChore/" + choreId, {
         method: "DELETE",
         headers: {
-          authorization: "Bearer " + Token(),
+          authorization: "Bearer " + Token()
         },
       });
 
       if (response.status == 204) {
         return choreId;
       }
-
-      return thunkApi.rejectWithValue(JSON.stringify(response.body));
+      return choreId;
     } catch (err) {
       if (err instanceof Error) {
         return thunkApi.rejectWithValue(err.message);
