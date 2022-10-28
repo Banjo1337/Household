@@ -76,7 +76,6 @@ export default function EditChoreScreen({ route, navigation }: Props) {
                             isArchived: true,
                             householdId: household.id
                         };
-                        console.log(household.id);
                         dispatch(updateChore({ choreUpdateDto: choreUpdateDto, choreId: chore.id }));
                         navigation.goBack();
                     }
