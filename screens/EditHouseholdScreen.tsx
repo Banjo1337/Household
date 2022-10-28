@@ -13,7 +13,6 @@ import {
   Pressable,
 } from "react-native";
 import { Switch } from "react-native-paper";
-//import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 import CustomInput from "../components/CustomInput";
 import {
@@ -27,13 +26,41 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 import ProfileListItem from "../components/ProfileListItem";
 
+export function ContainAdminFalse() {
+  const members = useAppSelector(selectProfileByHousholdId);
+  var r = [];
+  members.forEach((element) => {
+    if (element.isAdmin == false) {
+      r.push(element);
+    }
+  });
+  if (r.length >= 1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export function ContainTwoAdmin() {
+  const members = useAppSelector(selectProfileByHousholdId);
+  var r = [];
+  members.forEach((element) => {
+    if (element.isAdmin == true) {
+      r.push(element);
+    }
+  });
+  if (r.length >= 2) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function EditHouseholdScreen({
   route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList>) {
-  //add route.params for householdId instead of "stringPlaceholder";
-  const householdId = "stringPlaceholder";
   const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
   const members = useAppSelector(selectProfileByHousholdId);
@@ -43,6 +70,9 @@ export default function EditHouseholdScreen({
   const [enabled, setEnabled] = useState(false);
   const [modalAddAdminVisible, setModalAddAdminVisible] = useState(false);
   const [modalRemoveAdminVisible, setModalRemoveAdminVisible] = useState(false);
+
+  const membersContainsNonAdmin = ContainAdminFalse();
+  const membersContainsAtLeastTwoAdmin = ContainTwoAdmin();
 
   const {
     control,
@@ -55,7 +85,7 @@ export default function EditHouseholdScreen({
     dispatch(
       editHouseholdThunk({
         householdEditDto: { name: name },
-        householdId: householdId,
+        householdId: household.id,
       }),
     );
   };
@@ -100,25 +130,29 @@ export default function EditHouseholdScreen({
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>Click profile to add as admin</Text>
                 <View style={styles.avatarIcon}>
-                  {members.map((member, memberindex) => {
-                    if (member.isAdmin == false) {
-                      return (
-                        <Pressable
-                          onPress={() =>
-                            dispatch(
-                              editProfile({
-                                profileEditDto: { isAdmin: true, alias: member.alias },
-                                profileId: member.id,
-                              }),
-                            )
-                          }
-                          key={memberindex}
-                        >
-                          <ProfileListItem profile={member} />
-                        </Pressable>
-                      );
-                    }
-                  })}
+                  {membersContainsNonAdmin ? (
+                    members.map((member, memberindex) => {
+                      if (member.isAdmin === false) {
+                        return (
+                          <Pressable
+                            onPress={() =>
+                              dispatch(
+                                editProfile({
+                                  profileEditDto: { isAdmin: true, alias: member.alias },
+                                  profileId: member.id,
+                                }),
+                              )
+                            }
+                            key={memberindex}
+                          >
+                            <ProfileListItem profile={member} />
+                          </Pressable>
+                        );
+                      }
+                    })
+                  ) : (
+                    <Text style={{ color: "red" }}>All members are already admin!</Text>
+                  )}
                 </View>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
@@ -141,36 +175,67 @@ export default function EditHouseholdScreen({
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>Click admin profile to remove</Text>
                 <View style={styles.avatarIcon}>
-                  {members.map((member, memberindex) => {
-                    if (member.isAdmin) {
-                      return (
-                        <Pressable
-                          onPress={() =>
-                            dispatch(
-                              editProfile({
-                                profileEditDto: {
-                                  isAdmin: false,
-                                  avatar: member.avatar,
-                                  alias: member.alias,
-                                },
-                                profileId: member.id,
-                              }),
-                            )
-                          }
-                          key={memberindex}
-                        >
-                          <ProfileListItem profile={member} />
-                        </Pressable>
-                      );
-                    }
-                  })}
+                  {membersContainsAtLeastTwoAdmin ? (
+                    members.map((member, memberindex) => {
+                      if (member.isAdmin) {
+                        return (
+                          <Pressable
+                            onPress={() =>
+                              dispatch(
+                                editProfile({
+                                  profileEditDto: {
+                                    isAdmin: false,
+                                    avatar: member.avatar,
+                                    alias: member.alias,
+                                  },
+                                  profileId: member.id,
+                                }),
+                              )
+                            }
+                            key={memberindex}
+                          >
+                            <ProfileListItem profile={member} />
+                          </Pressable>
+                        );
+                      }
+                    })
+                  ) : (
+                    <View style={{ alignItems: "center" }}>
+                      <Text style={{ color: "red" }}>
+                        If you remove this admin the household will be deleted!
+                      </Text>
+                      <Text style={{ color: "red" }}>Do you want to delete this household?</Text>
+                    </View>
+                  )}
                 </View>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalRemoveAdminVisible(!modalRemoveAdminVisible)}
+                <View
+                  style={{ flexDirection: "row", justifyContent: "space-around", flexWrap: "wrap" }}
                 >
-                  <Text style={styles.textStyle}>Close</Text>
-                </Pressable>
+                  {!membersContainsAtLeastTwoAdmin && (
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setModalRemoveAdminVisible(!modalRemoveAdminVisible)}
+                    >
+                      <Text style={styles.textStyle}>Delete Household</Text>
+                    </Pressable>
+                  )}
+                  {!membersContainsAtLeastTwoAdmin && (
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setModalRemoveAdminVisible(!modalRemoveAdminVisible)}
+                    >
+                      <Text style={styles.textStyle}>Close and keep houshold</Text>
+                    </Pressable>
+                  )}
+                  {membersContainsAtLeastTwoAdmin && (
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setModalRemoveAdminVisible(!modalRemoveAdminVisible)}
+                    >
+                      <Text style={styles.textStyle}>Close</Text>
+                    </Pressable>
+                  )}
+                </View>
               </View>
             </View>
           </Modal>
