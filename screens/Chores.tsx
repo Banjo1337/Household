@@ -5,6 +5,7 @@ import { Button, Text, Title } from "react-native-paper";
 import ChoreListItem from "../components/ChoreListItem";
 import { selectChores } from "../features/chore/choreSelectors";
 import { selectHousehold } from "../features/household/householdSelectors";
+import { selectActiveProfile } from "../features/profile/profileSelector";
 import { useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 //import { TopTabParamsList } from "../navigation/TopTabsNavigator";
@@ -13,10 +14,10 @@ import { RootStackParamList } from "../NavContainer";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ChoresScreen(Props: NativeStackScreenProps<RootStackParamList>) {
-  const [editableMode, setEditableMode] = useState(true);
+  const [editableMode, setEditableMode] = useState(false);
   const household = useAppSelector(selectHousehold);
   const chores = useAppSelector(selectChores);
-
+  const profile = useAppSelector(selectActiveProfile);
 
   const onAddChorePressed = () => {
     Props.navigation.navigate("AddChore");
@@ -51,40 +52,40 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
           />
         </View>
 
-        <View style={styles.container}></View>
-        <View style={{ flexDirection: "row" }}>
-          <Button
-            mode="contained"
-            style={{
-              width: "50%",
-              alignSelf: "flex-end",
-              justifyContent: "flex-end",
-              backgroundColor: "hotpink",
-            }}
-            onPress={onAddChorePressed}
-          >
-            <Text>Add Chore</Text>
-          </Button>
-          <Button
-            mode="contained"
-            style={{
-              width: "50%",
-              alignSelf: "flex-end",
-              justifyContent: "flex-end",
-            }}
-            onPress={toggleIsEditable}
-          >
-            <Text
+        {profile.isAdmin &&
+          <View style={{ flexDirection: "row" }}>
+            <Button
+              mode="contained"
               style={{
-                color: "black",
-                alignSelf: "center",
-                justifyContent: "center",
+                width: "50%",
+                alignSelf: "flex-end",
+                justifyContent: "flex-end",
+                backgroundColor: "hotpink",
               }}
+              onPress={onAddChorePressed}
             >
-              Edit Chore
-            </Text>
-          </Button>
-        </View>
+              <Text>Add Chore</Text>
+            </Button>
+            <Button
+              mode="contained"
+              style={{
+                width: "50%",
+                alignSelf: "flex-end",
+                justifyContent: "flex-end",
+              }}
+              onPress={toggleIsEditable}
+            >
+              <Text
+                style={{
+                  color: "black",
+                  alignSelf: "center",
+                  justifyContent: "center",
+                }}
+              >
+                Edit Chore
+              </Text>
+            </Button>
+          </View>}
       </View>
     </>
   );

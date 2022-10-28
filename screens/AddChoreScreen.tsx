@@ -10,8 +10,9 @@ import { Button } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { createChore } from "../features/chore/choreSlice";
 import { ChoreCreateDto } from "../features/chore/choreTypes";
+import { selectHousehold } from "../features/household/householdSelectors";
 import { useTheme } from "../features/theme/ThemeContext";
-import { useAppDispatch } from "../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 
 
@@ -27,6 +28,8 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
   const [frequencyValue, setFrequencyValue] = useState(1);
   const [pointValue, setPointValue] = useState(2);
   const dispatch = useAppDispatch();
+  const household = useAppSelector(selectHousehold);
+
 
   const onOpenFrequency = useCallback(() => {
     setOpenPoint(false);
@@ -136,7 +139,7 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
       pictureUrl: "",
       audioUrl: "",
       isArchived: false,
-      householdId: "C0000000-0000-0000-0000-000000000003"
+      householdId: household.id
     };
     dispatch(createChore(choreCreateDto));
     navigation.navigate("Home", { screen: "Chores" });

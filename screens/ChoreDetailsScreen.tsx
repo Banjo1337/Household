@@ -56,7 +56,7 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
         </View>
         <View style={styles.container}>
           <Button onPress={onBackPressed} mode="contained" style={styles.button}>Go back</Button>
-          <Button onPress={onEditPressed} mode="contained" style={styles.button}>Edit this chore</Button>
+          {profile.isAdmin && <Button onPress={onEditPressed} mode="contained" style={styles.button}>Edit this chore</Button>}
           <Checkbox
             status={checked ? 'checked' : 'unchecked'}
             onPress={() => {

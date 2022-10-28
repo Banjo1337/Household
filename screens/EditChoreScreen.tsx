@@ -6,7 +6,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { Button, Text } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { selectChoreById } from "../features/chore/choreSelectors";
-import { updateChore } from "../features/chore/choreSlice";
+import { deleteChore, updateChore } from "../features/chore/choreSlice";
 import { ChoreUpdateDto } from "../features/chore/choreTypes";
 import { useTheme } from "../features/theme/ThemeContext";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
@@ -54,6 +54,10 @@ export default function EditChoreScreen({ route, navigation }: Props) {
         data.frequency = frequencyValue;
         data.points = pointValue;
         dispatch(updateChore({ choreUpdateDto: data, choreId: chore.id }))
+        navigation.goBack();
+    };
+    const onDeleteChorePressed = () => {
+        dispatch(deleteChore(chore.id));
         navigation.goBack();
     };
 
@@ -151,7 +155,9 @@ export default function EditChoreScreen({ route, navigation }: Props) {
                     <Text>Close</Text>
                 </Button>
             </View>
-
+            <Button style={{ backgroundColor: "red" }} onPress={onDeleteChorePressed}>
+                <Text>Delete the chore</Text>
+            </Button>
         </View >
     );
 }

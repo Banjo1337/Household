@@ -35,6 +35,7 @@ export default function ChoreListItem({ chore, navigation, editableMode }: Props
         >
           {editableMode && (
             <Pressable
+              key={chore.id}
               onPress={() => navigation.navigate("EditChore", { choreId: chore.id })}
               style={{
                 zIndex: 1,
