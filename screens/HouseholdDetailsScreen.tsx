@@ -1,24 +1,19 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ScrollView,
-  Pressable,
-  Modal,
-} from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, Pressable, Modal } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
 
+import { ContainTwoAdmin } from "../screens/EditHouseholdScreen";
 import {
   selectHousehold,
   selectProfileByHousholdId,
 } from "../features/household/householdSelectors";
-import { useAppSelector } from "../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 import ProfileListItem from "../components/ProfileListItem";
+import { deleteProfile } from "../features/profile/profileSlice";
+import { deleteHouseholdThunk } from "../features/household/householdSlice";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function HouseholdDetailsScreen({
@@ -30,6 +25,8 @@ export default function HouseholdDetailsScreen({
   console.log(members);
   //console.log(membersOnPause);
   const [modalLeaveVisible, setModalLeaveVisible] = useState(false);
+  const membersContainsAtLeastTwoAdmin = ContainTwoAdmin();
+  const dispatch = useAppDispatch();
 
   var householdPicture = "../assets/house-cartoon.png";
 
@@ -56,38 +53,75 @@ export default function HouseholdDetailsScreen({
                 }}
               >
                 <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <Text style={styles.modalText}>
-                      Are you sure you want to leave the household?
-                    </Text>
-                    <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                      {members.map((member, memberindex) => {
-                        if (member.id == currentProfileId) {
-                          return <ProfileListItem profile={member} key={memberindex} />;
-                        }
-                      })}
+                  {membersContainsAtLeastTwoAdmin && (
+                    <View style={styles.modalView}>
+                      <Text style={styles.modalText}>
+                        Are you sure you want to leave the household?
+                      </Text>
+                      <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                        {members.map((member, memberindex) => {
+                          if (member.id == currentProfileId) {
+                            return <ProfileListItem profile={member} key={memberindex} />;
+                          }
+                        })}
+                      </View>
+                      <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+                        <Pressable
+                          style={[styles.button, styles.buttonClose]}
+                          onPress={() => {
+                            setModalLeaveVisible(!modalLeaveVisible);
+                            dispatch(deleteProfile(currentProfileId)); 
+                            navigation.navigate("CreateProfile");
+                          }}
+                        >
+                          <Text style={styles.textStyle}>Yes</Text>
+                        </Pressable>
+                        <Pressable
+                          style={[styles.button, styles.buttonClose]}
+                          onPress={() => {
+                            setModalLeaveVisible(!modalLeaveVisible);
+                          }}
+                        >
+                          <Text style={styles.textStyle}>No</Text>
+                        </Pressable>
+                      </View>
                     </View>
-                    <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-                      <Pressable
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={() => {
-                          setModalLeaveVisible(!modalLeaveVisible);
-                          navigation.navigate("SelectProfile");
-                          //Add logic to remove member from household. If member is the last admin the household will be deleted
-                        }}
-                      >
-                        <Text style={styles.textStyle}>Yes</Text>
-                      </Pressable>
-                      <Pressable
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={() => {
-                          setModalLeaveVisible(!modalLeaveVisible);
-                        }}
-                      >
-                        <Text style={styles.textStyle}>No</Text>
-                      </Pressable>
+                  )}
+                  {!membersContainsAtLeastTwoAdmin && (
+                    <View style={styles.modalView}>
+                      <Text style={styles.modalText}>
+                        You are the last admin. The household will be deleted if you leave!
+                      </Text>
+                      <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                        {members.map((member, memberindex) => {
+                          if (member.id == currentProfileId) {
+                            return <ProfileListItem profile={member} key={memberindex} />;
+                          }
+                        })}
+                      </View>
+                      <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+                        <Pressable
+                          style={[styles.button, styles.buttonClose]}
+                          onPress={() => {
+                            setModalLeaveVisible(!modalLeaveVisible);
+                            dispatch(deleteProfile(currentProfileId)); 
+                            dispatch(deleteHouseholdThunk(household.id));
+                            navigation.navigate("CreateProfile");
+                          }}
+                        >
+                          <Text style={styles.textStyle}>Leave and delete it</Text>
+                        </Pressable>
+                        <Pressable
+                          style={[styles.button, styles.buttonClose]}
+                          onPress={() => {
+                            setModalLeaveVisible(!modalLeaveVisible);
+                          }}
+                        >
+                          <Text style={styles.textStyle}>Stay and keep it</Text>
+                        </Pressable>
+                      </View>
                     </View>
-                  </View>
+                  )}
                 </View>
               </Modal>
               <Pressable
@@ -105,9 +139,7 @@ export default function HouseholdDetailsScreen({
           <View style={styles.avatarIcon}>
             {members.map((member, memberindex) => {
               if (member.isAdmin) {
-                return (
-                    <ProfileListItem profile={member} key={memberindex} />
-                );
+                return <ProfileListItem profile={member} key={memberindex} />;
               }
             })}
           </View>
