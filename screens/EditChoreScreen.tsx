@@ -8,13 +8,13 @@ import CustomInput from "../components/CustomInput";
 import { selectChoreById } from "../features/chore/choreSelectors";
 import { deleteChore, updateChore } from "../features/chore/choreSlice";
 import { ChoreUpdateDto } from "../features/chore/choreTypes";
+import { selectHousehold } from "../features/household/householdSelectors";
 import { useTheme } from "../features/theme/ThemeContext";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 type Props = NativeStackScreenProps<RootStackParamList, "EditChore">;
 
 export default function EditChoreScreen({ route, navigation }: Props) {
-    console.log(route.params.choreId);
     const { currentTheme } = useTheme();
     const [routeId] = useState(route.params.choreId);
     const chore = useAppSelector((state) => selectChoreById(state, routeId));
@@ -23,6 +23,7 @@ export default function EditChoreScreen({ route, navigation }: Props) {
     const [frequencyValue, setFrequencyValue] = useState(chore.frequency);
     const [pointValue, setPointValue] = useState(chore.points);
     const dispatch = useAppDispatch();
+    const household = useAppSelector(selectHousehold);
 
     const dropDownFrequencyValues = [...Array(31)].map((_, i) => {
         i++;
@@ -73,10 +74,9 @@ export default function EditChoreScreen({ route, navigation }: Props) {
                             pictureUrl: chore.pictureUrl,
                             audioUrl: chore.audioUrl,
                             isArchived: true,
-                            householdId: "c0000000-0000-0000-0000-000000000003"
+                            householdId: household.id
                         };
-                        console.log(route.params.choreId)
-                        console.log(choreUpdateDto);
+                        console.log(household.id);
                         dispatch(updateChore({ choreUpdateDto: choreUpdateDto, choreId: route.params.choreId }));
                         navigation.goBack();
                     }
@@ -189,8 +189,6 @@ export default function EditChoreScreen({ route, navigation }: Props) {
             <Button style={{ backgroundColor: "red" }} onPress={createThreeButtonAlert}>
                 <Text>Delete the chore</Text>
             </Button>
-
-
         </View >
     );
 }
