@@ -20,11 +20,11 @@ interface Props {
 export default function PieChartRenderer({ start, end, navigation }: Props) {
 
 	const statsForEachChore = useAppSelector((state) =>
-		selectChoreCompletedStatisticsListForAllChores(state, start, end)
+		selectChoreCompletedStatisticsListForAllChores(state, start, new Date(end.getTime() + 60000))
 	);
 
 	const statsAllChores = useAppSelector((state) =>
-		selectChoreCompletedStatisticsForAllChores(state, start, end)
+		selectChoreCompletedStatisticsForAllChores(state, start, new Date(end.getTime() + 60000))
 	);
 
 	function renderItem(item: StatisticsList) {
