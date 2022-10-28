@@ -63,7 +63,7 @@ export default function EditChoreScreen({ route, navigation }: Props) {
             "Delete",
             "Are you sure??",
             [
-                { text: "Cancel", onPress: () => console.log(route.params.choreId) },
+                { text: "Cancel" },
                 {
                     text: "Archive it instead.", onPress: () => {
                         const choreUpdateDto: ChoreUpdateDto = {
@@ -77,7 +77,7 @@ export default function EditChoreScreen({ route, navigation }: Props) {
                             householdId: household.id
                         };
                         console.log(household.id);
-                        dispatch(updateChore({ choreUpdateDto: choreUpdateDto, choreId: route.params.choreId }));
+                        dispatch(updateChore({ choreUpdateDto: choreUpdateDto, choreId: chore.id }));
                         navigation.goBack();
                     }
                 },
@@ -86,7 +86,6 @@ export default function EditChoreScreen({ route, navigation }: Props) {
                     onPress: () => {
                         dispatch(deleteChore(chore.id));
                         navigation.goBack();
-
                     }
                 },
             ]
