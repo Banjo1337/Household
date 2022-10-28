@@ -102,7 +102,7 @@ export default function MegaNavigationGodScreen(
         <Button
           mode='contained'
           style={styles.button}
-          onPress={() => Props.navigation.navigate("FinalizeProfile")}
+          onPress={() => Props.navigation.navigate("EditProfile")}
         >
           FinalizeProfile
         </Button>

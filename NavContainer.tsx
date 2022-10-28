@@ -5,6 +5,8 @@ import AddChoreScreen from "./screens/AddChoreScreen";
 import ChoreDetailsScreen from "./screens/ChoreDetailsScreen";
 //import ChoresScreen from "./screens/Chores";
 import JoinOrCreateHouseholdPromptScreen from "./screens/JoinOrCreateHouseholdPromptScreen";
+import CreateProfileScreen from "./screens/CreateProfileScreen";
+import EditProfileScreen from "./screens/EditProfileScreen";
 import MegaNavigationGodScreen from "./screens/MegaNavigationGodScreen";
 import PendingRequestScreen from "./screens/PendingRequest";
 import SelectProfileScreen from "./screens/SelectProfileScreen";
@@ -38,7 +40,7 @@ export type RootStackParamList = {
   EditHousehold: undefined;
   HouseholdDetails: undefined;
   SelectProfile: undefined;
-  FinalizeProfile: undefined;
+  EditProfile: undefined;
   PendingRequest: undefined;
   ParsingJoinHouseholdScreen: { householdCode: string };
   Settings: undefined;
@@ -79,6 +81,7 @@ export default function NavContainer() {
             <Stack.Screen name='EditHousehold' component={EditHouseholdScreen} />
             <Stack.Screen name='HouseholdDetails' component={HouseholdDetailsScreen} />
             <Stack.Screen name='SelectProfile' component={SelectProfileScreen} />
+            <Stack.Screen name='EditProfile' component={EditProfileScreen} />
             <Stack.Screen name='PendingRequest' component={PendingRequestScreen} />
             <Stack.Screen
               name='ParsingJoinHouseholdScreen'
