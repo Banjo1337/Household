@@ -102,14 +102,15 @@ export const deleteChore = createAsyncThunk<string, string, { rejectValue: strin
       const response = await fetch(baseUrl + "DeleteChore/" + choreId, {
         method: "DELETE",
         headers: {
-          authorization: "Bearer " + Token()
+          authorization: "Bearer " + Token
         },
       });
 
       if (response.status == 204) {
         return choreId;
       }
-      return choreId;
+      return thunkApi.rejectWithValue(JSON.stringify(response.body));
+
     } catch (err) {
       if (err instanceof Error) {
         return thunkApi.rejectWithValue(err.message);

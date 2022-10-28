@@ -19,7 +19,6 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
   const chores = useAppSelector(selectChores);
   const profile = useAppSelector(selectActiveProfile);
 
-
   const onAddChorePressed = () => {
     Props.navigation.navigate("AddChore");
   };

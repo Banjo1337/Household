@@ -58,6 +58,7 @@ export default function EditChoreScreen({ route, navigation }: Props) {
     };
     const onDeleteChorePressed = () => {
         dispatch(deleteChore(chore.id));
+        navigation.goBack();
     };
 
     return (
