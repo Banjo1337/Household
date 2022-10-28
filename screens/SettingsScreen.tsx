@@ -1,7 +1,9 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { View, StyleSheet } from "react-native";
-import { Text, Switch } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
+import { Button, Switch, Text } from "react-native-paper";
+import { logout } from "../features/authentication/authenticationSlice";
 import { useTheme } from "../features/theme/ThemeContext";
+import { useAppDispatch } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 
 export default function SettingsScreen(
@@ -9,7 +11,11 @@ export default function SettingsScreen(
   Props: NativeStackScreenProps<RootStackParamList, "Settings">,
 ) {
   const { darkmode, setDarkmode, systemTheme, setSystemTheme } = useTheme();
+  const dispatch = useAppDispatch();
 
+  const onLogoutPressed = () => {
+    dispatch(logout());
+  };
   return (
     <View>
       <View style={styles.switchContainer}>
@@ -20,6 +26,10 @@ export default function SettingsScreen(
       <View style={styles.switchContainer}>
         <Text variant='titleMedium'>Darkmode</Text>
         <Switch value={darkmode} onValueChange={setDarkmode} disabled={systemTheme} />
+      </View>
+
+      <View>
+        <Button onPress={onLogoutPressed}>Log out</Button>
       </View>
     </View>
   );

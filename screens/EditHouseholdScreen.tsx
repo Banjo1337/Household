@@ -2,29 +2,29 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import {
-  View,
-  Text,
-  StyleSheet,
   Image,
-  TouchableOpacity,
-  ScrollView,
-  Platform,
   Modal,
+  Platform,
   Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { Switch } from "react-native-paper";
 
 import CustomInput from "../components/CustomInput";
+import ProfileListItem from "../components/ProfileListItem";
 import {
   selectHousehold,
   selectProfileByHousholdId,
 } from "../features/household/householdSelectors";
 import { editHouseholdThunk } from "../features/household/householdSlice";
-import { editProfile } from "../features/profile/profileSlice";
 import { selectPauses } from "../features/pause/pauseSelectors";
+import { editProfile } from "../features/profile/profileSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
-import ProfileListItem from "../components/ProfileListItem";
 
 export function ContainAdminFalse() {
   const members = useAppSelector(selectProfileByHousholdId);

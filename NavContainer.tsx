@@ -4,11 +4,11 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import AddChoreScreen from "./screens/AddChoreScreen";
 import ChoreDetailsScreen from "./screens/ChoreDetailsScreen";
 //import ChoresScreen from "./screens/Chores";
+import JoinOrCreateHouseholdPromptScreen from "./screens/JoinOrCreateHouseholdPromptScreen";
 import CreateProfileScreen from "./screens/CreateProfileScreen";
 import EditProfileScreen from "./screens/EditProfileScreen";
 import MegaNavigationGodScreen from "./screens/MegaNavigationGodScreen";
 import PendingRequestScreen from "./screens/PendingRequest";
-import RequestResponseScreen from "./screens/RequestResponseScreen";
 import SelectProfileScreen from "./screens/SelectProfileScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import SignInScreen from "./screens/SignInScreen";
@@ -21,6 +21,7 @@ import { useTheme } from "./features/theme/ThemeContext";
 import { useAppDispatch } from "./hooks/reduxHooks";
 import TopTabNavigator from "./navigation/TopTabsNavigator";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
+import ParsingJoinHouseholdScreen from "./screens/ParsingJoinHouseholdScreen";
 import EditChoreScreen from "./screens/EditChoreScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
 import HouseholdDetailsScreen from "./screens/HouseholdDetailsScreen";
@@ -29,17 +30,18 @@ export type RootStackParamList = {
   Home: { screen: "Chores" | "Statistics" };
   AddChore: undefined;
   ChoreDetails: { choreId: string };
-  EditChore: { choreId: string }
+  EditChore: { choreId: string };
   SignIn: undefined;
   SignUp: undefined;
-  CreateProfile: undefined;
+  CreateProfile: { householdId: string | undefined };
   CreateHousehold: undefined;
+  JoinOrCreateHouseholdPrompt: undefined;
   EditHousehold: undefined;
   HouseholdDetails: undefined;
   SelectProfile: undefined;
   EditProfile: undefined;
   PendingRequest: undefined;
-  RequestResponse: undefined;
+  ParsingJoinHouseholdScreen: { householdCode: string };
   Settings: undefined;
   MegaNavigationGod: undefined;
 };
@@ -61,22 +63,33 @@ export default function NavContainer() {
               component={MegaNavigationGodScreen}
               options={() => ({ title: "This is temporary" })}
             />
-            <Stack.Screen name='Home' component={TopTabNavigator} options={() => ({
-              headerShown: false
-            })} />
+            <Stack.Screen
+              name='Home'
+              component={TopTabNavigator}
+              options={() => ({
+                headerShown: false,
+              })}
+            />
             <Stack.Screen name='AddChore' component={AddChoreScreen} />
             <Stack.Screen name='ChoreDetails' component={ChoreDetailsScreen} />
-            <Stack.Screen name="EditChore" component={EditChoreScreen} />
+            <Stack.Screen name='EditChore' component={EditChoreScreen} />
             <Stack.Screen name='SignIn' component={SignInScreen} />
             <Stack.Screen name='SignUp' component={SignUpScreen} />
             <Stack.Screen name='CreateHousehold' component={CreateHouseholdScreen} />
             <Stack.Screen name='CreateProfile' component={CreateProfileScreen} />
+            <Stack.Screen
+              name='JoinOrCreateHouseholdPrompt'
+              component={JoinOrCreateHouseholdPromptScreen}
+            />
             <Stack.Screen name='EditHousehold' component={EditHouseholdScreen} />
             <Stack.Screen name='HouseholdDetails' component={HouseholdDetailsScreen} />
             <Stack.Screen name='SelectProfile' component={SelectProfileScreen} />
             <Stack.Screen name='EditProfile' component={EditProfileScreen} />
             <Stack.Screen name='PendingRequest' component={PendingRequestScreen} />
-            <Stack.Screen name='RequestResponse' component={RequestResponseScreen} />
+            <Stack.Screen
+              name='ParsingJoinHouseholdScreen'
+              component={ParsingJoinHouseholdScreen}
+            />
             <Stack.Screen name='Settings' component={SettingsScreen} />
           </Stack.Navigator>
         </NavigationContainer>

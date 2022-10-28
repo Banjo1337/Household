@@ -41,7 +41,7 @@ export default function SelectProfileScreen({
         <SelectProfileButton key={p.id} profile={p} handleSelectUser={handleSelectUser} />
       ))}
       <View style={[styles.profilePortrait, { backgroundColor: "#474747" }]}>
-        <TouchableOpacity onPress={() => navigation.navigate("CreateProfile")}>
+        <TouchableOpacity onPress={() => navigation.navigate("JoinOrCreateHouseholdPrompt")}>
           <Text style={styles.avatar}>➕</Text>
         </TouchableOpacity>
       </View>

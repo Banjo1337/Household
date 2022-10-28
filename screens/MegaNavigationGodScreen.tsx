@@ -1,10 +1,10 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import { RootStackParamList } from "../NavContainer";
 
 export default function MegaNavigationGodScreen(
-  Props: NativeStackScreenProps<RootStackParamList, "MegaNavigationGod">
+  Props: NativeStackScreenProps<RootStackParamList, "MegaNavigationGod">,
 ) {
   return (
     <View style={styles.container}>
@@ -53,10 +53,24 @@ export default function MegaNavigationGodScreen(
         <Button
           mode='contained'
           style={styles.button}
-          onPress={() => Props.navigation.navigate("CreateProfile")}
+          onPress={() => Props.navigation.navigate("JoinOrCreateHouseholdPrompt")}
         >
-          CreateProfile
+          JoinOrCreateHouseholdPrompt
         </Button>
+        <View style={{ borderColor: "red", borderWidth: 1 }}>
+          <Text>Requires household sent</Text>
+          <Button
+            mode='contained'
+            style={styles.button}
+            // Requires a provided householdId in order to successfully create a profile.
+            // Entering this screen through the god-navigator will still work well,
+            // but clicking the "Finalise & Join" button will not do anything
+            // if no HouseholdId is provided.
+            onPress={() => Props.navigation.navigate("CreateProfile")}
+          >
+            CreateProfile
+          </Button>
+        </View>
         <Button
           mode='contained'
           style={styles.button}
@@ -99,13 +113,14 @@ export default function MegaNavigationGodScreen(
         >
           PendingRequest
         </Button>
+        {/* <Text>Requires props!</Text>
         <Button
           mode='contained'
           style={styles.button}
-          onPress={() => Props.navigation.navigate("RequestResponse")}
+          onPress={() => Props.navigation.navigate("ParsingJoinHouseholdScreen")}
         >
-          RequestResponse
-        </Button>
+          ParsingJoinHouseholdScreen(param)
+        </Button> */}
         <Button
           mode='contained'
           style={styles.button}
@@ -130,7 +145,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    marginTop: 25,
+    marginVertical: 15,
     width: "100%",
   },
   scrollview: {
