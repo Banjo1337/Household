@@ -9,7 +9,6 @@ import {
   Pressable,
   Modal,
 } from "react-native";
-//import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 import { Feather } from "@expo/vector-icons";
 
