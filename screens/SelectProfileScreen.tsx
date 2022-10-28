@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 import { Profile } from "../features/profile/profileTypes";
 import { useState } from "react";
@@ -9,11 +9,13 @@ import SelectProfileButton from "../components/SelectProfileButton";
 import { useEffect } from "react";
 import { selectAuthUserId } from "../features/authentication/authenticationSelectors";
 import { useSetAndHydrateProfile } from "../hooks/useSetAndHydrateProfile";
+import { selectActiveProfile } from "../features/profile/profileSelector";
 
 export default function SelectProfileScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "SelectProfile">) {
   const authUserId = useAppSelector(selectAuthUserId);
+  const profile = useAppSelector(selectActiveProfile);
   const [profiles, setProfiles] = useState<Profile[]>();
   const setAndHydrateProfile = useSetAndHydrateProfile();
 
@@ -26,7 +28,7 @@ export default function SelectProfileScreen({
         setProfiles(await response.json());
       }
     })();
-  }, [authUserId]);
+  }, [authUserId, profile]);
 
   function handleSelectUser(profile: Profile) {
     setAndHydrateProfile(profile);

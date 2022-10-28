@@ -69,23 +69,22 @@ export const editProfile = createAsyncThunk<
   }
 });
 
-export const deleteProfile = createAsyncThunk<Profile, string, { rejectValue: string }>(
+export const deleteProfile = createAsyncThunk<string, string, { rejectValue: string }>(
   "profile/deleteProfile",
   async (profileId: string, thunkApi) => {
-    if (Token()) {
-      return thunkApi.rejectWithValue("User not logged in");
-    }
+    // if (!Token()) {
+    //   return thunkApi.rejectWithValue("User not logged in");
+    // }
     try {
-      const response = await fetch(baseUrl + "deleteProfile/" + profileId, {
+      const response = await fetch(baseUrl + "DeleteProfile/" + profileId, {
         method: "DELETE",
         headers: {
-          "content-type": "application/json",
-          authorization: "Bearer " + Token(),
+          // authorization: "Bearer " + Token(),
         },
       });
 
       if (response.status == 204) {
-        return {} as Profile;
+        return profileId;
       }
 
       return thunkApi.rejectWithValue(JSON.stringify(response.body));
@@ -114,6 +113,10 @@ const profileSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(deleteProfile.fulfilled, (state) => {
+      state.profile = {} as Profile;
+      state.isLoading = false;
+    }),
     builder.addMatcher(
       isAnyOf(createProfile.pending, editProfile.pending, deleteProfile.pending),
       (state) => {
@@ -121,7 +124,7 @@ const profileSlice = createSlice({
       },
     ),
       builder.addMatcher(
-        isAnyOf(createProfile.fulfilled, editProfile.fulfilled, deleteProfile.fulfilled),
+        isAnyOf(createProfile.fulfilled, editProfile.fulfilled),
         (state, action) => {
           state.profile = action.payload;
           state.isLoading = false;
