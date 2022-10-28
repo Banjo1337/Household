@@ -13,8 +13,8 @@ import { selectActiveProfile } from "../features/profile/profileSelector";
 import { deleteProfile, editProfile } from "../features/profile/profileSlice";
 import { selectProfileByHousholdId } from "../features/household/householdSelectors";
 
-export default function FinalizeProfileScreen(
-  Props: NativeStackScreenProps<RootStackParamList, "FinalizeProfile">,
+export default function EditProfileScreen(
+  Props: NativeStackScreenProps<RootStackParamList, "EditProfile">,
 ) {
   const dispatch = useAppDispatch();
   const [deleteProfileWarning, setDeleteProfileWarning] = useState(false);

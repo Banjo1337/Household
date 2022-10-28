@@ -5,7 +5,7 @@ import AddChoreScreen from "./screens/AddChoreScreen";
 import ChoreDetailsScreen from "./screens/ChoreDetailsScreen";
 //import ChoresScreen from "./screens/Chores";
 import CreateProfileScreen from "./screens/CreateProfileScreen";
-import FinalizeProfileScreen from "./screens/FinalizeProfileScreen";
+import EditProfileScreen from "./screens/EditProfileScreen";
 import MegaNavigationGodScreen from "./screens/MegaNavigationGodScreen";
 import PendingRequestScreen from "./screens/PendingRequest";
 import RequestResponseScreen from "./screens/RequestResponseScreen";
@@ -37,7 +37,7 @@ export type RootStackParamList = {
   EditHousehold: undefined;
   HouseholdDetails: undefined;
   SelectProfile: undefined;
-  FinalizeProfile: undefined;
+  EditProfile: undefined;
   PendingRequest: undefined;
   RequestResponse: undefined;
   Settings: undefined;
@@ -74,7 +74,7 @@ export default function NavContainer() {
             <Stack.Screen name='EditHousehold' component={EditHouseholdScreen} />
             <Stack.Screen name='HouseholdDetails' component={HouseholdDetailsScreen} />
             <Stack.Screen name='SelectProfile' component={SelectProfileScreen} />
-            <Stack.Screen name='FinalizeProfile' component={FinalizeProfileScreen} />
+            <Stack.Screen name='EditProfile' component={EditProfileScreen} />
             <Stack.Screen name='PendingRequest' component={PendingRequestScreen} />
             <Stack.Screen name='RequestResponse' component={RequestResponseScreen} />
             <Stack.Screen name='Settings' component={SettingsScreen} />
