@@ -20,9 +20,9 @@ import {
   selectHousehold,
   selectProfileByHousholdId,
 } from "../features/household/householdSelectors";
-import { editHouseholdThunk } from "../features/household/householdSlice";
+import { deleteHouseholdThunk, editHouseholdThunk } from "../features/household/householdSlice";
 import { selectPauses } from "../features/pause/pauseSelectors";
-import { editProfile } from "../features/profile/profileSlice";
+import { deleteProfile, editProfile } from "../features/profile/profileSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 
@@ -73,6 +73,8 @@ export default function EditHouseholdScreen({
 
   const membersContainsNonAdmin = ContainAdminFalse();
   const membersContainsAtLeastTwoAdmin = ContainTwoAdmin();
+
+  const currentProfileId = useAppSelector((state) => state.profileReducer.profile).id;
 
   const {
     control,
@@ -214,7 +216,12 @@ export default function EditHouseholdScreen({
                   {!membersContainsAtLeastTwoAdmin && (
                     <Pressable
                       style={[styles.button, styles.buttonClose]}
-                      onPress={() => setModalRemoveAdminVisible(!modalRemoveAdminVisible)}
+                      onPress={() => {
+                        setModalRemoveAdminVisible(!modalRemoveAdminVisible);
+                        dispatch(deleteProfile(currentProfileId));
+                        dispatch(deleteHouseholdThunk(household.id));
+                        navigation.navigate("CreateProfile");
+                      }}
                     >
                       <Text style={styles.textStyle}>Delete Household</Text>
                     </Pressable>
@@ -224,7 +231,7 @@ export default function EditHouseholdScreen({
                       style={[styles.button, styles.buttonClose]}
                       onPress={() => setModalRemoveAdminVisible(!modalRemoveAdminVisible)}
                     >
-                      <Text style={styles.textStyle}>Close and keep houshold</Text>
+                      <Text style={styles.textStyle}>Close and keep household</Text>
                     </Pressable>
                   )}
                   {membersContainsAtLeastTwoAdmin && (
