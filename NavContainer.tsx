@@ -21,7 +21,6 @@ import { useTheme } from "./features/theme/ThemeContext";
 import { useAppDispatch } from "./hooks/reduxHooks";
 import TopTabNavigator from "./navigation/TopTabsNavigator";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
-import CreateProfileScreen from "./screens/CreateProfileScreen";
 import ParsingJoinHouseholdScreen from "./screens/ParsingJoinHouseholdScreen";
 import EditChoreScreen from "./screens/EditChoreScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
@@ -31,7 +30,7 @@ export type RootStackParamList = {
   Home: { screen: "Chores" | "Statistics" };
   AddChore: undefined;
   ChoreDetails: { choreId: string };
-  EditChore: { choreId: string }
+  EditChore: { choreId: string };
   SignIn: undefined;
   SignUp: undefined;
   CreateProfile: { householdId: string | undefined };
@@ -64,12 +63,16 @@ export default function NavContainer() {
               component={MegaNavigationGodScreen}
               options={() => ({ title: "This is temporary" })}
             />
-            <Stack.Screen name='Home' component={TopTabNavigator} options={() => ({
-              headerShown: false
-            })} />
+            <Stack.Screen
+              name='Home'
+              component={TopTabNavigator}
+              options={() => ({
+                headerShown: false,
+              })}
+            />
             <Stack.Screen name='AddChore' component={AddChoreScreen} />
             <Stack.Screen name='ChoreDetails' component={ChoreDetailsScreen} />
-            <Stack.Screen name="EditChore" component={EditChoreScreen} />
+            <Stack.Screen name='EditChore' component={EditChoreScreen} />
             <Stack.Screen name='SignIn' component={SignInScreen} />
             <Stack.Screen name='SignUp' component={SignUpScreen} />
             <Stack.Screen name='CreateHousehold' component={CreateHouseholdScreen} />
