@@ -220,7 +220,7 @@ export default function EditHouseholdScreen({
                         setModalRemoveAdminVisible(!modalRemoveAdminVisible);
                         dispatch(deleteProfile(currentProfileId));
                         dispatch(deleteHouseholdThunk(household.id));
-                        navigation.navigate("CreateProfile");
+                        navigation.navigate("MegaNavigationGod");
                       }}
                     >
                       <Text style={styles.textStyle}>Delete Household</Text>
