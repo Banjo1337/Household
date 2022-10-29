@@ -15,6 +15,22 @@ import ProfileListItem from "../components/ProfileListItem";
 import { deleteProfile } from "../features/profile/profileSlice";
 import { deleteHouseholdThunk } from "../features/household/householdSlice";
 
+
+
+export function CurrentProfileisAdmin() {
+  const members = useAppSelector(selectProfileByHousholdId);
+  const currentProfileId = useAppSelector((state) => state.profileReducer.profile).id;
+  var currentProfile = members.find((element) => element.id == currentProfileId);
+  if(currentProfile?.isAdmin){
+    return true;
+  }
+ else {
+    return false;
+  }
+}
+
+
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function HouseholdDetailsScreen({
   navigation,
@@ -26,6 +42,7 @@ export default function HouseholdDetailsScreen({
   //console.log(membersOnPause);
   const [modalLeaveVisible, setModalLeaveVisible] = useState(false);
   const membersContainsAtLeastTwoAdmin = ContainTwoAdmin();
+  const currentProfileisAdmin = CurrentProfileisAdmin();
   const dispatch = useAppDispatch();
 
   var householdPicture = "../assets/house-cartoon.png";
@@ -37,13 +54,14 @@ export default function HouseholdDetailsScreen({
           <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <Image source={require(householdPicture)} style={styles.householdPicture} />
             <View style={{ alignItems: "flex-end", padding: 10 }}>
+              {currentProfileisAdmin && (
               <Pressable
                 onPress={() => navigation.navigate("EditHousehold")}
                 style={{ padding: 10 }}
               >
                 <Feather name='settings' size={35} color='black' />
               </Pressable>
-
+              )}
               <Modal
                 animationType='slide'
                 transparent={true}
@@ -71,7 +89,7 @@ export default function HouseholdDetailsScreen({
                           onPress={() => {
                             setModalLeaveVisible(!modalLeaveVisible);
                             dispatch(deleteProfile(currentProfileId)); 
-                            navigation.navigate("CreateProfile");
+                            navigation.navigate("MegaNavigationGod");
                           }}
                         >
                           <Text style={styles.textStyle}>Yes</Text>
@@ -106,7 +124,7 @@ export default function HouseholdDetailsScreen({
                             setModalLeaveVisible(!modalLeaveVisible);
                             dispatch(deleteProfile(currentProfileId)); 
                             dispatch(deleteHouseholdThunk(household.id));
-                            navigation.navigate("CreateProfile");
+                            navigation.navigate("MegaNavigationGod");
                           }}
                         >
                           <Text style={styles.textStyle}>Leave and delete it</Text>
