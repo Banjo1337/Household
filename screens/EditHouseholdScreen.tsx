@@ -142,6 +142,7 @@ export default function EditHouseholdScreen({
                                 editProfile({
                                   profileEditDto: { isAdmin: true, alias: member.alias },
                                   profileId: member.id,
+                                  isActiveProfile: false
                                 }),
                               )
                             }
@@ -191,6 +192,7 @@ export default function EditHouseholdScreen({
                                     alias: member.alias,
                                   },
                                   profileId: member.id,
+                                  isActiveProfile: false
                                 }),
                               )
                             }
@@ -218,9 +220,9 @@ export default function EditHouseholdScreen({
                       style={[styles.button, styles.buttonClose]}
                       onPress={() => {
                         setModalRemoveAdminVisible(!modalRemoveAdminVisible);
-                        dispatch(deleteProfile(currentProfileId));
+                        dispatch(deleteProfile({profileId: currentProfileId, isActiveProfile: false}));
                         dispatch(deleteHouseholdThunk(household.id));
-                        navigation.navigate("CreateProfile");
+                        navigation.navigate("SelectProfile");
                       }}
                     >
                       <Text style={styles.textStyle}>Delete Household</Text>
