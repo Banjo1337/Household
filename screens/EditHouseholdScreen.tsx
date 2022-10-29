@@ -4,7 +4,6 @@ import { FieldValues, useForm } from "react-hook-form";
 import {
   Image,
   Modal,
-  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -12,10 +11,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Switch } from "react-native-paper";
 
 import CustomInput from "../components/CustomInput";
 import ProfileListItem from "../components/ProfileListItem";
+import SwitchToPause from "../components/SwitchToPause";
 import {
   selectHousehold,
   selectProfileByHousholdId,
@@ -67,7 +66,6 @@ export default function EditHouseholdScreen({
   const membersOnPause = useAppSelector(selectPauses);
   console.log(members);
   //console.log(membersOnPause);
-  const [enabled, setEnabled] = useState(false);
   const [modalAddAdminVisible, setModalAddAdminVisible] = useState(false);
   const [modalRemoveAdminVisible, setModalRemoveAdminVisible] = useState(false);
 
@@ -93,15 +91,6 @@ export default function EditHouseholdScreen({
   };
 
   var householdPicture = "../assets/house-cartoon.png";
-
-  const toggleSwitch = () => {
-    setEnabled((oldValue) => !oldValue);
-  };
-
-  const thumbColorOn = Platform.OS === "android" ? "#0cd1e8" : "#f3f3f3";
-  const thumbColorOff = Platform.OS === "android" ? "#f04141" : "#f3f3f3";
-  const trackColorOn = Platform.OS === "android" ? "#98e7f0" : "#0cd1e8";
-  const trackColorOff = Platform.OS === "android" ? "#f3adad" : "#f04141";
 
   return (
     <ScrollView>
@@ -279,13 +268,7 @@ export default function EditHouseholdScreen({
               return (
                 <View key={memberindex}>
                   <ProfileListItem profile={member} />
-                  <Switch
-                    value={enabled}
-                    onValueChange={toggleSwitch}
-                    thumbColor={enabled ? thumbColorOn : thumbColorOff}
-                    trackColor={{ false: trackColorOff, true: trackColorOn }}
-                  />
-                  {enabled ? (member.isAdmin = true) : (member.isAdmin = false)}
+                  <SwitchToPause profile={member} />
                 </View>
               );
             })}
