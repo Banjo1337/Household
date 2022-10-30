@@ -78,7 +78,7 @@ export const editHouseholdThunk = createAsyncThunk<
     return thunkApi.rejectWithValue("User not logged in");
   } */
   try {
-    const response = await fetch(baseUrl + "editHousehold/" + householdId, {
+    const response = await fetch(baseUrl + "EditHousehold/" + householdId, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
