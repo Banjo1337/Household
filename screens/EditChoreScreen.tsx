@@ -1,13 +1,14 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Button, Text } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { selectChoreById } from "../features/chore/choreSelectors";
 import { deleteChore, updateChore } from "../features/chore/choreSlice";
 import { ChoreUpdateDto } from "../features/chore/choreTypes";
+import { selectHousehold } from "../features/household/householdSelectors";
 import { useTheme } from "../features/theme/ThemeContext";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
@@ -22,6 +23,7 @@ export default function EditChoreScreen({ route, navigation }: Props) {
     const [frequencyValue, setFrequencyValue] = useState(chore.frequency);
     const [pointValue, setPointValue] = useState(chore.points);
     const dispatch = useAppDispatch();
+    const household = useAppSelector(selectHousehold);
 
     const dropDownFrequencyValues = [...Array(31)].map((_, i) => {
         i++;
@@ -53,13 +55,40 @@ export default function EditChoreScreen({ route, navigation }: Props) {
     const onEditChorePressed = (data: ChoreUpdateDto) => {
         data.frequency = frequencyValue;
         data.points = pointValue;
-        dispatch(updateChore({ choreUpdateDto: data, choreId: chore.id }))
+        dispatch(updateChore({ choreUpdateDto: data, choreId: chore.id }));
         navigation.goBack();
     };
-    const onDeleteChorePressed = () => {
-        dispatch(deleteChore(chore.id));
-        navigation.goBack();
-    };
+    const createThreeButtonAlert = () =>
+        Alert.alert(
+            "Delete",
+            "Are you sure??",
+            [
+                { text: "Cancel" },
+                {
+                    text: "Archive it instead.", onPress: () => {
+                        const choreUpdateDto: ChoreUpdateDto = {
+                            name: chore.name,
+                            points: chore.points,
+                            description: chore.description,
+                            frequency: chore.frequency,
+                            pictureUrl: chore.pictureUrl,
+                            audioUrl: chore.audioUrl,
+                            isArchived: true,
+                            householdId: household.id
+                        };
+                        dispatch(updateChore({ choreUpdateDto: choreUpdateDto, choreId: chore.id }));
+                        navigation.goBack();
+                    }
+                },
+                {
+                    text: "Delete the chore!",
+                    onPress: () => {
+                        dispatch(deleteChore(chore.id));
+                        navigation.goBack();
+                    }
+                },
+            ]
+        );
 
     return (
         <View style={styles.container}>
@@ -155,7 +184,7 @@ export default function EditChoreScreen({ route, navigation }: Props) {
                     <Text>Close</Text>
                 </Button>
             </View>
-            <Button style={{ backgroundColor: "red" }} onPress={onDeleteChorePressed}>
+            <Button style={{ backgroundColor: "red" }} onPress={createThreeButtonAlert}>
                 <Text>Delete the chore</Text>
             </Button>
         </View >
@@ -181,9 +210,11 @@ const styles = StyleSheet.create({
     sectionDark: {
         backgroundColor: "#333",
     },
-    button: {
-        backgroundColor: "lightgrey", paddingHorizontal: 30, marginTop: 40,
-    },
     input: {},
     dropDownPicker: {},
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+    }
 });
