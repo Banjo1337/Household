@@ -83,7 +83,7 @@ export default function EditHouseholdScreen({
   } = useForm();
 
   const onEditHouseholdPressed = (data: FieldValues) => {
-    const name = data.housholdName;
+    const name = String(data.householdName);
     dispatch(
       editHouseholdThunk({
         householdEditDto: { name: name },
