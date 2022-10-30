@@ -4,13 +4,19 @@ import {
   createSlice,
   isAnyOf,
   isRejectedWithValue,
+  PayloadAction,
   Reducer,
 } from "@reduxjs/toolkit";
 import { Profile } from "../profile/profileTypes";
 import { Household, HouseholdCreateDto, HouseholdEditDto } from "./householdTypes";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { selectToken } from "../authentication/authenticationSelectors";
-import { deleteProfile, editProfile } from "../profile/profileSlice";
+import {
+  deleteProfile,
+  DeleteProfilePayloadAction,
+  editProfile,
+  EditProfilePayloadAction,
+} from "../profile/profileSlice";
 
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/Household/";
 
@@ -169,26 +175,33 @@ const householdSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(hydrateHouseholdSliceFromBackendThunk.fulfilled, (state, action) => {
       state.household = action.payload;
-      state.isLoading = false;
     }),
-    builder.addCase(createHouseholdThunk.fulfilled, (state, action) => {
-      state.household.name = action.payload.name;
-    }),
-    builder.addCase(editHouseholdThunk.fulfilled, (state, action) => {
-      state.household.name = action.payload.name;
-    }),
-    builder.addCase(deleteHouseholdThunk.fulfilled, (state, action) => {
-      state.household.id = action.payload.id;
-    }),
-    builder.addCase(getProfilesByHouseholdId.fulfilled, (state, action) => {
-      state.profiles = action.payload;
-    }),
-    builder.addCase(editProfile.fulfilled, (state, action) => {
-      state.profiles = state.profiles.map(p => p.id === action.payload.id ? action.payload : p);
-    }),
-    builder.addCase(deleteProfile.fulfilled, (state, action) => {
-      state.profiles = state.profiles.filter(p => p.id !== action.payload);
-    }),
+      builder.addCase(createHouseholdThunk.fulfilled, (state, action) => {
+        state.household.name = action.payload.name;
+      }),
+      builder.addCase(editHouseholdThunk.fulfilled, (state, action) => {
+        state.household.name = action.payload.name;
+      }),
+      builder.addCase(deleteHouseholdThunk.fulfilled, (state, action) => {
+        state.household.id = action.payload.id;
+      }),
+      builder.addCase(getProfilesByHouseholdId.fulfilled, (state, action) => {
+        state.profiles = action.payload;
+      }),
+      builder.addCase(
+        editProfile.fulfilled,
+        (state, action: PayloadAction<EditProfilePayloadAction>) => {
+          state.profiles = state.profiles.map((p) =>
+            p.id === action.payload.profile.id ? action.payload.profile : p,
+          );
+        },
+      ),
+      builder.addCase(
+        deleteProfile.fulfilled,
+        (state, action: PayloadAction<DeleteProfilePayloadAction>) => {
+          state.profiles = state.profiles.filter((p) => p.id !== action.payload.profileId);
+        },
+      ),
       builder.addMatcher(
         isAnyOf(
           editHouseholdThunk.pending,
@@ -213,6 +226,18 @@ const householdSlice = createSlice({
           if (action.payload) {
             state.error = action.payload;
           }
+          state.isLoading = false;
+        },
+      ),
+      builder.addMatcher(
+        isAnyOf(
+          editHouseholdThunk.fulfilled,
+          deleteHouseholdThunk.fulfilled,
+          createHouseholdThunk.fulfilled,
+          editHouseholdThunk.fulfilled,
+          hydrateHouseholdSliceFromBackendThunk.fulfilled,
+        ),
+        (state) => {
           state.isLoading = false;
         },
       );

@@ -3,6 +3,7 @@ import { Profile, ProfileCreateDto, ProfileEditDto, ProfileState } from "./profi
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/profile/";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { selectToken } from "../authentication/authenticationSelectors";
+import ProfileListItem from "../../components/ProfileListItem";
 
 const Token = () => useAppSelector(selectToken);
 
@@ -38,53 +39,30 @@ export const createProfile = createAsyncThunk<Profile, ProfileCreateDto, { rejec
 );
 
 export const editProfile = createAsyncThunk<
-  Profile,
-  { profileEditDto: ProfileEditDto; profileId: string },
+  { profile: Profile; isActiveProfile: boolean },
+  { profileEditDto: ProfileEditDto; profileId: string; isActiveProfile?: boolean },
   { rejectValue: string }
->("profile/EditProfile", async ({profileEditDto, profileId}, thunkApi) => {
-/*    if (Token()) {
+>(
+  "profile/EditProfile",
+  async ({ profileEditDto, profileId, isActiveProfile = true }, thunkApi) => {
+    /*    if (Token()) {
     return thunkApi.rejectWithValue("User not logged in");
-  } */ 
-  try {
-    const response = await fetch(baseUrl + "editProfile/" + profileId, {
-      method: "PATCH",
-      headers: {
-        "content-type": "application/json",
-       /*  authorization: "Bearer " + Token(), */
-      },
-      body: JSON.stringify(profileEditDto),
-    });
-
-    if (response.ok) {
-      return (await response.json()) as Profile;
-    }
-
-    return thunkApi.rejectWithValue(JSON.stringify(response.body));
-  } catch (err) {
-    if (err instanceof Error) {
-      return thunkApi.rejectWithValue(err.message);
-    } else {
-      return thunkApi.rejectWithValue("");
-    }
-  }
-});
-
-export const deleteProfile = createAsyncThunk<string, string, { rejectValue: string }>(
-  "profile/deleteProfile",
-  async (profileId: string, thunkApi) => {
-    // if (!Token()) {
-    //   return thunkApi.rejectWithValue("User not logged in");
-    // }
+  } */
     try {
-      const response = await fetch(baseUrl + "DeleteProfile/" + profileId, {
-        method: "DELETE",
+      const response = await fetch(baseUrl + "editProfile/" + profileId, {
+        method: "PATCH",
         headers: {
-          // authorization: "Bearer " + Token(),
+          "content-type": "application/json",
+          /*  authorization: "Bearer " + Token(), */
         },
+        body: JSON.stringify(profileEditDto),
       });
 
-      if (response.status == 204) {
-        return profileId;
+      if (response.ok) {
+        return {
+          profile: (await response.json()) as Profile,
+          isActiveProfile: isActiveProfile,
+        };
       }
 
       return thunkApi.rejectWithValue(JSON.stringify(response.body));
@@ -98,10 +76,50 @@ export const deleteProfile = createAsyncThunk<string, string, { rejectValue: str
   },
 );
 
+export const deleteProfile = createAsyncThunk<
+  { profileId: string; isActiveProfile: boolean },
+  { profileId: string; isActiveProfile?: boolean },
+  { rejectValue: string }
+>("profile/deleteProfile", async ({ profileId, isActiveProfile = true }, thunkApi) => {
+  // if (!Token()) {
+  //   return thunkApi.rejectWithValue("User not logged in");
+  // }
+  try {
+    const response = await fetch(baseUrl + "DeleteProfile/" + profileId, {
+      method: "DELETE",
+      headers: {
+        // authorization: "Bearer " + Token(),
+      },
+    });
+
+    if (response.status == 204) {
+      return { profileId: profileId, isActiveProfile: isActiveProfile };
+    }
+
+    return thunkApi.rejectWithValue(response.statusText);
+  } catch (err) {
+    if (err instanceof Error) {
+      return thunkApi.rejectWithValue(err.message);
+    } else {
+      return thunkApi.rejectWithValue("");
+    }
+  }
+});
+
 const initialState: ProfileState = {
   profile: {} as Profile,
   isLoading: false,
   error: "",
+};
+
+export type EditProfilePayloadAction = {
+  profile: Profile;
+  isActiveProfile: boolean;
+};
+
+export type DeleteProfilePayloadAction = {
+  profileId: string;
+  isActiveProfile: boolean;
 };
 
 const profileSlice = createSlice({
@@ -113,21 +131,26 @@ const profileSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(deleteProfile.fulfilled, (state) => {
-      state.profile = {} as Profile;
-      state.isLoading = false;
-    }),
-    builder.addMatcher(
-      isAnyOf(createProfile.pending, editProfile.pending, deleteProfile.pending),
-      (state) => {
-        state.isLoading = true;
+    builder.addCase(
+      editProfile.fulfilled,
+      (state, action: PayloadAction<EditProfilePayloadAction>) => {
+        if (action.payload.isActiveProfile) {
+          state.profile = action.payload.profile;
+        }
       },
     ),
+      builder.addCase(
+        deleteProfile.fulfilled,
+        (state, action: PayloadAction<DeleteProfilePayloadAction>) => {
+          if (action.payload.isActiveProfile) {
+            state.profile = {} as Profile;
+          }
+        },
+      ),
       builder.addMatcher(
-        isAnyOf(createProfile.fulfilled, editProfile.fulfilled),
-        (state, action) => {
-          state.profile = action.payload;
-          state.isLoading = false;
+        isAnyOf(createProfile.pending, editProfile.pending, deleteProfile.pending),
+        (state) => {
+          state.isLoading = true;
         },
       ),
       builder.addMatcher(
@@ -137,6 +160,12 @@ const profileSlice = createSlice({
             state.error = action.payload;
             console.log(action.payload);
           }
+          state.isLoading = false;
+        },
+      ),
+      builder.addMatcher(
+        isAnyOf(createProfile.fulfilled, editProfile.fulfilled, deleteProfile.fulfilled),
+        (state) => {
           state.isLoading = false;
         },
       );
