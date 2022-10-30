@@ -68,15 +68,15 @@ export const editHouseholdThunk = createAsyncThunk<
   { householdEditDto: HouseholdEditDto; householdId: string },
   { rejectValue: string }
 >("household/EditHousehold", async ({ householdEditDto, householdId }, thunkApi) => {
-  if (Token()) {
+/*   if (Token()) {
     return thunkApi.rejectWithValue("User not logged in");
-  }
+  } */
   try {
     const response = await fetch(baseUrl + "editHousehold/" + householdId, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
-        authorization: "Bearer " + Token(),
+        //authorization: "Bearer " + Token(),
       },
       body: JSON.stringify(householdEditDto),
     });
