@@ -58,9 +58,6 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
   const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
   const members = useAppSelector(selectProfileByHousholdId);
-  //const pauses = useAppSelector(selectPauses);
-  //console.log(members);
-  //console.log(pauses);
 
   const [modalAddAdminVisible, setModalAddAdminVisible] = useState(false);
   const [modalRemoveAdminVisible, setModalRemoveAdminVisible] = useState(false);
@@ -266,9 +263,10 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
           <View style={styles.avatarIcon}>
             {members.map((member, memberindex) => {
               return (
-                <View key={memberindex}>
+                <View key={memberindex} style={{alignItems: "center"}}>
                   <ProfileListItem profile={member} />
                   <SwitchToPause profile={member} />
+                  <Text style={{fontSize: 12, margin:0}}>pause</Text>
                 </View>
               );
             })}
