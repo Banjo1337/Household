@@ -12,6 +12,7 @@ import { selectToken } from "../authentication/authenticationSelectors";
 import { Profile } from "../profile/profileTypes";
 import { Household, HouseholdCreateDto, HouseholdEditDto } from "./householdTypes";
 import {
+  createProfile,
   deleteProfile,
   DeleteProfilePayloadAction,
   editProfile,
@@ -74,7 +75,7 @@ export const editHouseholdThunk = createAsyncThunk<
   { householdEditDto: HouseholdEditDto; householdId: string },
   { rejectValue: string }
 >("household/EditHousehold", async ({ householdEditDto, householdId }, thunkApi) => {
-/*   if (Token()) {
+  /*   if (Token()) {
     return thunkApi.rejectWithValue("User not logged in");
   } */
   try {
@@ -197,6 +198,9 @@ const householdSlice = createSlice({
           );
         },
       ),
+      builder.addCase(createProfile.fulfilled, (state, action: PayloadAction<Profile>) => {
+        state.profiles.push(action.payload);
+      }),
       builder.addCase(
         deleteProfile.fulfilled,
         (state, action: PayloadAction<DeleteProfilePayloadAction>) => {
