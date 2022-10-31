@@ -4,12 +4,12 @@ import { Profile } from "../features/profile/profileTypes";
 import React, { useState } from "react";
 import CustomInput from "./CustomInput";
 import { FieldValues, useForm } from "react-hook-form";
-import { createPause } from "../features/pause/pauseSlice";
+import { createPause, updatePause } from "../features/pause/pauseSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { selectHousehold } from "../features/household/householdSelectors";
 import { newDateInClientTimezone } from "../app/dateUtils";
-import {PauseCreateDto} from "../features/pause/pauseTypes";
-import { selectPauseByProfileId } from "../features/pause/pauseSelectors";
+import {PauseCreateDto, PauseUpdateDto} from "../features/pause/pauseTypes";
+import { selectCurrentlyPausedByProfileId } from "../features/pause/pauseSelectors";
 
 interface Props {
   profile: Profile;
@@ -18,12 +18,14 @@ interface Props {
 export default function SwitchToPause({ profile }: Props) {
   const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
-  const pauses = useAppSelector((state) => selectPauseByProfileId(state,profile.id));
+  const pause = useAppSelector((state) => selectCurrentlyPausedByProfileId(state, profile.id));
+  console.log(pause);
   const isPaused = () => {
-    for (pause in pauses){
-      if 
+    if (pause.length>0){
+      return true;
     }
-  };
+    return false;
+  }; 
   
   const [enabled, setEnabled] = useState(isPaused);
   const [modalPauseVisible, setModalPauseVisible] = useState(false);
@@ -43,8 +45,8 @@ export default function SwitchToPause({ profile }: Props) {
     const initialDate = newDateInClientTimezone();
     initialDate.setDate(pauseDuration);
     const endPauseDate = initialDate;
-    console.log(todaysDate);
-    console.log(endPauseDate);
+    //console.log(todaysDate);
+    //console.log(endPauseDate);
     const pauseCreateDto : PauseCreateDto  = {
         startDate: todaysDate.toISOString(),
         endDate: endPauseDate.toISOString(),
@@ -53,7 +55,7 @@ export default function SwitchToPause({ profile }: Props) {
     };
 
     dispatch(createPause(pauseCreateDto));
-    console.log(pauseCreateDto);
+    //console.log(pauseCreateDto);
   };
 
   const toggleSwitch = () => {
@@ -125,11 +127,21 @@ export default function SwitchToPause({ profile }: Props) {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>The ongoing pause is now removed</Text>
+              <Text style={styles.modalText}>The ongoing pause is now stopped</Text>
 
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalPauseVisible(!modalPauseVisible)}
+                onPress={() => {
+                  setModalPauseVisible(!modalPauseVisible);
+                  const pauseId = pause[0].id;
+                  const pauseUpdateDto: PauseUpdateDto = {
+                    endDate: newDateInClientTimezone().toISOString(),
+                    householdId: household.id,
+                  };
+                  dispatch(updatePause({ pauseUpdateDto, pauseId }));
+                  console.log(pauseUpdateDto);
+                  console.log("hello");
+                }}
               >
                 <Text style={styles.textStyle}>Close</Text>
               </Pressable>
