@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { FlatList, StyleSheet, TouchableHighlight, View } from "react-native";
 import { Button, Text, Title } from "react-native-paper";
 import ChoreCard from "../components/ChoreCard";
-import { selectChoresToShowInChoreScreen, selectProfileWhoDidThisChoreByChoreId } from "../features/chore/choreSelectors";
+import { selectChoresToShowInChoreScreen } from "../features/chore/choreSelectors";
 import { selectHousehold } from "../features/household/householdSelectors";
 import { selectActiveProfile } from "../features/profile/profileSelector";
 import { useAppSelector } from "../hooks/reduxHooks";
@@ -12,7 +12,6 @@ import { RootStackParamList } from "../NavContainer";
 
 //type Props = NativeStackScreenProps<RootStackParamList>;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ChoresScreen(Props: NativeStackScreenProps<RootStackParamList>) {
   const [editableMode, setEditableMode] = useState(false);
   const household = useAppSelector(selectHousehold);
@@ -31,8 +30,12 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
     <>
       <View style={{ justifyContent: "center" }}>
         <View style={{ alignItems: "center" }}>
-          <Title style={{ textAlign: "center", backgroundColor: "gray", width: 250 }}>Household:{household.name} </Title>
-          <Title style={{ textAlign: "center", backgroundColor: "lightblue" }}>Code: {household.code}</Title>
+          <Title style={{ textAlign: "center", backgroundColor: "gray", width: 250 }}>
+            Household:{household.name}{" "}
+          </Title>
+          <Title style={{ textAlign: "center", backgroundColor: "lightblue" }}>
+            Code: {household.code}
+          </Title>
         </View>
         <View style={{ justifyContent: "center", height: 350 }}>
           <FlatList
@@ -51,10 +54,10 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
           />
         </View>
 
-        {profile.isAdmin &&
+        {profile.isAdmin && (
           <View style={{ flexDirection: "row" }}>
             <Button
-              mode="contained"
+              mode='contained'
               style={{
                 width: "50%",
                 alignSelf: "flex-end",
@@ -66,7 +69,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
               <Text>Add Chore</Text>
             </Button>
             <Button
-              mode="contained"
+              mode='contained'
               style={{
                 width: "50%",
                 alignSelf: "flex-end",
@@ -84,17 +87,19 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
                 Edit Chore
               </Text>
             </Button>
-          </View>}
+          </View>
+        )}
       </View>
     </>
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     padding: 20,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   title: {
     backgroundColor: "white",
