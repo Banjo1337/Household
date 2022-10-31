@@ -33,43 +33,45 @@ export const editProfile = createAsyncThunk<
   { profile: Profile; isActiveProfile: boolean },
   { profileEditDto: ProfileEditDto; profileId: string; isActiveProfile?: boolean },
   { rejectValue: string }
->("profile/EditProfile", async ({ profileEditDto, profileId }, thunkApi) => {
-  try {
-    const response = await fetch(baseUrl + "editProfile/" + profileId, {
-      method: "PATCH",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(profileEditDto),
-    });
+>(
+  "profile/EditProfile",
+  async ({ profileEditDto, profileId, isActiveProfile = true }, thunkApi) => {
+    try {
+      const response = await fetch(baseUrl + "editProfile/" + profileId, {
+        method: "PATCH",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(profileEditDto),
+      });
 
-    if (response.ok) {
-      return (await response.json()) as Profile;
-    }
+      if (response.ok) {
+        return {
+          profile: (await response.json()) as Profile,
+          isActiveProfile: isActiveProfile,
+        };
+      }
 
-    return thunkApi.rejectWithValue(JSON.stringify(response.body));
-  } catch (err) {
-    if (err instanceof Error) {
-      return thunkApi.rejectWithValue(err.message);
-    } else {
-      return thunkApi.rejectWithValue("");
+      return thunkApi.rejectWithValue(JSON.stringify(response.body));
+    } catch (err) {
+      if (err instanceof Error) {
+        return thunkApi.rejectWithValue(err.message);
+      } else {
+        return thunkApi.rejectWithValue("");
+      }
     }
-  }
-});
+  },
+);
 
 export const deleteProfile = createAsyncThunk<
   { profileId: string; isActiveProfile: boolean },
   { profileId: string; isActiveProfile?: boolean },
   { rejectValue: string }
 >("profile/deleteProfile", async ({ profileId, isActiveProfile = true }, thunkApi) => {
-  // if (!Token()) {
-  //   return thunkApi.rejectWithValue("User not logged in");
-  // }
   try {
     const response = await fetch(baseUrl + "DeleteProfile/" + profileId, {
       method: "DELETE",
       headers: {
-        // authorization: "Bearer " + Token(),
       },
     });
 
@@ -112,6 +114,9 @@ const profileSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(createProfile.fulfilled, (state, action: PayloadAction<Profile>) => {
+        state.profile = action.payload;
+      }),
     builder.addCase(
       editProfile.fulfilled,
       (state, action: PayloadAction<EditProfilePayloadAction>) => {
