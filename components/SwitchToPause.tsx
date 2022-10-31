@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { selectHousehold } from "../features/household/householdSelectors";
 import { newDateInClientTimezone } from "../app/dateUtils";
 import {PauseCreateDto} from "../features/pause/pauseTypes";
+import { selectPauseByProfileId } from "../features/pause/pauseSelectors";
 
 interface Props {
   profile: Profile;
@@ -17,7 +18,14 @@ interface Props {
 export default function SwitchToPause({ profile }: Props) {
   const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
-  const [enabled, setEnabled] = useState(false);
+  const pauses = useAppSelector((state) => selectPauseByProfileId(state,profile.id));
+  const isPaused = () => {
+    for (pause in pauses){
+      if 
+    }
+  };
+  
+  const [enabled, setEnabled] = useState(isPaused);
   const [modalPauseVisible, setModalPauseVisible] = useState(false);
 
   const todaysDate = newDateInClientTimezone();
