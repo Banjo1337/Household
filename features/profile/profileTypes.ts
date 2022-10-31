@@ -36,6 +36,7 @@ export const Avatars = {
   dolphin: { emoji: "🐬", color: "#62ccf3" },
   owl: { emoji: "🦉", color: "#f2d3b0" },
   unicorn: { emoji: "🦄", color: "#f880b2" },
+  pending: { emoji: "⏳", color: "#262626" },
 } as const;
 
 export type Avatar = keyof typeof Avatars;

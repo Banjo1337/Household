@@ -24,7 +24,7 @@ export default function EditProfileScreen(
   const availableAvatars = Object.keys(Avatars)
     .filter((a) => !householdProfiles.map((p) => p.avatar).includes(a as Avatar))
     .concat(profile.avatar)
-    .map((a, index) => (
+    .map((a, index) => a !== "pending" && (
       <AvatarSelectorItem
         key={index}
         avatar={a as Avatar}
@@ -55,7 +55,7 @@ export default function EditProfileScreen(
   }
 
   function handleDelete() {
-    dispatch(deleteProfile(profile.id));
+    dispatch(deleteProfile({profileId: profile.id}));
     Props.navigation.navigate("SelectProfile");
   }
 
