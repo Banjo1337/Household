@@ -28,7 +28,7 @@ export const selectChoresToShowInChoreScreen = (state: RootStateType): Chore[] =
     const today = new Date();
     const diffTime = Math.abs(today.getTime() - choreCompletedDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    console.log(diffDays, chore.id)
+    console.log(diffDays, chore.id);
     if (diffDays <= 1) {
       const choreToAdd = selectChoreById(state, chore.choreId);
       choresArchivedButOnly1DayOld.push(choreToAdd);
@@ -51,6 +51,7 @@ export const selectProfileWhoDidThisChoreByChoreId = (
   state: RootStateType,
   choreId: string,
 ): Profile => {
+  console.log(choreId)
   const thisChoreCompletedLastDone = getLatestChoreCompletedByChoreId(state, choreId);
 
   const profiles: Profile[] = state.householdReducer.profiles;
@@ -71,8 +72,19 @@ export const selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId = (
   const choreCompletedDate = new Date(thisChoreCompletedLastDone.completedAt);
   const today = new Date();
   const diffTime = Math.abs(today.getTime() - choreCompletedDate.getTime());
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  const returnText = `${diffDays} / ${chore.frequency}`;
+
+  let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  let diffDaysText = "";
+  if (isNaN(diffDays)) {
+    diffDaysText = "Never done";
+  }
+  else {
+    diffDaysText = diffDays.toString();
+  }
+  if (chore.frequency === 0) {
+    return "";
+  }
+  const returnText = `${diffDaysText} / ${chore.frequency}`;
   return returnText;
 };
 
@@ -94,10 +106,8 @@ function getLatestChoreCompletedByChoreId(state: RootStateType, choreId: string)
     (cc) => cc.choreId == choreId,
   );
   const thisChoreCompletedSortedByDate: ChoreCompleted[] = thisChoreCompleted.sort((a, b) => {
-    return new Date(a.completedAt).getTime() - new Date(b.completedAt).getTime();
+    return new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime();
   });
   const thisChoreCompletedLastDone = thisChoreCompletedSortedByDate[0] ?? ({} as ChoreCompleted);
-  console.log(thisChoreCompletedSortedByDate)
-  console.log(thisChoreCompletedLastDone)
   return thisChoreCompletedLastDone;
 }
