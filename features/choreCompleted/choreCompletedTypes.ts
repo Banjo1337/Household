@@ -33,3 +33,9 @@ export interface Statistics {
 		fill: string;
 	};
 }
+
+export interface StatisticsAvailability {
+	StatisticsCurrentWeek: boolean,
+    StatisticsPreviousWeek: boolean,
+    StatisticsPreviousMonth: boolean
+}
