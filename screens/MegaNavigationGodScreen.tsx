@@ -1,14 +1,22 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
+import { newDateInClientTimezone } from "../app/dateUtils";
+import { selectAuthUserId, selectToken } from "../features/authentication/authenticationSelectors";
 import { RootStackParamList } from "../NavContainer";
+import { useAppSelector } from "../hooks/reduxHooks";
 
 export default function MegaNavigationGodScreen(
   Props: NativeStackScreenProps<RootStackParamList, "MegaNavigationGod">,
 ) {
+  const token: string = useAppSelector(selectToken);
+  const authUserId: string = useAppSelector(selectAuthUserId);
+
+  const dateTime = newDateInClientTimezone().toISOString();
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollview}>
+        <Text>{dateTime}</Text>
         <Button
           mode='contained'
           style={styles.button}
@@ -122,6 +130,8 @@ export default function MegaNavigationGodScreen(
         >
           Statistics
         </Button>
+        <Text>authUserId: {authUserId}</Text>
+        <Text>Token: {token}</Text>
       </ScrollView>
     </View>
   );

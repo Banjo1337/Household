@@ -7,6 +7,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import { createPause } from "../features/pause/pauseSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { selectHousehold } from "../features/household/householdSelectors";
+import { newDateInClientTimezone } from "../app/dateUtils";
 
 interface Props {
   profile: Profile;
@@ -18,8 +19,8 @@ export default function SwitchToPause({ profile }: Props) {
   const [enabled, setEnabled] = useState(false);
   const [modalPauseVisible, setModalPauseVisible] = useState(false);
 
-  const todaysDate = new Date();
-  
+  const todaysDate = newDateInClientTimezone();
+
   const {
     control,
     handleSubmit,
@@ -30,7 +31,7 @@ export default function SwitchToPause({ profile }: Props) {
     const duration = Number(data.duration);
     const startPauseDate = todaysDate;
     const pauseDuration = startPauseDate.getDate() + duration;
-    const initialDate = new Date();
+    const initialDate = newDateInClientTimezone();
     initialDate.setDate(pauseDuration);
     const endPauseDate = initialDate;
     console.log(todaysDate);
@@ -49,7 +50,6 @@ export default function SwitchToPause({ profile }: Props) {
   const toggleSwitch = () => {
     setEnabled((oldValue) => !oldValue);
     setModalPauseVisible(!modalPauseVisible);
-    
   };
   const thumbColorOn = Platform.OS === "android" ? "#0cd1e8" : "#f3f3f3";
   const thumbColorOff = Platform.OS === "android" ? "#f04141" : "#f3f3f3";
