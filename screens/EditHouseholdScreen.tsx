@@ -103,11 +103,11 @@ export default function EditHouseholdScreen({
         <View>
           <View style={styles.icons}>
             <Image source={require(householdPicture)} style={styles.householdPicture} />
-            {pendingRequestCount && 
+            {pendingRequestCount ? 
               <PendingRequestButton 
                 navigation={navigation} 
                 pendingRequestCount={pendingRequestCount} 
-              />
+              /> : null
             }
 
           </View>
