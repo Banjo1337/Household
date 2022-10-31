@@ -1,24 +1,15 @@
 import { createAsyncThunk, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import { Profile, ProfileCreateDto, ProfileEditDto, ProfileState } from "./profileTypes";
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/profile/";
-import { useAppSelector } from "../../hooks/reduxHooks";
-import { selectToken } from "../authentication/authenticationSelectors";
-import ProfileListItem from "../../components/ProfileListItem";
-
-const Token = () => useAppSelector(selectToken);
 
 export const createProfile = createAsyncThunk<Profile, ProfileCreateDto, { rejectValue: string }>(
   "profile/CreateProfile",
   async (profileCreateDto: ProfileCreateDto, thunkApi) => {
-    if (Token()) {
-      return thunkApi.rejectWithValue("User not logged in");
-    }
     try {
       const response = await fetch(baseUrl + "createProfile", {
         method: "POST",
         headers: {
           "content-type": "application/json",
-          authorization: "Bearer " + Token(),
         },
         body: JSON.stringify(profileCreateDto),
       });
@@ -42,39 +33,29 @@ export const editProfile = createAsyncThunk<
   { profile: Profile; isActiveProfile: boolean },
   { profileEditDto: ProfileEditDto; profileId: string; isActiveProfile?: boolean },
   { rejectValue: string }
->(
-  "profile/EditProfile",
-  async ({ profileEditDto, profileId, isActiveProfile = true }, thunkApi) => {
-    /*    if (Token()) {
-    return thunkApi.rejectWithValue("User not logged in");
-  } */
-    try {
-      const response = await fetch(baseUrl + "editProfile/" + profileId, {
-        method: "PATCH",
-        headers: {
-          "content-type": "application/json",
-          /*  authorization: "Bearer " + Token(), */
-        },
-        body: JSON.stringify(profileEditDto),
-      });
+>("profile/EditProfile", async ({ profileEditDto, profileId }, thunkApi) => {
+  try {
+    const response = await fetch(baseUrl + "editProfile/" + profileId, {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(profileEditDto),
+    });
 
-      if (response.ok) {
-        return {
-          profile: (await response.json()) as Profile,
-          isActiveProfile: isActiveProfile,
-        };
-      }
-
-      return thunkApi.rejectWithValue(JSON.stringify(response.body));
-    } catch (err) {
-      if (err instanceof Error) {
-        return thunkApi.rejectWithValue(err.message);
-      } else {
-        return thunkApi.rejectWithValue("");
-      }
+    if (response.ok) {
+      return (await response.json()) as Profile;
     }
-  },
-);
+
+    return thunkApi.rejectWithValue(JSON.stringify(response.body));
+  } catch (err) {
+    if (err instanceof Error) {
+      return thunkApi.rejectWithValue(err.message);
+    } else {
+      return thunkApi.rejectWithValue("");
+    }
+  }
+});
 
 export const deleteProfile = createAsyncThunk<
   { profileId: string; isActiveProfile: boolean },

@@ -7,10 +7,10 @@ import {
   PayloadAction,
   Reducer,
 } from "@reduxjs/toolkit";
-import { Profile } from "../profile/profileTypes";
-import { Household, HouseholdCreateDto, HouseholdEditDto } from "./householdTypes";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { selectToken } from "../authentication/authenticationSelectors";
+import { Profile } from "../profile/profileTypes";
+import { Household, HouseholdCreateDto, HouseholdEditDto } from "./householdTypes";
 import {
   deleteProfile,
   DeleteProfilePayloadAction,
@@ -42,15 +42,15 @@ export const createHouseholdThunk = createAsyncThunk<
   HouseholdCreateDto,
   { rejectValue: string }
 >("household/CreateHousehold", async (householdCreateDto: HouseholdCreateDto, thunkApi) => {
-  if (Token()) {
+  /* if (Token()) {
     return thunkApi.rejectWithValue("User not logged in");
-  }
+  } */
   try {
-    const response = await fetch(baseUrl + "createHousehold", {
+    const response = await fetch(baseUrl + "AddHousehold", {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        authorization: "Bearer " + Token(),
+        /* authorization: "Bearer " + Token(), */
       },
       body: JSON.stringify(householdCreateDto),
     });
@@ -175,9 +175,10 @@ const householdSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(hydrateHouseholdSliceFromBackendThunk.fulfilled, (state, action) => {
       state.household = action.payload;
+      state.isLoading = false;
     }),
       builder.addCase(createHouseholdThunk.fulfilled, (state, action) => {
-        state.household.name = action.payload.name;
+        state.household = action.payload;
       }),
       builder.addCase(editHouseholdThunk.fulfilled, (state, action) => {
         state.household.name = action.payload.name;

@@ -18,6 +18,7 @@ export interface ProfileCreateDto {
   alias: string;
   householdId?: string;
   isAdmin: boolean;
+  authUserId: string;
 }
 
 export interface ProfileEditDto {

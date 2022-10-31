@@ -4,6 +4,8 @@ import { FieldValues, useForm } from "react-hook-form";
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
+import { createHouseholdThunk } from "../features/household/householdSlice";
+import { useAppDispatch } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 
 export default function JoinOrCreateHouseholdPromptScreen({
@@ -14,6 +16,7 @@ export default function JoinOrCreateHouseholdPromptScreen({
     handleSubmit,
     formState: {},
   } = useForm();
+  const dispatch = useAppDispatch();
 
   const toggleInput = () => {
     setInput((joinHousehold) => !joinHousehold);
@@ -23,45 +26,56 @@ export default function JoinOrCreateHouseholdPromptScreen({
   const [joinAsAdmin, setInput] = useState(false);
 
   const onCreateHouseholdPressed = (data: FieldValues) => {
-    console.log("you have pressed create household" + data.householdname + data.profilename);
-    navigation.navigate("CreateHousehold");
+    console.log("you have pressed create a household with name " + data.householdName);
+    const result = dispatch(createHouseholdThunk({ name: data.householdName }));
+
+    result.then(() => {
+      navigation.navigate("CreateProfile");
+    });
   };
+
   const onJoinHouseholdPressed = (data: FieldValues) => {
-    console.log("you have pressed join household" + data.householdname + data.profilename);
-    navigation.navigate("ParsingJoinHouseholdScreen", { householdCode: data.householdCode });
+    console.log(
+      "you have pressed join household " + data.householdCode + " as " + data.profileName,
+    );
   };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
+        <Text variant='headlineMedium' style={styles.headlineText}>
+          Be ready to create a profile on the next screen!
+        </Text>
         <View>
           <View style={{ marginTop: "5%" }}>
-            <Text style={{ fontSize: 24, marginLeft: 20 }}>
-              {joinAsAdmin ? "Household Name" : "Code to Household"}
+            <Text variant='headlineSmall' style={{ marginLeft: 20 }}>
+              {joinAsAdmin ? "Name of Household" : "Code to Household"}
             </Text>
             {joinAsAdmin ? (
-              <CustomInput
-                name='householdname'
-                placeholder='Name of household to create'
-                control={control}
-                rules={{
-                  required: "Name of household is required",
-                  maxLength: {
-                    value: 50,
-                    message: "Cant be more than 50 letters",
-                  },
-                }}
-              />
+              <>
+                <CustomInput
+                  name='householdName'
+                  placeholder='Name of household to create'
+                  control={control}
+                  rules={{
+                    required: "Household Name is required",
+                    maxLength: {
+                      value: 20,
+                      message: "Cant be more than 20 letters",
+                    },
+                  }}
+                />
+              </>
             ) : (
               <CustomInput
-                name='householdcode'
+                name='householdCode'
                 placeholder='Code to the household you want to join'
                 control={control}
                 rules={{
                   required: "Household Code is required",
                   maxLength: {
                     value: 10,
-                    message: "Cant be more than 50 letters",
+                    message: "Cant be more than 10 letters",
                   },
                 }}
               />
@@ -94,9 +108,12 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: "center",
-    paddingTop: "30%",
+    paddingTop: "20%",
     paddingHorizontal: 20,
     height: "100%",
+  },
+  headlineText: {
+    textAlign: "center",
   },
   joinButton: {
     position: "absolute",
