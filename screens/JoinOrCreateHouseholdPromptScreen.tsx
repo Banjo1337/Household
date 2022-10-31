@@ -37,21 +37,12 @@ export default function JoinOrCreateHouseholdPromptScreen({
         <View>
           <View style={{ marginTop: "5%" }}>
             <Text style={{ fontSize: 24, marginLeft: 20 }}>
-              {joinAsAdmin ? "Household Name" : "Code to Household"}
+              {joinAsAdmin ? "" : "Code to Household"}
             </Text>
             {joinAsAdmin ? (
-              <CustomInput
-                name='householdname'
-                placeholder='Name of household to create'
-                control={control}
-                rules={{
-                  required: "Name of household is required",
-                  maxLength: {
-                    value: 50,
-                    message: "Cant be more than 50 letters",
-                  },
-                }}
-              />
+              <>
+                <Text>Continue onto next screen to create a household!</Text>
+              </>
             ) : (
               <CustomInput
                 name='householdcode'

@@ -27,10 +27,11 @@ export default function MegaNavigationGodScreen(
           mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("ChoreDetails", { choreId: "" })}
-        >ChoreDetails
+        >
+          ChoreDetails
         </Button>
         <Button
-          mode="contained"
+          mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("EditChore", { choreId: "" })}
         >
@@ -102,9 +103,9 @@ export default function MegaNavigationGodScreen(
         <Button
           mode='contained'
           style={styles.button}
-          onPress={() => Props.navigation.navigate("EditProfile")}
+          onPress={() => Props.navigation.navigate("EditProfile", { isAdmin: false })}
         >
-          FinalizeProfile
+          EditProfile
         </Button>
         <Button
           mode='contained'

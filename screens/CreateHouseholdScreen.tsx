@@ -1,15 +1,13 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import {
-  Pressable as Button,
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
-import { Title } from "react-native-paper";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Button, Text, Title } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
+import { createHouseholdThunk } from "../features/household/householdSlice";
+import { HouseholdCreateDto } from "../features/household/householdTypes";
+import { useAppDispatch } from "../hooks/reduxHooks";
+import { useSetAndHydrateProfile } from "../hooks/useSetAndHydrateProfile";
 import { RootStackParamList } from "../NavContainer";
 
 export default function CreateHouseholdScreen({
@@ -21,10 +19,15 @@ export default function CreateHouseholdScreen({
     formState: {},
   } = useForm();
 
+  const setAndHydrateProfile = useSetAndHydrateProfile();
+  const dispatch = useAppDispatch();
+
   const onCreateHouseholdPressed = (data: FieldValues) => {
-    //TODO: add dispatch from CreateHouseholdSlice
-    console.log("you have pressed create household" + data.householdName);
-    navigation.navigate("MegaNavigationGod");
+    const sendThis: HouseholdCreateDto = { name: data.name };
+    const jsonResult = dispatch(createHouseholdThunk(sendThis));
+    console.log(jsonResult);
+
+    navigation.navigate("EditProfile", { isAdmin: true });
   };
 
   return (
@@ -32,16 +35,19 @@ export default function CreateHouseholdScreen({
       <View style={styles.container}>
         <Title style={styles.title}>Create Household Screen</Title>
         <CustomInput
-          style={styles.input}
-          name="householdname"
-          placeholder="Name of household"
+          name='name'
+          placeholder='Name of household to create'
           control={control}
           rules={{
             required: "Name of household is required",
-            maxLength: { value: 50, message: "Cant be more than 50 letters" },
+            maxLength: {
+              value: 50,
+              message: "Cant be more than 50 letters",
+            },
           }}
-        ></CustomInput>
+        />
         <Button
+          mode={"contained"}
           style={styles.button}
           onPress={handleSubmit(onCreateHouseholdPressed)}
         >
@@ -54,12 +60,12 @@ export default function CreateHouseholdScreen({
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: "green",
-    padding: 20,
+    justifyContent: "center",
+    paddingHorizontal: 20,
   },
-  title: {
-    backgroundColor: "white",
+  title: {},
+  button: {},
+  input: {
+    backgroundColor: "brown",
   },
-  button: { backgroundColor: "hotpink" },
-  input: { backgroundColor: "brown" },
 });

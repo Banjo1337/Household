@@ -4,9 +4,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import AddChoreScreen from "./screens/AddChoreScreen";
 import ChoreDetailsScreen from "./screens/ChoreDetailsScreen";
 //import ChoresScreen from "./screens/Chores";
-import JoinOrCreateHouseholdPromptScreen from "./screens/JoinOrCreateHouseholdPromptScreen";
-import CreateProfileScreen from "./screens/CreateProfileScreen";
 import EditProfileScreen from "./screens/EditProfileScreen";
+import JoinOrCreateHouseholdPromptScreen from "./screens/JoinOrCreateHouseholdPromptScreen";
 import MegaNavigationGodScreen from "./screens/MegaNavigationGodScreen";
 import PendingRequestScreen from "./screens/PendingRequest";
 import SelectProfileScreen from "./screens/SelectProfileScreen";
@@ -21,10 +20,10 @@ import { useTheme } from "./features/theme/ThemeContext";
 import { useAppDispatch } from "./hooks/reduxHooks";
 import TopTabNavigator from "./navigation/TopTabsNavigator";
 import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
-import ParsingJoinHouseholdScreen from "./screens/ParsingJoinHouseholdScreen";
 import EditChoreScreen from "./screens/EditChoreScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
 import HouseholdDetailsScreen from "./screens/HouseholdDetailsScreen";
+import ParsingJoinHouseholdScreen from "./screens/ParsingJoinHouseholdScreen";
 
 export type RootStackParamList = {
   Home: { screen: "Chores" | "Statistics" };
@@ -33,13 +32,12 @@ export type RootStackParamList = {
   EditChore: { choreId: string };
   SignIn: undefined;
   SignUp: undefined;
-  CreateProfile: { householdId: string | undefined };
   CreateHousehold: undefined;
   JoinOrCreateHouseholdPrompt: undefined;
   EditHousehold: undefined;
   HouseholdDetails: undefined;
   SelectProfile: undefined;
-  EditProfile: undefined;
+  EditProfile: { isAdmin: boolean; householdId?: string | undefined };
   PendingRequest: undefined;
   ParsingJoinHouseholdScreen: { householdCode: string };
   Settings: undefined;
@@ -76,7 +74,6 @@ export default function NavContainer() {
             <Stack.Screen name='SignIn' component={SignInScreen} />
             <Stack.Screen name='SignUp' component={SignUpScreen} />
             <Stack.Screen name='CreateHousehold' component={CreateHouseholdScreen} />
-            <Stack.Screen name='CreateProfile' component={CreateProfileScreen} />
             <Stack.Screen
               name='JoinOrCreateHouseholdPrompt'
               component={JoinOrCreateHouseholdPromptScreen}
