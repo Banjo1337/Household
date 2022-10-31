@@ -77,14 +77,14 @@ export const selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId = (
   let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   let diffDaysText = "";
   if (isNaN(diffDays)) {
-    diffDaysText = "Never done";
+    diffDaysText = "N/D Yet";
   } else {
     diffDaysText = diffDays.toString();
   }
   if (chore.frequency === 0) {
     return "";
   }
-  const returnText = `${diffDaysText} / ${chore.frequency}`;
+  const returnText = `${diffDaysText}/${chore.frequency}`;
   return returnText;
 };
 
