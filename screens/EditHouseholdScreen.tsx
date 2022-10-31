@@ -13,10 +13,12 @@ import {
 } from "react-native";
 
 import CustomInput from "../components/CustomInput";
+import PendingRequestButton from "../components/PendingRequestButton";
 import ProfileListItem from "../components/ProfileListItem";
 import SwitchToPause from "../components/SwitchToPause";
 import {
   selectHousehold,
+  selectPendingRequestProfilesCount,
   selectProfileByHousehold,
 } from "../features/household/householdSelectors";
 import { deleteHouseholdThunk, editHouseholdThunk } from "../features/household/householdSlice";
@@ -63,9 +65,11 @@ export default function EditHouseholdScreen({
   const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
   const members = useAppSelector(selectProfileByHousehold);
+  const pendingRequestCount = useAppSelector(selectPendingRequestProfilesCount);
   //const pauses = useAppSelector(selectPauses);
   //console.log(members);
   //console.log(pauses);
+
   
   const [modalAddAdminVisible, setModalAddAdminVisible] = useState(false);
   const [modalRemoveAdminVisible, setModalRemoveAdminVisible] = useState(false);
@@ -97,7 +101,16 @@ export default function EditHouseholdScreen({
     <ScrollView>
       <View style={styles.container}>
         <View>
-          <Image source={require(householdPicture)} style={styles.householdPicture} />
+          <View style={styles.icons}>
+            <Image source={require(householdPicture)} style={styles.householdPicture} />
+            {pendingRequestCount && 
+              <PendingRequestButton 
+                navigation={navigation} 
+                pendingRequestCount={pendingRequestCount} 
+              />
+            }
+
+          </View>
           <Text>Household's name: </Text>
           <Text style={styles.showProperty}>{household.name}</Text>
 
@@ -367,4 +380,8 @@ export const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
   },
+  icons: {
+    flexDirection: "row",
+    justifyContent: "space-between"
+  }
 });
