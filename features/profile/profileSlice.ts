@@ -1,24 +1,15 @@
 import { createAsyncThunk, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import { Profile, ProfileCreateDto, ProfileEditDto, ProfileState } from "./profileTypes";
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/profile/";
-import { useAppSelector } from "../../hooks/reduxHooks";
-import { selectToken } from "../authentication/authenticationSelectors";
-import ProfileListItem from "../../components/ProfileListItem";
-
-const Token = () => useAppSelector(selectToken);
 
 export const createProfile = createAsyncThunk<Profile, ProfileCreateDto, { rejectValue: string }>(
   "profile/CreateProfile",
   async (profileCreateDto: ProfileCreateDto, thunkApi) => {
-    if (Token()) {
-      return thunkApi.rejectWithValue("User not logged in");
-    }
     try {
       const response = await fetch(baseUrl + "createProfile", {
         method: "POST",
         headers: {
           "content-type": "application/json",
-          authorization: "Bearer " + Token(),
         },
         body: JSON.stringify(profileCreateDto),
       });
@@ -45,15 +36,11 @@ export const editProfile = createAsyncThunk<
 >(
   "profile/EditProfile",
   async ({ profileEditDto, profileId, isActiveProfile = true }, thunkApi) => {
-    /*    if (Token()) {
-    return thunkApi.rejectWithValue("User not logged in");
-  } */
     try {
       const response = await fetch(baseUrl + "editProfile/" + profileId, {
         method: "PATCH",
         headers: {
           "content-type": "application/json",
-          /*  authorization: "Bearer " + Token(), */
         },
         body: JSON.stringify(profileEditDto),
       });
@@ -81,14 +68,10 @@ export const deleteProfile = createAsyncThunk<
   { profileId: string; isActiveProfile?: boolean },
   { rejectValue: string }
 >("profile/deleteProfile", async ({ profileId, isActiveProfile = true }, thunkApi) => {
-  // if (!Token()) {
-  //   return thunkApi.rejectWithValue("User not logged in");
-  // }
   try {
     const response = await fetch(baseUrl + "DeleteProfile/" + profileId, {
       method: "DELETE",
       headers: {
-        // authorization: "Bearer " + Token(),
       },
     });
 
@@ -131,6 +114,9 @@ const profileSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(createProfile.fulfilled, (state, action: PayloadAction<Profile>) => {
+        state.profile = action.payload;
+      }),
     builder.addCase(
       editProfile.fulfilled,
       (state, action: PayloadAction<EditProfilePayloadAction>) => {

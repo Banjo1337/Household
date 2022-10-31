@@ -1,20 +1,29 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import { Button, ProgressBar, Text } from "react-native-paper";
 import { Household } from "../features/household/householdTypes";
+import { ProfileCreateDto } from "../features/profile/profileTypes";
+import { useAppDispatch } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 
 export default function ParsingJoinHouseholdScreen({
   route,
   navigation,
 }: // eslint-disable-next-line @typescript-eslint/no-unused-vars
-NativeStackScreenProps<RootStackParamList, "ParsingJoinHouseholdScreen">) {
+NativeStackScreenProps<RootStackParamList, "ParsingJoinHousehold">) {
+  const {
+    handleSubmit,
+    formState: {},
+  } = useForm();
+
   const [household, setHousehold] = useState<Household>();
   const [foundHouseholdBool, setHouseholdFound] = useState(false);
   const [searching, setSearching] = useState(true);
 
   let result: Household;
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     (async function getHousehold() {
@@ -35,6 +44,11 @@ NativeStackScreenProps<RootStackParamList, "ParsingJoinHouseholdScreen">) {
       }
     })();
   }, []);
+
+  const onJoinHouseholdPressed = (data: FieldValues) => {
+    const sendProfileData: ProfileCreateDto = { alias: route.params.profileName, isAdmin: false };
+    dispatch();
+  };
 
   return (
     <View style={styles.container}>
@@ -70,7 +84,7 @@ NativeStackScreenProps<RootStackParamList, "ParsingJoinHouseholdScreen">) {
 
           <Button
             mode='contained'
-            onPress={() => navigation.navigate("CreateProfile", { householdId: household?.id })}
+            onPress={handleSubmit(onJoinHouseholdPressed)}
             style={{ marginTop: 100 }}
           >
             Awesome!

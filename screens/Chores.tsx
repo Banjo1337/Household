@@ -2,8 +2,8 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import { FlatList, StyleSheet, TouchableHighlight, View } from "react-native";
 import { Button, Text, Title } from "react-native-paper";
-import ChoreListItem from "../components/ChoreListItem";
-import { selectChores } from "../features/chore/choreSelectors";
+import ChoreCard from "../components/ChoreCard";
+import { selectChoresToShowInChoreScreen, selectProfileWhoDidThisChoreByChoreId } from "../features/chore/choreSelectors";
 import { selectHousehold } from "../features/household/householdSelectors";
 import { selectActiveProfile } from "../features/profile/profileSelector";
 import { useAppSelector } from "../hooks/reduxHooks";
@@ -16,7 +16,7 @@ import { RootStackParamList } from "../NavContainer";
 export default function ChoresScreen(Props: NativeStackScreenProps<RootStackParamList>) {
   const [editableMode, setEditableMode] = useState(false);
   const household = useAppSelector(selectHousehold);
-  const chores = useAppSelector(selectChores);
+  const chores = useAppSelector(selectChoresToShowInChoreScreen);
   const profile = useAppSelector(selectActiveProfile);
 
   const onAddChorePressed = () => {
@@ -25,7 +25,6 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
 
   const toggleIsEditable = () => {
     setEditableMode((current: boolean) => !current);
-    console.log(editableMode);
   };
 
   return (
@@ -41,11 +40,11 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
             renderItem={({ item }) => (
               <TouchableHighlight>
                 <View>
-                  <ChoreListItem
+                  <ChoreCard
                     chore={item}
                     navigation={Props.navigation}
                     editableMode={editableMode}
-                  ></ChoreListItem>
+                  ></ChoreCard>
                 </View>
               </TouchableHighlight>
             )}

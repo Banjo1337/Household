@@ -1,7 +1,7 @@
 import { RootStateType } from "../../app/store";
-import { Chore } from "./choreTypes";
 import { ChoreCompleted } from "../choreCompleted/choreCompletedTypes";
 import { Profile } from "../profile/profileTypes";
+import { Chore } from "./choreTypes";
 
 export const selectChores = (state: RootStateType): Chore[] => state.choreReducer.chores;
 export const selectChoreById = (state: RootStateType, choreId: string): Chore =>
@@ -28,6 +28,7 @@ export const selectChoresToShowInChoreScreen = (state: RootStateType): Chore[] =
     const today = new Date();
     const diffTime = Math.abs(today.getTime() - choreCompletedDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    console.log(diffDays, chore.id);
     if (diffDays <= 1) {
       const choreToAdd = selectChoreById(state, chore.choreId);
       choresArchivedButOnly1DayOld.push(choreToAdd);
@@ -37,7 +38,10 @@ export const selectChoresToShowInChoreScreen = (state: RootStateType): Chore[] =
   const returnChores: Chore[] = [];
   returnChores.push(...choresNotArchived);
   returnChores.push(...choresArchivedButOnly1DayOld);
-  return returnChores;
+  const returnChoresWithoutDuplicates = returnChores.filter(
+    (thing, i, arr) => arr.findIndex((t) => t.id === thing.id) === i,
+  );
+  return returnChoresWithoutDuplicates;
 };
 
 //KISS igen. Har snabbskummat denna https://redux.js.org/usage/deriving-data-selectors men inte fått något bra svar. skulle fråga David om nedan.
@@ -47,6 +51,7 @@ export const selectProfileWhoDidThisChoreByChoreId = (
   state: RootStateType,
   choreId: string,
 ): Profile => {
+  console.log(choreId)
   const thisChoreCompletedLastDone = getLatestChoreCompletedByChoreId(state, choreId);
 
   const profiles: Profile[] = state.householdReducer.profiles;
@@ -67,8 +72,19 @@ export const selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId = (
   const choreCompletedDate = new Date(thisChoreCompletedLastDone.completedAt);
   const today = new Date();
   const diffTime = Math.abs(today.getTime() - choreCompletedDate.getTime());
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  const returnText = `${diffDays} / ${chore.frequency}`;
+
+  let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  let diffDaysText = "";
+  if (isNaN(diffDays)) {
+    diffDaysText = "Never done";
+  }
+  else {
+    diffDaysText = diffDays.toString();
+  }
+  if (chore.frequency === 0) {
+    return "";
+  }
+  const returnText = `${diffDaysText} / ${chore.frequency}`;
   return returnText;
 };
 

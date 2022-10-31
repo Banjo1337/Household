@@ -27,10 +27,11 @@ export default function MegaNavigationGodScreen(
           mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("ChoreDetails", { choreId: "" })}
-        >ChoreDetails
+        >
+          ChoreDetails
         </Button>
         <Button
-          mode="contained"
+          mode='contained'
           style={styles.button}
           onPress={() => Props.navigation.navigate("EditChore", { choreId: "" })}
         >
@@ -57,20 +58,6 @@ export default function MegaNavigationGodScreen(
         >
           JoinOrCreateHouseholdPrompt
         </Button>
-        <View style={{ borderColor: "red", borderWidth: 1 }}>
-          <Text>Requires household sent</Text>
-          <Button
-            mode='contained'
-            style={styles.button}
-            // Requires a provided householdId in order to successfully create a profile.
-            // Entering this screen through the god-navigator will still work well,
-            // but clicking the "Finalise & Join" button will not do anything
-            // if no HouseholdId is provided.
-            onPress={() => Props.navigation.navigate("CreateProfile")}
-          >
-            CreateProfile
-          </Button>
-        </View>
         <Button
           mode='contained'
           style={styles.button}
@@ -102,9 +89,9 @@ export default function MegaNavigationGodScreen(
         <Button
           mode='contained'
           style={styles.button}
-          onPress={() => Props.navigation.navigate("EditProfile")}
+          onPress={() => Props.navigation.navigate("EditProfile", { isAdmin: false })}
         >
-          FinalizeProfile
+          EditProfile
         </Button>
         <Button
           mode='contained'

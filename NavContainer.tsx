@@ -4,9 +4,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import AddChoreScreen from "./screens/AddChoreScreen";
 import ChoreDetailsScreen from "./screens/ChoreDetailsScreen";
 //import ChoresScreen from "./screens/Chores";
-import JoinOrCreateHouseholdPromptScreen from "./screens/JoinOrCreateHouseholdPromptScreen";
-import CreateProfileScreen from "./screens/CreateProfileScreen";
 import EditProfileScreen from "./screens/EditProfileScreen";
+import JoinOrCreateHouseholdPromptScreen from "./screens/JoinOrCreateHouseholdPromptScreen";
 import MegaNavigationGodScreen from "./screens/MegaNavigationGodScreen";
 import PendingRequestScreen from "./screens/PendingRequest";
 import SelectProfileScreen from "./screens/SelectProfileScreen";
@@ -20,11 +19,11 @@ import { hydrateAuthenticationSliceFromSecureStorageThunk } from "./features/aut
 import { useTheme } from "./features/theme/ThemeContext";
 import { useAppDispatch } from "./hooks/reduxHooks";
 import TopTabNavigator from "./navigation/TopTabsNavigator";
-import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
-import ParsingJoinHouseholdScreen from "./screens/ParsingJoinHouseholdScreen";
+import CreateProfileScreen from "./screens/CreateProfileScreen";
 import EditChoreScreen from "./screens/EditChoreScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
 import HouseholdDetailsScreen from "./screens/HouseholdDetailsScreen";
+import ParsingJoinHouseholdScreen from "./screens/ParsingJoinHouseholdScreen";
 
 export type RootStackParamList = {
   Home: { screen: "Chores" | "Statistics" };
@@ -33,15 +32,14 @@ export type RootStackParamList = {
   EditChore: { choreId: string };
   SignIn: undefined;
   SignUp: undefined;
-  CreateProfile: { householdId: string | undefined };
-  CreateHousehold: undefined;
+  CreateProfile: undefined;
   JoinOrCreateHouseholdPrompt: undefined;
   EditHousehold: undefined;
   HouseholdDetails: undefined;
   SelectProfile: undefined;
   EditProfile: undefined;
   PendingRequest: undefined;
-  ParsingJoinHouseholdScreen: { householdCode: string };
+  ParsingJoinHousehold: { householdCode: string; profileName: string };
   Settings: undefined;
   MegaNavigationGod: undefined;
 };
@@ -75,7 +73,6 @@ export default function NavContainer() {
             <Stack.Screen name='EditChore' component={EditChoreScreen} />
             <Stack.Screen name='SignIn' component={SignInScreen} />
             <Stack.Screen name='SignUp' component={SignUpScreen} />
-            <Stack.Screen name='CreateHousehold' component={CreateHouseholdScreen} />
             <Stack.Screen name='CreateProfile' component={CreateProfileScreen} />
             <Stack.Screen
               name='JoinOrCreateHouseholdPrompt'
@@ -86,10 +83,7 @@ export default function NavContainer() {
             <Stack.Screen name='SelectProfile' component={SelectProfileScreen} />
             <Stack.Screen name='EditProfile' component={EditProfileScreen} />
             <Stack.Screen name='PendingRequest' component={PendingRequestScreen} />
-            <Stack.Screen
-              name='ParsingJoinHouseholdScreen'
-              component={ParsingJoinHouseholdScreen}
-            />
+            <Stack.Screen name='ParsingJoinHousehold' component={ParsingJoinHouseholdScreen} />
             <Stack.Screen name='Settings' component={SettingsScreen} />
           </Stack.Navigator>
         </NavigationContainer>
