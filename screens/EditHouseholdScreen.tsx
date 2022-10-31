@@ -63,9 +63,9 @@ export default function EditHouseholdScreen({
   const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
   const members = useAppSelector(selectProfileByHousholdId);
-  const pauses = useAppSelector(selectPauses);
+  //const pauses = useAppSelector(selectPauses);
   //console.log(members);
-  console.log(pauses);
+  //console.log(pauses);
   
   const [modalAddAdminVisible, setModalAddAdminVisible] = useState(false);
   const [modalRemoveAdminVisible, setModalRemoveAdminVisible] = useState(false);
