@@ -80,7 +80,7 @@ ytterligare.
 
 - [X] En ägare ska kunna ta bort en syssla.
 
-- [ ] När en syssla tas bort ska användaren få en varning om att all statistik gällande sysslan
+- [x] När en syssla tas bort ska användaren få en varning om att all statistik gällande sysslan
 också kommer att tas bort och få valet att arkivera sysslan istället.
 
 ## Dagsvyn (3)
