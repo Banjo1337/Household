@@ -4,13 +4,19 @@ import {
   createSlice,
   isAnyOf,
   isRejectedWithValue,
+  PayloadAction,
   Reducer,
 } from "@reduxjs/toolkit";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { selectToken } from "../authentication/authenticationSelectors";
-import { deleteProfile, editProfile } from "../profile/profileSlice";
 import { Profile } from "../profile/profileTypes";
 import { Household, HouseholdCreateDto, HouseholdEditDto } from "./householdTypes";
+import {
+  deleteProfile,
+  DeleteProfilePayloadAction,
+  editProfile,
+  EditProfilePayloadAction,
+} from "../profile/profileSlice";
 
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/Household/";
 
@@ -68,15 +74,15 @@ export const editHouseholdThunk = createAsyncThunk<
   { householdEditDto: HouseholdEditDto; householdId: string },
   { rejectValue: string }
 >("household/EditHousehold", async ({ householdEditDto, householdId }, thunkApi) => {
-  if (Token()) {
+/*   if (Token()) {
     return thunkApi.rejectWithValue("User not logged in");
-  }
+  } */
   try {
-    const response = await fetch(baseUrl + "editHousehold/" + householdId, {
+    const response = await fetch(baseUrl + "EditHousehold/" + householdId, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
-        authorization: "Bearer " + Token(),
+        //authorization: "Bearer " + Token(),
       },
       body: JSON.stringify(householdEditDto),
     });
@@ -183,14 +189,20 @@ const householdSlice = createSlice({
       builder.addCase(getProfilesByHouseholdId.fulfilled, (state, action) => {
         state.profiles = action.payload;
       }),
-      builder.addCase(editProfile.fulfilled, (state, action) => {
-        state.profiles = state.profiles.map((p) =>
-          p.id === action.payload.id ? action.payload : p,
-        );
-      }),
-      builder.addCase(deleteProfile.fulfilled, (state, action) => {
-        state.profiles = state.profiles.filter((p) => p.id !== action.payload);
-      }),
+      builder.addCase(
+        editProfile.fulfilled,
+        (state, action: PayloadAction<EditProfilePayloadAction>) => {
+          state.profiles = state.profiles.map((p) =>
+            p.id === action.payload.profile.id ? action.payload.profile : p,
+          );
+        },
+      ),
+      builder.addCase(
+        deleteProfile.fulfilled,
+        (state, action: PayloadAction<DeleteProfilePayloadAction>) => {
+          state.profiles = state.profiles.filter((p) => p.id !== action.payload.profileId);
+        },
+      ),
       builder.addMatcher(
         isAnyOf(
           editHouseholdThunk.pending,
@@ -215,6 +227,18 @@ const householdSlice = createSlice({
           if (action.payload) {
             state.error = action.payload;
           }
+          state.isLoading = false;
+        },
+      ),
+      builder.addMatcher(
+        isAnyOf(
+          editHouseholdThunk.fulfilled,
+          deleteHouseholdThunk.fulfilled,
+          createHouseholdThunk.fulfilled,
+          editHouseholdThunk.fulfilled,
+          hydrateHouseholdSliceFromBackendThunk.fulfilled,
+        ),
+        (state) => {
           state.isLoading = false;
         },
       );

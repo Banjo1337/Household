@@ -82,7 +82,7 @@ export default function EditHouseholdScreen({
   } = useForm();
 
   const onEditHouseholdPressed = (data: FieldValues) => {
-    const name = data.housholdName;
+    const name = String(data.householdName);
     dispatch(
       editHouseholdThunk({
         householdEditDto: { name: name },
@@ -132,6 +132,7 @@ export default function EditHouseholdScreen({
                                 editProfile({
                                   profileEditDto: { isAdmin: true, alias: member.alias },
                                   profileId: member.id,
+                                  isActiveProfile: false
                                 }),
                               )
                             }
@@ -181,6 +182,7 @@ export default function EditHouseholdScreen({
                                     alias: member.alias,
                                   },
                                   profileId: member.id,
+                                  isActiveProfile: false
                                 }),
                               )
                             }
@@ -208,7 +210,7 @@ export default function EditHouseholdScreen({
                       style={[styles.button, styles.buttonClose]}
                       onPress={() => {
                         setModalRemoveAdminVisible(!modalRemoveAdminVisible);
-                        dispatch(deleteProfile(currentProfileId));
+                        dispatch(deleteProfile({profileId: currentProfileId, isActiveProfile: false}));
                         dispatch(deleteHouseholdThunk(household.id));
                         navigation.navigate("MegaNavigationGod");
                       }}

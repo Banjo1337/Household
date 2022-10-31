@@ -2,10 +2,19 @@ import { RootStateType } from "../../app/store";
 import { selectChoreById, selectChores } from "../chore/choreSelectors";
 import { selectHouseholdProfile } from "../household/householdSelectors";
 import { Avatars } from "../profile/profileTypes";
-import { ChoreCompleted, Statistics, StatisticsList } from "./choreCompletedTypes";
+import { ChoreCompleted, Statistics, StatisticsAvailability, StatisticsList } from "./choreCompletedTypes";
 
 export const selectChoreCompleted = (state: RootStateType): ChoreCompleted[] =>
   state.choreCompletedReducer.completedChores;
+
+export const selectStatAvailability = (state: RootStateType): StatisticsAvailability => {
+  const now = new Date();
+  return {
+    StatisticsCurrentWeek: selectChoreCompletedRange(state, new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7), now).length > 0,
+    StatisticsPreviousWeek: selectChoreCompletedRange(state, new Date(now.getFullYear(), now.getMonth(), now.getDate() - 14), new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7)).length > 0,
+    StatisticsPreviousMonth: selectChoreCompletedRange(state, new Date(now.getFullYear(), now.getMonth() - 2, now.getDate()), new Date(now.getFullYear(), now.getMonth() - 1, now.getDate())).length > 0,
+  };
+};
 
 export const selectChoreCompletedRange = (
   state: RootStateType,

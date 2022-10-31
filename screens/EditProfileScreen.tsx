@@ -62,7 +62,7 @@ export default function EditProfileScreen(
   }
 
   function handleDelete() {
-    dispatch(deleteProfile(profile.id));
+    dispatch(deleteProfile({profileId: profile.id}));
     Props.navigation.navigate("SelectProfile");
   }
 
