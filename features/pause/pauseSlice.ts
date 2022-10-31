@@ -63,15 +63,15 @@ export const updatePause = createAsyncThunk<
   { pauseUpdateDto: PauseUpdateDto; pauseId: string },
   { rejectValue: string }
 >("pause/UpdatePause", async ({ pauseUpdateDto, pauseId }, thunkApi) => {
-  if (Token()) {
+/*   if (Token()) {
     return thunkApi.rejectWithValue("User not logged in");
-  }
+  } */
   try {
     const response = await fetch(baseUrl + "UpdatePause/" + pauseId, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
-        authorization: "Bearer " + Token(),
+        //authorization: "Bearer " + Token(),
       },
       body: JSON.stringify(pauseUpdateDto),
     });
