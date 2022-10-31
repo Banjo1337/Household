@@ -19,7 +19,6 @@ export default function SwitchToPause({ profile }: Props) {
   const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
   const pause = useAppSelector((state) => selectCurrentlyPausedByProfileId(state, profile.id));
-  console.log(pause);
   const isPaused = () => {
     if (pause.length>0){
       return true;
@@ -45,17 +44,14 @@ export default function SwitchToPause({ profile }: Props) {
     const initialDate = newDateInClientTimezone();
     initialDate.setDate(pauseDuration);
     const endPauseDate = initialDate;
-    //console.log(todaysDate);
-    //console.log(endPauseDate);
+
     const pauseCreateDto : PauseCreateDto  = {
         startDate: todaysDate.toISOString(),
         endDate: endPauseDate.toISOString(),
         householdId: household.id,
         profileIdQol: profile.id,
     };
-
     dispatch(createPause(pauseCreateDto));
-    //console.log(pauseCreateDto);
   };
 
   const toggleSwitch = () => {
@@ -101,7 +97,7 @@ export default function SwitchToPause({ profile }: Props) {
                 style={styles.pressable}
                 onPress={handleSubmit(onDefinePauseDurationPressed)}
               >
-                <Text>Validate</Text>
+                <Text style={{fontSize: 15}}>Validate</Text>
               </TouchableOpacity>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
@@ -127,19 +123,19 @@ export default function SwitchToPause({ profile }: Props) {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>The ongoing pause is now stopped</Text>
-
+              
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
                   setModalPauseVisible(!modalPauseVisible);
-                  const pauseId = pause[0].id;
-                  const pauseUpdateDto: PauseUpdateDto = {
-                    endDate: newDateInClientTimezone().toISOString(),
-                    householdId: household.id,
-                  };
-                  dispatch(updatePause({ pauseUpdateDto, pauseId }));
-                  console.log(pauseUpdateDto);
-                  console.log("hello");
+                  if (pause.length>0) {
+                    const pauseId = pause[0].id;
+                    const pauseUpdateDto: PauseUpdateDto = {
+                      endDate: newDateInClientTimezone().toISOString(),
+                      householdId: household.id,
+                    };
+                    dispatch(updatePause({ pauseUpdateDto, pauseId }));
+                  }
                 }}
               >
                 <Text style={styles.textStyle}>Close</Text>
