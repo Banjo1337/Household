@@ -1,3 +1,4 @@
+import { newDateInClientTimezone } from "../../app/dateUtils";
 import { RootStateType } from "../../app/store";
 import { Pause } from "./pauseTypes";
 
@@ -10,7 +11,19 @@ export const selectPauseByHouseholdId = (state: RootStateType, householdId: stri
 };
 export const selectPauseByProfileId = (state: RootStateType, profileId: string) => {
   const pauses = selectPauses(state);
-  return pauses.find((pause: Pause) => pause.profileIdQol === profileId);
+  return pauses.filter((pause: Pause) => pause.profileIdQol === profileId);
+};
+
+export const selectCurrentlyPausedByProfileId = (state: RootStateType, profileId: string) => {
+  const pauses = selectPauses(state);
+  const pausesByProfileId = pauses.filter((pause: Pause) => pause.profileIdQol === profileId);
+  const currentPauses:Pause[] = [];
+  pausesByProfileId.map((pause)=>{
+    if(pause.startDate<newDateInClientTimezone().toISOString()&&pause.endDate>newDateInClientTimezone().toISOString()){
+    currentPauses.push(pause);
+    }
+  });
+  return currentPauses;
 };
 
 export const selectHasUserPauseAtThisTime = (
