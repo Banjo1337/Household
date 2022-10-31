@@ -1,11 +1,9 @@
 import { createAsyncThunk, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
-import { useAppSelector } from "../../hooks/reduxHooks";
-import { selectToken } from "../authentication/authenticationSelectors";
-import { Pause, PauseState, PauseCreateDto, PauseUpdateDto } from "./pauseTypes";
+import { Pause, PauseCreateDto, PauseState, PauseUpdateDto } from "./pauseTypes";
 
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/Pause/";
 
-const Token = () => useAppSelector(selectToken);
+// const Token = () => useAppSelector(selectToken);
 
 export const hydratePauseSliceFromBackendThunk = createAsyncThunk<
   Pause[],
@@ -30,7 +28,7 @@ export const hydratePauseSliceFromBackendThunk = createAsyncThunk<
 export const createPause = createAsyncThunk<Pause, PauseCreateDto, { rejectValue: string }>(
   "pause/CreatePause",
   async (pauseCreateDto: PauseCreateDto, thunkApi) => {
-/*     if (Token()) {
+    /*     if (Token()) {
       return thunkApi.rejectWithValue("User not logged in");
     } */
     try {
@@ -38,7 +36,7 @@ export const createPause = createAsyncThunk<Pause, PauseCreateDto, { rejectValue
         method: "POST",
         headers: {
           "content-type": "application/json",
-         // authorization: "Bearer " + Token(),
+          // authorization: "Bearer " + Token(),
         },
         body: JSON.stringify(pauseCreateDto),
       });
@@ -63,7 +61,7 @@ export const updatePause = createAsyncThunk<
   { pauseUpdateDto: PauseUpdateDto; pauseId: string },
   { rejectValue: string }
 >("pause/UpdatePause", async ({ pauseUpdateDto, pauseId }, thunkApi) => {
-/*   if (Token()) {
+  /*   if (Token()) {
     return thunkApi.rejectWithValue("User not logged in");
   } */
   try {

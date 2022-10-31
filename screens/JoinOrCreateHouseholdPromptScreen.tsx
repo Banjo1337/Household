@@ -8,9 +8,9 @@ import { createHouseholdThunk } from "../features/household/householdSlice";
 import { useAppDispatch } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 
-export default function JoinOrCreateHouseholdPromptScreen({
-  navigation,
-}: NativeStackScreenProps<RootStackParamList>) {
+export default function JoinOrCreateHouseholdPromptScreen(
+  Props: NativeStackScreenProps<RootStackParamList>,
+) {
   const {
     control,
     handleSubmit,
@@ -30,12 +30,12 @@ export default function JoinOrCreateHouseholdPromptScreen({
     const result = dispatch(createHouseholdThunk({ name: data.householdName }));
 
     result.then(() => {
-      navigation.navigate("CreateProfile");
+      Props.navigation.navigate("CreateProfile");
     });
   };
 
   const onJoinHouseholdPressed = (data: FieldValues) => {
-    navigation.navigate("ParsingJoinHousehold", { householdCode: data.householdCode });
+    Props.navigation.navigate("ParsingJoinHousehold", { householdCode: data.householdCode });
   };
 
   return (

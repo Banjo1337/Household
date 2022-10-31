@@ -22,7 +22,6 @@ import {
   selectProfileByHousehold,
 } from "../features/household/householdSelectors";
 import { deleteHouseholdThunk, editHouseholdThunk } from "../features/household/householdSlice";
-import { selectPauses } from "../features/pause/pauseSelectors";
 import { deleteProfile, editProfile } from "../features/profile/profileSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
@@ -57,11 +56,7 @@ export function ContainTwoAdmin() {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function EditHouseholdScreen({
-  route,
-  navigation,
-}: NativeStackScreenProps<RootStackParamList>) {
+export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootStackParamList>) {
   const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
   const members = useAppSelector(selectProfileByHousehold);
@@ -70,7 +65,6 @@ export default function EditHouseholdScreen({
   //console.log(members);
   //console.log(pauses);
 
-  
   const [modalAddAdminVisible, setModalAddAdminVisible] = useState(false);
   const [modalRemoveAdminVisible, setModalRemoveAdminVisible] = useState(false);
 
@@ -105,7 +99,7 @@ export default function EditHouseholdScreen({
             <Image source={require(householdPicture)} style={styles.householdPicture} />
             {pendingRequestCount ? 
               <PendingRequestButton 
-                navigation={navigation} 
+                navigation={Props.navigation} 
                 pendingRequestCount={pendingRequestCount} 
               /> : null
             }
@@ -145,7 +139,7 @@ export default function EditHouseholdScreen({
                                 editProfile({
                                   profileEditDto: { isAdmin: true, alias: member.alias },
                                   profileId: member.id,
-                                  isActiveProfile: false
+                                  isActiveProfile: false,
                                 }),
                               )
                             }
@@ -195,7 +189,7 @@ export default function EditHouseholdScreen({
                                     alias: member.alias,
                                   },
                                   profileId: member.id,
-                                  isActiveProfile: false
+                                  isActiveProfile: false,
                                 }),
                               )
                             }
@@ -223,9 +217,11 @@ export default function EditHouseholdScreen({
                       style={[styles.button, styles.buttonClose]}
                       onPress={() => {
                         setModalRemoveAdminVisible(!modalRemoveAdminVisible);
-                        dispatch(deleteProfile({profileId: currentProfileId, isActiveProfile: false}));
+                        dispatch(
+                          deleteProfile({ profileId: currentProfileId, isActiveProfile: false }),
+                        );
                         dispatch(deleteHouseholdThunk(household.id));
-                        navigation.navigate("MegaNavigationGod");
+                        Props.navigation.navigate("MegaNavigationGod");
                       }}
                     >
                       <Text style={styles.textStyle}>Delete Household</Text>
