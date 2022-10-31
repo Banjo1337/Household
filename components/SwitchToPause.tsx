@@ -31,7 +31,7 @@ export default function SwitchToPause({ profile }: Props) {
   const [modalPauseVisible, setModalPauseVisible] = useState(false);
 
   const todaysDate = newDateInClientTimezone();
-  
+
   const {
     control,
     handleSubmit,
@@ -61,7 +61,6 @@ export default function SwitchToPause({ profile }: Props) {
   const toggleSwitch = () => {
     setEnabled((oldValue) => !oldValue);
     setModalPauseVisible(!modalPauseVisible);
-    
   };
   const thumbColorOn = Platform.OS === "android" ? "#0cd1e8" : "#f3f3f3";
   const thumbColorOff = Platform.OS === "android" ? "#f04141" : "#f3f3f3";

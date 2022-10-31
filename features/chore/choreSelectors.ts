@@ -1,3 +1,4 @@
+import { newDateInClientTimezone } from "../../app/dateUtils";
 import { RootStateType } from "../../app/store";
 import { ChoreCompleted } from "../choreCompleted/choreCompletedTypes";
 import { Profile } from "../profile/profileTypes";
@@ -25,7 +26,7 @@ export const selectChoresToShowInChoreScreen = (state: RootStateType): Chore[] =
 
   for (const chore of choresCompleted) {
     const choreCompletedDate = new Date(chore.completedAt);
-    const today = new Date();
+    const today = newDateInClientTimezone();
     const diffTime = Math.abs(today.getTime() - choreCompletedDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     console.log(diffDays, chore.id);
@@ -51,7 +52,7 @@ export const selectProfileWhoDidThisChoreByChoreId = (
   state: RootStateType,
   choreId: string,
 ): Profile => {
-  console.log(choreId)
+  console.log(choreId);
   const thisChoreCompletedLastDone = getLatestChoreCompletedByChoreId(state, choreId);
 
   const profiles: Profile[] = state.householdReducer.profiles;
@@ -70,15 +71,14 @@ export const selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId = (
   const chore = selectChoreById(state, choreId);
 
   const choreCompletedDate = new Date(thisChoreCompletedLastDone.completedAt);
-  const today = new Date();
+  const today = newDateInClientTimezone();
   const diffTime = Math.abs(today.getTime() - choreCompletedDate.getTime());
 
   let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   let diffDaysText = "";
   if (isNaN(diffDays)) {
     diffDaysText = "Never done";
-  }
-  else {
+  } else {
     diffDaysText = diffDays.toString();
   }
   if (chore.frequency === 0) {
@@ -94,7 +94,7 @@ export const selectIsChoreOverdueByChoreId = (state: RootStateType, choreId: str
   const chore = selectChoreById(state, choreId);
 
   const choreCompletedDate = new Date(thisChoreCompletedLastDone.completedAt);
-  const today = new Date();
+  const today = newDateInClientTimezone();
   const diffTime = Math.abs(today.getTime() - choreCompletedDate.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   return diffDays > chore.frequency;
