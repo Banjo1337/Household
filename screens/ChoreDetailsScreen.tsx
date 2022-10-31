@@ -2,7 +2,10 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Checkbox, Text, Title } from "react-native-paper";
+import { newDateInClientTimezone } from "../app/dateUtils";
 import { selectChoreById } from "../features/chore/choreSelectors";
+import { updateChore } from "../features/chore/choreSlice";
+import { ChoreUpdateDto } from "../features/chore/choreTypes";
 import { addChoreCompleted } from "../features/choreCompleted/choreCompletedSlice";
 import { ChoreCompletedCreateDto } from "../features/choreCompleted/choreCompletedTypes";
 import { selectHousehold } from "../features/household/householdSelectors";
@@ -24,7 +27,7 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
 
   const onSavePressed = () => {
     if (checked) {
-      var dateTime = new Date();
+      var dateTime = newDateInClientTimezone();
       const choreCompleted: ChoreCompletedCreateDto = {
         completedAt: dateTime.toISOString(),
         profileIdQol: profile.id,
@@ -32,6 +35,19 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
         householdId: household.id,
       };
       dispatch(addChoreCompleted(choreCompleted));
+      if (chore.frequency === 0) {
+        const choreUpdateDto: ChoreUpdateDto = {
+          name: chore.name,
+          points: chore.points,
+          description: chore.description,
+          pictureUrl: chore.pictureUrl,
+          audioUrl: chore.audioUrl,
+          frequency: chore.frequency,
+          isArchived: true,
+          householdId: household.id
+        };
+        dispatch(updateChore({ choreUpdateDto, choreId: chore.id }));
+      }
       navigation.navigate("Home", { screen: "Chores" });
     }
     else console.log("not changed");
