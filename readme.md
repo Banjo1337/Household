@@ -107,7 +107,7 @@ fördelning av varje enskild syssla. 🚨⚠🚨
 
 - [x] Det ska finnas en statistikvy över ”förra månaden”.
 
-- [ ] Om det inte finns statistik för en av vyerna ska den vyn inte visas.
+- [x] Om det inte finns statistik för en av vyerna ska den vyn inte visas.
 
 ## Schemaläggning (3)
 
