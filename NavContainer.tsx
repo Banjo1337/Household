@@ -39,7 +39,7 @@ export type RootStackParamList = {
   SelectProfile: undefined;
   EditProfile: undefined;
   PendingRequest: undefined;
-  ParsingJoinHousehold: { householdCode: string; profileName: string };
+  ParsingJoinHousehold: { householdCode: string; };
   Settings: undefined;
   MegaNavigationGod: undefined;
 };
