@@ -17,7 +17,7 @@ import ProfileListItem from "../components/ProfileListItem";
 import SwitchToPause from "../components/SwitchToPause";
 import {
   selectHousehold,
-  selectProfileByHousholdId,
+  selectProfileByHousehold,
 } from "../features/household/householdSelectors";
 import { deleteHouseholdThunk, editHouseholdThunk } from "../features/household/householdSlice";
 import { selectPauses } from "../features/pause/pauseSelectors";
@@ -26,7 +26,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 
 export function ContainAdminFalse() {
-  const members = useAppSelector(selectProfileByHousholdId);
+  const members = useAppSelector(selectProfileByHousehold);
   var r = [];
   members.forEach((element) => {
     if (element.isAdmin == false) {
@@ -41,7 +41,7 @@ export function ContainAdminFalse() {
 }
 
 export function ContainTwoAdmin() {
-  const members = useAppSelector(selectProfileByHousholdId);
+  const members = useAppSelector(selectProfileByHousehold);
   var r = [];
   members.forEach((element) => {
     if (element.isAdmin == true) {
@@ -62,7 +62,7 @@ export default function EditHouseholdScreen({
 }: NativeStackScreenProps<RootStackParamList>) {
   const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
-  const members = useAppSelector(selectProfileByHousholdId);
+  const members = useAppSelector(selectProfileByHousehold);
   //const pauses = useAppSelector(selectPauses);
   //console.log(members);
   //console.log(pauses);
