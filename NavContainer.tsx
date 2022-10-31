@@ -19,7 +19,7 @@ import { hydrateAuthenticationSliceFromSecureStorageThunk } from "./features/aut
 import { useTheme } from "./features/theme/ThemeContext";
 import { useAppDispatch } from "./hooks/reduxHooks";
 import TopTabNavigator from "./navigation/TopTabsNavigator";
-import CreateHouseholdScreen from "./screens/CreateHouseholdScreen";
+import CreateProfileScreen from "./screens/CreateProfileScreen";
 import EditChoreScreen from "./screens/EditChoreScreen";
 import EditHouseholdScreen from "./screens/EditHouseholdScreen";
 import HouseholdDetailsScreen from "./screens/HouseholdDetailsScreen";
@@ -32,14 +32,14 @@ export type RootStackParamList = {
   EditChore: { choreId: string };
   SignIn: undefined;
   SignUp: undefined;
-  CreateHousehold: undefined;
+  CreateProfile: undefined;
   JoinOrCreateHouseholdPrompt: undefined;
   EditHousehold: undefined;
   HouseholdDetails: undefined;
   SelectProfile: undefined;
-  EditProfile: { isAdmin: boolean; householdId?: string | undefined };
+  EditProfile: undefined;
   PendingRequest: undefined;
-  ParsingJoinHouseholdScreen: { householdCode: string };
+  ParsingJoinHousehold: { householdCode: string; profileName: string };
   Settings: undefined;
   MegaNavigationGod: undefined;
 };
@@ -73,7 +73,7 @@ export default function NavContainer() {
             <Stack.Screen name='EditChore' component={EditChoreScreen} />
             <Stack.Screen name='SignIn' component={SignInScreen} />
             <Stack.Screen name='SignUp' component={SignUpScreen} />
-            <Stack.Screen name='CreateHousehold' component={CreateHouseholdScreen} />
+            <Stack.Screen name='CreateProfile' component={CreateProfileScreen} />
             <Stack.Screen
               name='JoinOrCreateHouseholdPrompt'
               component={JoinOrCreateHouseholdPromptScreen}
@@ -83,10 +83,7 @@ export default function NavContainer() {
             <Stack.Screen name='SelectProfile' component={SelectProfileScreen} />
             <Stack.Screen name='EditProfile' component={EditProfileScreen} />
             <Stack.Screen name='PendingRequest' component={PendingRequestScreen} />
-            <Stack.Screen
-              name='ParsingJoinHouseholdScreen'
-              component={ParsingJoinHouseholdScreen}
-            />
+            <Stack.Screen name='ParsingJoinHousehold' component={ParsingJoinHouseholdScreen} />
             <Stack.Screen name='Settings' component={SettingsScreen} />
           </Stack.Navigator>
         </NavigationContainer>

@@ -1,23 +1,19 @@
 import { createAsyncThunk, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
-import { Profile, ProfileCreateDto, ProfileEditDto, ProfileState } from "./profileTypes";
-const baseUrl = "https://household-backend.azurewebsites.net/api/V01/profile/";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { selectToken } from "../authentication/authenticationSelectors";
+import { Profile, ProfileCreateDto, ProfileEditDto, ProfileState } from "./profileTypes";
+const baseUrl = "https://household-backend.azurewebsites.net/api/V01/profile/";
 
 const Token = () => useAppSelector(selectToken);
 
 export const createProfile = createAsyncThunk<Profile, ProfileCreateDto, { rejectValue: string }>(
   "profile/CreateProfile",
   async (profileCreateDto: ProfileCreateDto, thunkApi) => {
-    if (Token()) {
-      return thunkApi.rejectWithValue("User not logged in");
-    }
     try {
       const response = await fetch(baseUrl + "createProfile", {
         method: "POST",
         headers: {
           "content-type": "application/json",
-          authorization: "Bearer " + Token(),
         },
         body: JSON.stringify(profileCreateDto),
       });
@@ -41,16 +37,12 @@ export const editProfile = createAsyncThunk<
   Profile,
   { profileEditDto: ProfileEditDto; profileId: string },
   { rejectValue: string }
->("profile/EditProfile", async ({profileEditDto, profileId}, thunkApi) => {
-/*    if (Token()) {
-    return thunkApi.rejectWithValue("User not logged in");
-  } */ 
+>("profile/EditProfile", async ({ profileEditDto, profileId }, thunkApi) => {
   try {
     const response = await fetch(baseUrl + "editProfile/" + profileId, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
-       /*  authorization: "Bearer " + Token(), */
       },
       body: JSON.stringify(profileEditDto),
     });
@@ -117,12 +109,15 @@ const profileSlice = createSlice({
       state.profile = {} as Profile;
       state.isLoading = false;
     }),
-    builder.addMatcher(
-      isAnyOf(createProfile.pending, editProfile.pending, deleteProfile.pending),
-      (state) => {
-        state.isLoading = true;
-      },
-    ),
+      builder.addCase(createProfile.fulfilled, (state, action: PayloadAction<Profile>) => {
+        state.profile = action.payload;
+      }),
+      builder.addMatcher(
+        isAnyOf(createProfile.pending, editProfile.pending, deleteProfile.pending),
+        (state) => {
+          state.isLoading = true;
+        },
+      ),
       builder.addMatcher(
         isAnyOf(createProfile.fulfilled, editProfile.fulfilled),
         (state, action) => {

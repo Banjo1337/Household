@@ -7,8 +7,8 @@ import AvatarSelectorItem from "../components/AvatarSelectorItem";
 import CustomInput from "../components/CustomInput";
 import { selectProfileByHousholdId } from "../features/household/householdSelectors";
 import { selectActiveProfile } from "../features/profile/profileSelector";
-import { createProfile, deleteProfile, editProfile } from "../features/profile/profileSlice";
-import { Avatar, Avatars, ProfileCreateDto } from "../features/profile/profileTypes";
+import { deleteProfile, editProfile } from "../features/profile/profileSlice";
+import { Avatar, Avatars } from "../features/profile/profileTypes";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 import { styles as modalStyles } from "./EditHouseholdScreen";
@@ -24,14 +24,17 @@ export default function EditProfileScreen(
   const availableAvatars = Object.keys(Avatars)
     .filter((a) => !householdProfiles.map((p) => p.avatar).includes(a as Avatar))
     .concat(profile.avatar)
-    .map((a, index) => (
-      <AvatarSelectorItem
-        key={index}
-        avatar={a as Avatar}
-        selectedAvatar={selectedAvatar}
-        handlePress={setSelectedAvatar}
-      />
-    ));
+    .map(
+      (a, index) =>
+        a !== "pending" && (
+          <AvatarSelectorItem
+            key={index}
+            avatar={a as Avatar}
+            selectedAvatar={selectedAvatar}
+            handlePress={setSelectedAvatar}
+          />
+        ),
+    );
 
   type FormValue = {
     name: string;
@@ -43,7 +46,7 @@ export default function EditProfileScreen(
   } = useForm<FormValue>({ defaultValues: { name: profile.alias } });
 
   function submitProfileChanges(data: FormValue) {
-    dispatch(
+    const result = dispatch(
       editProfile({
         profileEditDto: {
           alias: data.name,
@@ -52,11 +55,10 @@ export default function EditProfileScreen(
         profileId: profile.id,
       }),
     );
-  }
 
-  function submitCreateProfile(data: FormValue) {
-    const sendThis: ProfileCreateDto = { alias: data.name, isAdmin: true };
-    dispatch(createProfile({}));
+    result.then(() => {
+      Props.navigation.navigate("Home", { screen: "Chores" });
+    });
   }
 
   function handleDelete() {
@@ -85,11 +87,8 @@ export default function EditProfileScreen(
               },
             }}
           />
-          <Button
-            mode='contained'
-            onPress={Props.route.params.isAdmin ? <></> : handleSubmit(submitProfileChanges)}
-          >
-            <Title style={styles.title}>Save {Props.route.params.isAdmin ? "as admin" : ""}</Title>
+          <Button mode='contained' onPress={handleSubmit(submitProfileChanges)}>
+            <Title style={styles.title}>Save</Title>
           </Button>
         </View>
         <Button

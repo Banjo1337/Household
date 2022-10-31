@@ -50,7 +50,7 @@ export const createHouseholdThunk = createAsyncThunk<
     });
 
     if (response.ok) {
-      return await response.json();
+      return (await response.json()) as Household;
     }
 
     return thunkApi.rejectWithValue(JSON.stringify(response.body));
@@ -172,7 +172,7 @@ const householdSlice = createSlice({
       state.isLoading = false;
     }),
       builder.addCase(createHouseholdThunk.fulfilled, (state, action) => {
-        state.household.name = action.payload.name;
+        state.household = action.payload;
       }),
       builder.addCase(editHouseholdThunk.fulfilled, (state, action) => {
         state.household.name = action.payload.name;
