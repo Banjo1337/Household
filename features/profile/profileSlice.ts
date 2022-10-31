@@ -1,11 +1,6 @@
 import { createAsyncThunk, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
-import { useAppSelector } from "../../hooks/reduxHooks";
-import { selectToken } from "../authentication/authenticationSelectors";
-import ProfileListItem from "../../components/ProfileListItem";
 import { Profile, ProfileCreateDto, ProfileEditDto, ProfileState } from "./profileTypes";
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/profile/";
-
-const Token = () => useAppSelector(selectToken);
 
 export const createProfile = createAsyncThunk<Profile, ProfileCreateDto, { rejectValue: string }>(
   "profile/CreateProfile",
@@ -61,40 +56,6 @@ export const editProfile = createAsyncThunk<
     }
   }
 });
-
-export const deleteProfile = createAsyncThunk<string, string, { rejectValue: string }>(
-  "profile/deleteProfile",
-  async (profileId: string, thunkApi) => {
-    // if (!Token()) {
-    //   return thunkApi.rejectWithValue("User not logged in");
-    // }
-    try {
-      const response = await fetch(baseUrl + "editProfile/" + profileId, {
-        method: "PATCH",
-        headers: {
-          "content-type": "application/json",
-          /*  authorization: "Bearer " + Token(), */
-        },
-        body: JSON.stringify(profileEditDto),
-      });
-
-      if (response.ok) {
-        return {
-          profile: (await response.json()) as Profile,
-          isActiveProfile: isActiveProfile,
-        };
-      }
-
-      return thunkApi.rejectWithValue(JSON.stringify(response.body));
-    } catch (err) {
-      if (err instanceof Error) {
-        return thunkApi.rejectWithValue(err.message);
-      } else {
-        return thunkApi.rejectWithValue("");
-      }
-    }
-  },
-);
 
 export const deleteProfile = createAsyncThunk<
   { profileId: string; isActiveProfile: boolean },
