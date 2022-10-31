@@ -1,35 +1,30 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView, Pressable, Modal } from "react-native";
+import { Image, Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
 
-import { ContainTwoAdmin } from "../screens/EditHouseholdScreen";
+import ProfileListItem from "../components/ProfileListItem";
 import {
   selectHousehold,
   selectProfileByHousholdId,
 } from "../features/household/householdSelectors";
+import { deleteHouseholdThunk } from "../features/household/householdSlice";
+import { deleteProfile } from "../features/profile/profileSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
-import ProfileListItem from "../components/ProfileListItem";
-import { deleteProfile } from "../features/profile/profileSlice";
-import { deleteHouseholdThunk } from "../features/household/householdSlice";
-
-
+import { ContainTwoAdmin } from "../screens/EditHouseholdScreen";
 
 export function CurrentProfileisAdmin() {
   const members = useAppSelector(selectProfileByHousholdId);
   const currentProfileId = useAppSelector((state) => state.profileReducer.profile).id;
   var currentProfile = members.find((element) => element.id == currentProfileId);
-  if(currentProfile?.isAdmin){
+  if (currentProfile?.isAdmin) {
     return true;
-  }
- else {
+  } else {
     return false;
   }
 }
-
-
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function HouseholdDetailsScreen({
@@ -55,12 +50,12 @@ export default function HouseholdDetailsScreen({
             <Image source={require(householdPicture)} style={styles.householdPicture} />
             <View style={{ alignItems: "flex-end", padding: 10 }}>
               {currentProfileisAdmin && (
-              <Pressable
-                onPress={() => navigation.navigate("EditHousehold")}
-                style={{ padding: 10 }}
-              >
-                <Feather name='settings' size={35} color='black' />
-              </Pressable>
+                <Pressable
+                  onPress={() => navigation.navigate("EditHousehold")}
+                  style={{ padding: 10 }}
+                >
+                  <Feather name='settings' size={35} color='black' />
+                </Pressable>
               )}
               <Modal
                 animationType='slide'
@@ -88,7 +83,8 @@ export default function HouseholdDetailsScreen({
                           style={[styles.button, styles.buttonClose]}
                           onPress={() => {
                             setModalLeaveVisible(!modalLeaveVisible);
-                            dispatch(deleteProfile(currentProfileId)); 
+                            dispatch(deleteProfile({ profileId: currentProfileId }));
+                            // TSC above: should there be more props other than profileId?
                             navigation.navigate("MegaNavigationGod");
                           }}
                         >
@@ -122,7 +118,7 @@ export default function HouseholdDetailsScreen({
                           style={[styles.button, styles.buttonClose]}
                           onPress={() => {
                             setModalLeaveVisible(!modalLeaveVisible);
-                            dispatch(deleteProfile(currentProfileId)); 
+                            dispatch(deleteProfile({ profileId: currentProfileId }));
                             dispatch(deleteHouseholdThunk(household.id));
                             navigation.navigate("MegaNavigationGod");
                           }}

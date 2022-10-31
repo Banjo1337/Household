@@ -1,6 +1,7 @@
 import React from "react";
 import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Surface, Text, Button } from "react-native-paper";
+
 import {
   selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId,
   selectIsChoreOverdueByChoreId,
@@ -93,6 +94,7 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
                 justifyContent: "center",
               }}
             >
+
               {daysPassedAndFrequency}
               {!daysPassedAndFrequency && <Text>✅</Text>}
             </Text>
@@ -110,6 +112,7 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
               </Text>
             )}
           </View>
+
         </Pressable>
       </Surface>
     </View>

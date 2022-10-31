@@ -7,6 +7,7 @@ import {
   selectChoresToShowInChoreScreen,
   selectProfileWhoDidThisChoreByChoreId,
 } from "../features/chore/choreSelectors";
+
 import { selectHousehold } from "../features/household/householdSelectors";
 import { selectActiveProfile } from "../features/profile/profileSelector";
 import { useAppSelector } from "../hooks/reduxHooks";
@@ -15,7 +16,6 @@ import { RootStackParamList } from "../NavContainer";
 
 //type Props = NativeStackScreenProps<RootStackParamList>;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ChoresScreen(Props: NativeStackScreenProps<RootStackParamList>) {
   const [editableMode, setEditableMode] = useState(false);
   const household = useAppSelector(selectHousehold);
@@ -49,6 +49,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
             Household:{household.name}
           </Title>
           <Title style={{ textAlign: "center", backgroundColor: "#E2D1F9", color: "#317773" }}>
+
             Code: {household.code}
           </Title>
         </View>
@@ -79,6 +80,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
 
         {profile.isAdmin && (
           <View style={{ flexDirection: "row", marginTop: 10 }}>
+
             <Button
               mode='contained'
               style={{
@@ -130,6 +132,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",

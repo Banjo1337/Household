@@ -3,8 +3,8 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { newDateInClientTimezone } from "../app/dateUtils";
 import { selectAuthUserId, selectToken } from "../features/authentication/authenticationSelectors";
-import { RootStackParamList } from "../NavContainer";
 import { useAppSelector } from "../hooks/reduxHooks";
+import { RootStackParamList } from "../NavContainer";
 
 export default function MegaNavigationGodScreen(
   Props: NativeStackScreenProps<RootStackParamList, "MegaNavigationGod">,
@@ -69,9 +69,9 @@ export default function MegaNavigationGodScreen(
         <Button
           mode='contained'
           style={styles.button}
-          onPress={() => Props.navigation.navigate("CreateHousehold")}
+          onPress={() => Props.navigation.navigate("CreateProfile")}
         >
-          CreateHousehold
+          CreateProfile
         </Button>
         <Button
           mode='contained'
@@ -97,7 +97,7 @@ export default function MegaNavigationGodScreen(
         <Button
           mode='contained'
           style={styles.button}
-          onPress={() => Props.navigation.navigate("EditProfile", { isAdmin: false })}
+          onPress={() => Props.navigation.navigate("EditProfile")}
         >
           EditProfile
         </Button>

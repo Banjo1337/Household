@@ -6,26 +6,21 @@ import { Button, Text, Title } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { selectAuthUserId } from "../features/authentication/authenticationSelectors";
 import { selectHousehold } from "../features/household/householdSelectors";
-import { selectActiveProfile } from "../features/profile/profileSelector";
 import { createProfile } from "../features/profile/profileSlice";
 import { ProfileCreateDto } from "../features/profile/profileTypes";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { useSetAndHydrateProfile } from "../hooks/useSetAndHydrateProfile";
 import { RootStackParamList } from "../NavContainer";
 
-export default function CreateProfileScreen({
-  route,
-  navigation,
-}: NativeStackScreenProps<RootStackParamList, "CreateProfile">) {
+export default function CreateProfileScreen(
+  Props: NativeStackScreenProps<RootStackParamList, "CreateProfile">,
+) {
   const {
     control,
     handleSubmit,
     formState: {},
   } = useForm();
 
-  const setAndHydrateProfile = useSetAndHydrateProfile();
   const dispatch = useAppDispatch();
-  const profile = useAppSelector(selectActiveProfile);
   const household = useAppSelector(selectHousehold);
   const authUser = useAppSelector(selectAuthUserId);
 
@@ -39,7 +34,7 @@ export default function CreateProfileScreen({
     const result = dispatch(createProfile(sendThisProfile));
 
     result.then(() => {
-      navigation.navigate("EditProfile");
+      Props.navigation.navigate("EditProfile");
     });
   };
 

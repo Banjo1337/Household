@@ -1,18 +1,15 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import { Button, ProgressBar, Text } from "react-native-paper";
 import { Household } from "../features/household/householdTypes";
-import { ProfileCreateDto } from "../features/profile/profileTypes";
-import { useAppDispatch } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 
 export default function ParsingJoinHouseholdScreen({
   route,
   navigation,
-}: // eslint-disable-next-line @typescript-eslint/no-unused-vars
-NativeStackScreenProps<RootStackParamList, "ParsingJoinHousehold">) {
+}: NativeStackScreenProps<RootStackParamList, "ParsingJoinHousehold">) {
   const {
     handleSubmit,
     formState: {},
@@ -21,9 +18,6 @@ NativeStackScreenProps<RootStackParamList, "ParsingJoinHousehold">) {
   const [household, setHousehold] = useState<Household>();
   const [foundHouseholdBool, setHouseholdFound] = useState(false);
   const [searching, setSearching] = useState(true);
-
-  let result: Household;
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     (async function getHousehold() {
@@ -43,11 +37,10 @@ NativeStackScreenProps<RootStackParamList, "ParsingJoinHousehold">) {
         setSearching(false);
       }
     })();
-  }, []);
+  }, [route.params.householdCode]);
 
-  const onJoinHouseholdPressed = (data: FieldValues) => {
-    const sendProfileData: ProfileCreateDto = { alias: route.params.profileName, isAdmin: false };
-    dispatch();
+  const onJoinHouseholdPressed = () => {
+    // TODO Join a household, send request to admin, etc
   };
 
   return (
