@@ -30,15 +30,13 @@ export default function PieChartRenderer({ start, end, navigation }: Props) {
 
   function renderItem(item: StatisticsList) {
     const name = item.name.split(" ");
-    return item.data.length ? (
+    return (
       <View style={styles.pieContainerContainer}>
         <TouchableOpacity onPress={() => navigation.navigate("ChoreDetails", { choreId: item.id })}>
           <PieChartCustom data={item.data} subtitle={item.name} isSmall={true} />
           <Text style={styles.miniPieTitle}>{name.length > 1 ? name[0] + "..." : name[0]}</Text>
         </TouchableOpacity>
       </View>
-    ) : (
-      <></>
     );
   }
 
@@ -60,7 +58,10 @@ export default function PieChartRenderer({ start, end, navigation }: Props) {
         <View style={styles.miniPieContainer}>
           <FlatList
             numColumns={3}
-            data={statsForEachChore}
+            data={statsForEachChore
+              .filter((stats) => stats.data.length)
+              .sort((a, b) => b.data.length - a.data.length)
+              .slice(0, 6)}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => renderItem(item)}
             contentContainerStyle={{ height: 500 }}
