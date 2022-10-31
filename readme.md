@@ -21,14 +21,14 @@ med produktägare, godkännas och dokumenteras. 🚨⚠🚨
 
 ## Hushåll (7)
 
-- [ ] Ett hushåll ska ha ett namn och en genererad (enkel) kod så andra kan gå med i hushållet,
+- [x] Ett hushåll ska ha ett namn och en genererad (enkel) kod så andra kan gå med i hushållet,
 namnet ska gå att ändra. 🚨⚠🚨
 
 - [x] Alla användare i ett hushåll ska kunna se vilka som tillhör ett hushåll.
 
-- [ ] En ägare av ett hushåll ska kunna se förfrågningar om att gå med i hushållet.
+- [x] En ägare av ett hushåll ska kunna se förfrågningar om att gå med i hushållet.
 
-- [ ] En ägare ska kunna acceptera eller neka förfrågningar.
+- [x] En ägare ska kunna acceptera eller neka förfrågningar.
 
 - [X] En ägare ska kunna göra andra till ägare.
 
@@ -42,11 +42,11 @@ normaliseras.
 
 - [x] En användare ska kunna registrera och logga in sig. 🚨⚠🚨
 
-- [ ] En användare ska kunna skapa ett nytt hushåll. 🚨⚠🚨
+- [x] En användare ska kunna skapa ett nytt hushåll. 🚨⚠🚨
 
-- [ ] En användare ska kunna gå med i ett hushåll genom att ange hushållets kod. 🚨⚠🚨
+- [x] En användare ska kunna gå med i ett hushåll genom att ange hushållets kod. 🚨⚠🚨
 
-- [ ] När en användare har valt att gå med i ett hushåll behöver en ägare av hushållet först
+- [x] När en användare har valt att gå med i ett hushåll behöver en ägare av hushållet först
 godkänna användaren.
 
 - [X] En användare ska kunna lämna ett hushåll.
@@ -59,7 +59,7 @@ godkänna användaren.
 
 - [X] Valda avatarer ska inte kunna väljas av andra användare i hushållet. 🚨⚠🚨
 
-- [] Avataren ska användas i appen för att visa vad användaren har gjort. 🚨⚠🚨
+- [x] Avataren ska användas i appen för att visa vad användaren har gjort. 🚨⚠🚨
 
 - [X] En användare ska kunna ställa in appens utseende (mörkt, ljust, auto).
 
@@ -87,7 +87,7 @@ också kommer att tas bort och få valet att arkivera sysslan istället.
 
 - [X] Alla sysslor ska listas i en dagsvy och ge en översikt kring vad som behöver göras. 🚨⚠🚨
 
-- [ ] Utöver sysslans namn ska även vem/vilka som har gjort sysslan visas, hur många dagar
+- [x] Utöver sysslans namn ska även vem/vilka som har gjort sysslan visas, hur många dagar
 sedan sysslan gjordes senast samt om den är försenad. 🚨⚠🚨
 
 - [X] När en användare väljer en syssla ska beskrivningen av sysslan visas och det ska även
