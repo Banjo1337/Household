@@ -15,11 +15,7 @@ import { RootStackParamList } from "../NavContainer";
 export default function SignInScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
   const dispatch = useAppDispatch();
   const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
-  const {
-    control,
-    handleSubmit,
-    formState: {},
-  } = useForm();
+  const { control, handleSubmit } = useForm();
   const { currentTheme } = useTheme();
 
   const Token = useAppSelector(selectToken);
@@ -48,6 +44,7 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
         <Image style={styles.image} source={require("../assets/household.png")} />
         <CustomInput
           style={styles.input}
+          defaultValue=''
           placeholder='Username'
           name='username'
           control={control}
@@ -66,7 +63,8 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
           />
         </Pressable>
         <CustomInput
-          style={styles.input}
+          style={[styles.input, { marginBottom: 20 }]}
+          defaultValue=''
           placeholder='Password'
           name='password'
           control={control}
@@ -74,14 +72,18 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
           rules={{ required: "Password is required" }}
         />
         <View style={{ display: "flex", flexDirection: "row" }}>
-          <Button mode='outlined' style={styles.button} onPress={handleSubmit(onLoginPressed)}>
+          <Button
+            mode='outlined'
+            style={[styles.button, { margin: 5 }]}
+            onPress={handleSubmit(onLoginPressed)}
+          >
             <Text style={styles.text}>Sign In</Text>
           </Button>
-          <Button mode='outlined' style={styles.button} onPress={onLogoutPressed}>
+          <Button mode='outlined' style={[styles.button, { margin: 5 }]} onPress={onLogoutPressed}>
             <Text style={styles.text}>Logout</Text>
           </Button>
         </View>
-        <Button mode='outlined' style={styles.button} onPress={onSignupPressed}>
+        <Button mode='outlined' style={[styles.button, { margin: 5 }]} onPress={onSignupPressed}>
           <Text style={styles.text}>Sign up</Text>
         </Button>
       </View>

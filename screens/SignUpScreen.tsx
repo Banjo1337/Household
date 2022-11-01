@@ -50,6 +50,10 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
     })();
   };
 
+  const onSignInPressed = () => {
+    navigation.navigate("SignIn");
+  };
+
   const onRegisterFailed = () => {
     alert("Failed");
   };
@@ -95,7 +99,7 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
       <View style={styles.container}>
         <Image style={styles.image} source={require("../assets/household.png")} />
         <CustomInput
-          style={styles.input}
+          style={[styles.input, { marginBottom: 26 }]}
           placeholder='Username'
           name='username'
           control={control}
@@ -142,13 +146,22 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
             validate: (value: string) => value === pwd || "Password not matching",
           }}
         />
-        <Button
-          mode='outlined'
-          style={styles.button}
-          onPress={handleSubmit(onRegisterPressed, onRegisterFailed)}
-        >
-          <Text style={styles.text}>Register</Text>
-        </Button>
+        <View style={{ display: "flex", flexDirection: "row" }}>
+          <Button
+            mode='outlined'
+            style={[styles.button, { marginTop: 15 }]}
+            onPress={handleSubmit(onRegisterPressed, onRegisterFailed)}
+          >
+            <Text style={styles.text}>Register</Text>
+          </Button>
+          <Button
+            mode='outlined'
+            style={[styles.button, { marginTop: 15 }]}
+            onPress={onSignInPressed}
+          >
+            <Text style={styles.text}>Sign in</Text>
+          </Button>
+        </View>
       </View>
     </ScrollView>
   );
