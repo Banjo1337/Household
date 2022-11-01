@@ -3,11 +3,7 @@ import React, { useState } from "react";
 import { FlatList, StyleSheet, TouchableHighlight, View } from "react-native";
 import { Button, Text, Title } from "react-native-paper";
 import ChoreCard from "../components/ChoreCard";
-import {
-  selectChoresToShowInChoreScreen,
-  selectIsChoreOverdueByChoreId,
-  selectProfileWhoDidThisChoreByChoreId,
-} from "../features/chore/choreSelectors";
+import { selectChoresToShowInChoreScreen } from "../features/chore/choreSelectors";
 
 import { selectHousehold } from "../features/household/householdSelectors";
 import { selectActiveProfile } from "../features/profile/profileSelector";
