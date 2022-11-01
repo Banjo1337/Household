@@ -1,6 +1,7 @@
 import { View, StyleSheet } from "react-native";
-import { Surface, Text, Button } from "react-native-paper";
+import { Surface, Text, Button, Title } from "react-native-paper";
 import { selectPendingRequestProfiles } from "../features/household/householdSelectors";
+import { denyPendingRequest } from "../features/household/householdSlice";
 import { editProfile } from "../features/profile/profileSlice";
 import { Profile } from "../features/profile/profileTypes";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
@@ -20,17 +21,12 @@ export default function PendingRequestScreen() {
   }
 
   function denyRequest(profileId: string) {
-    const response = fetch(
-      "https://household-backend.azurewebsites.net/api/V01/profile/deleteProfile/" + profileId,
-      {
-        method: "DELETE",
-      },
-    );
-    console.log(response);
+    dispatch(denyPendingRequest(profileId));
   }
   return (
     <View>
-      {pendingRequests.map((p) => (
+      {pendingRequests.length ? 
+      pendingRequests.map((p) => (
         <Surface key={p.id} style={styles.listItem}>
           <Text>{p.alias}</Text>
           <View style={styles.buttonContainer}>
@@ -50,7 +46,10 @@ export default function PendingRequestScreen() {
             </Button>
           </View>
         </Surface>
-      ))}
+      )) 
+      :
+        <Title>No more pending requests</Title>
+      }
     </View>
   );
 }
