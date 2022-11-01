@@ -9,17 +9,16 @@ interface Props {
   selectedAvatar: Avatar;
 }
 export default function AvatarSelectorItem({ avatar, handlePress, selectedAvatar }: Props) {
-  // Lite fult men ternaryn är bara så komponenten inte crashar efter man deletat sin profil och innan navigatorn hunnit backa ut
-  const { emoji, color } = useAvatar(avatar ? avatar : "unicorn");
+  const avatarAttributes = useAvatar(avatar);
   
-  return (
+  return avatarAttributes ? (
     <TouchableOpacity
       onPress={() => handlePress(avatar)}
-      style={[styles.bubble, selectedAvatar === avatar && styles.selectedAvatar, { backgroundColor: color }]}
+      style={[styles.bubble, selectedAvatar === avatar && styles.selectedAvatar, { backgroundColor: avatarAttributes.color }]}
     >
-    <Text style={styles.avatar}>{emoji}</Text>
+    <Text style={styles.avatar}>{avatarAttributes.emoji}</Text>
     </TouchableOpacity>
-  );
+  ) : null;
 }
 
 const styles = StyleSheet.create({
