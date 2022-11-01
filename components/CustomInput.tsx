@@ -50,7 +50,6 @@ const CustomInput = ({
               multiline={multiline}
               numberOfLines={numOfLines}
               defaultValue={defaultValue}
-
             />
           </View>
           {error && <Text style={{ color: "red", alignSelf: "stretch" }}>{error.message}</Text>}

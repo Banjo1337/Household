@@ -5,6 +5,7 @@ import { Button, Text, Title } from "react-native-paper";
 import ChoreCard from "../components/ChoreCard";
 import {
   selectChoresToShowInChoreScreen,
+  selectIsChoreOverdueByChoreId,
   selectProfileWhoDidThisChoreByChoreId,
 } from "../features/chore/choreSelectors";
 
@@ -36,20 +37,37 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
         <View style={{ alignItems: "center" }}>
           <Title
             style={{
-              color: "#E2D1F9",
+              color: "black",
               textAlignVertical: "center",
               textAlign: "center",
               justifyContent: "center",
               fontSize: 30,
-              backgroundColor: "#317773",
+              backgroundColor: "white",
               width: 350,
               height: 50,
+              elevation: 5,
             }}
           >
-            Household:{household.name}
+            Household
           </Title>
-          <Title style={{ textAlign: "center", backgroundColor: "#E2D1F9", color: "#317773" }}>
-
+          <Title
+            style={{
+              color: "black",
+              textAlignVertical: "center",
+              textAlign: "center",
+              justifyContent: "center",
+              fontSize: 20,
+              backgroundColor: "white",
+              width: 350,
+              height: 30,
+              elevation: 1,
+            }}
+          >
+            {household.name}
+          </Title>
+          <Title
+            style={{ textAlign: "center", backgroundColor: "white", color: "black", elevation: 5 }}
+          >
             Code: {household.code}
           </Title>
         </View>
@@ -57,7 +75,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
           style={{
             justifyContent: "center",
             height: "75%",
-            borderColor: "#E2D1F9",
+            borderColor: "white",
             borderRadius: 2,
             borderWidth: 2,
           }}
@@ -80,20 +98,20 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
 
         {profile.isAdmin && (
           <View style={{ flexDirection: "row", marginTop: 10 }}>
-
             <Button
-              mode='contained'
+              mode='outlined'
               style={{
                 width: "50%",
                 alignSelf: "flex-end",
+                height: 50,
                 justifyContent: "flex-end",
-                backgroundColor: "#317773",
+                backgroundColor: "white",
               }}
               onPress={onAddChorePressed}
             >
               <Text
                 style={{
-                  color: "#E2D1F9",
+                  color: "black",
                   fontSize: 20,
                   fontWeight: "bold",
                   textAlign: "center",
@@ -104,18 +122,19 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
               </Text>
             </Button>
             <Button
-              mode='contained'
+              mode='outlined'
               style={{
                 width: "50%",
+                height: 50,
                 alignSelf: "flex-end",
                 justifyContent: "flex-end",
-                backgroundColor: "#317773",
+                backgroundColor: "white",
               }}
               onPress={toggleIsEditable}
             >
               <Text
                 style={{
-                  color: "#E2D1F9",
+                  color: "black",
                   fontSize: 20,
                   fontWeight: "bold",
                   textAlign: "center",

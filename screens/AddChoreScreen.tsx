@@ -15,12 +15,11 @@ import { useTheme } from "../features/theme/ThemeContext";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 
-
 export default function AddChoreScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
   const {
     control,
     handleSubmit,
-    formState: { },
+    formState: {},
   } = useForm();
 
   const [openPoint, setOpenPoint] = useState(false);
@@ -29,7 +28,6 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
   const [pointValue, setPointValue] = useState(2);
   const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
-
 
   const onOpenFrequency = useCallback(() => {
     setOpenPoint(false);
@@ -46,89 +44,7 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
     i++;
     return { label: String(i), value: i };
   });
-
-  const [recording, setRecording] = useState<Audio.Recording | any>();
-  const [recordings, setRecordings] = useState([]);
-  const [, setMessage] = useState("");
-  const [image, setImage] = useState<string | null>(null);
   const { currentTheme } = useTheme();
-
-  async function startRecording() {
-    try {
-      const permission = await Audio.requestPermissionsAsync();
-
-      if (permission.status === "granted") {
-        await Audio.setAudioModeAsync({
-          allowsRecordingIOS: true,
-          playsInSilentModeIOS: true,
-        });
-
-        const { recording } = await Audio.Recording.createAsync(
-          Audio.RecordingOptionsPresets.HIGH_QUALITY,
-        );
-
-        setRecording(recording);
-      } else {
-        setMessage("Please grant permission to app to access microphone");
-      }
-    } catch (err) {
-      console.error("Failed to start recording", err);
-    }
-  }
-
-  async function stopRecording() {
-    setRecording(undefined!);
-    await recording!.stopAndUnloadAsync();
-
-    let updatedRecordings: any = [...recordings];
-    const { sound, status } = await recording!.createNewLoadedSoundAsync();
-    updatedRecordings.push({
-      sound: sound,
-      duration: getDurationFormatted(status.durationMillis),
-      file: recording!.getURI(),
-    });
-    setRecordings(updatedRecordings);
-  }
-
-  function getDurationFormatted(millis: number) {
-    const minutes = millis / 1000 / 60;
-    const minutesDisplay = Math.floor(minutes);
-    const seconds = Math.round((minutes - minutesDisplay) * 60);
-    const secondsDisplay = seconds < 10 ? `0${seconds}` : seconds;
-    return `${minutesDisplay}:${secondsDisplay}`;
-  }
-
-  function getRecordingLines() {
-    return recordings.map((recordingLine: any, index) => {
-      return (
-        <View key={index}>
-          <Text>
-            Recording {index + 1} - {recordingLine.duration}
-          </Text>
-          <Button onPress={() => recordingLine.sound.replayAsync()}>
-            <Text>▶️ Play</Text>
-          </Button>
-          <Button onPress={() => Sharing.shareAsync(recordingLine.file)}>
-            <Text>⏸️ Stop</Text>
-          </Button>
-        </View>
-      );
-    });
-  }
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      setImage(result.uri);
-    }
-  };
 
   const onAddChorePressed = (data: FieldValues) => {
     const choreCreateDto: ChoreCreateDto = {
@@ -139,7 +55,7 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
       pictureUrl: "",
       audioUrl: "",
       isArchived: false,
-      householdId: household.id
+      householdId: household.id,
     };
     dispatch(createChore(choreCreateDto));
     navigation.navigate("Home", { screen: "Chores" });
@@ -228,30 +144,12 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
           />
         </View>
       </View>
-      <TouchableOpacity
-        style={[styles.section, styles[currentTheme.dark ? "sectionDark" : "sectionLight"]]}
-        onPress={recording ? stopRecording : startRecording}
-      >
-        <Button style={styles.button}>
-          {recording ? <Text>⏹️ Stop Recording</Text> : <Text>🔴 Start Recording</Text>}
-        </Button>
-        {getRecordingLines()}
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.section, styles[currentTheme.dark ? "sectionDark" : "sectionLight"]]}
-        onPress={pickImage}
-      >
-        <Button style={styles.button}>
-          <Text>Pick Image</Text>
-        </Button>
-        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-      </TouchableOpacity>
       <View style={{ display: "flex", flexDirection: "row" }}>
-        <Button onPress={handleSubmit(onAddChorePressed)} style={styles.button}>
-          <Text>Save</Text>
+        <Button mode='outlined' onPress={handleSubmit(onAddChorePressed)} style={styles.button}>
+          <Text style={styles.text}>Save</Text>
         </Button>
-        <Button style={styles.button}>
-          <Text>Close</Text>
+        <Button mode='outlined' style={styles.button}>
+          <Text style={styles.text}>Close</Text>
         </Button>
       </View>
     </ScrollView>
@@ -276,7 +174,17 @@ const styles = StyleSheet.create({
   sectionDark: {
     backgroundColor: "#333",
   },
-  button: {},
-  input: {},
+  button: { width: "50%", height: "auto", justifyContent: "center", backgroundColor: "white" },
+  input: { backgroundColor: "white", borderWidth: 2 },
   dropDownPicker: {},
+  text: {
+    color: "black",
+    elevation: 2,
+    fontWeight: "bold",
+    backgroundColor: "white",
+    textAlignVertical: "center",
+    textAlign: "center",
+    fontSize: 20,
+    height: 70,
+  },
 });

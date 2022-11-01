@@ -29,7 +29,6 @@ export const selectChoresToShowInChoreScreen = (state: RootStateType): Chore[] =
     const today = newDateInClientTimezone();
     const diffTime = Math.abs(today.getTime() - choreCompletedDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    console.log(diffDays, chore.id);
     if (diffDays <= 1) {
       const choreToAdd = selectChoreById(state, chore.choreId);
       choresArchivedButOnly1DayOld.push(choreToAdd);
@@ -52,7 +51,6 @@ export const selectProfileWhoDidThisChoreByChoreId = (
   state: RootStateType,
   choreId: string,
 ): Profile => {
-  console.log(choreId);
   const thisChoreCompletedLastDone = getLatestChoreCompletedByChoreId(state, choreId);
 
   const profiles: Profile[] = state.householdReducer.profiles;
@@ -67,7 +65,8 @@ export const selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId = (
   choreId: string,
 ): string => {
   const thisChoreCompletedLastDone = getLatestChoreCompletedByChoreId(state, choreId);
-
+  console.log(choreId);
+  console.log(thisChoreCompletedLastDone);
   const chore = selectChoreById(state, choreId);
 
   const choreCompletedDate = new Date(thisChoreCompletedLastDone.completedAt);
@@ -77,7 +76,7 @@ export const selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId = (
   let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   let diffDaysText = "";
   if (isNaN(diffDays)) {
-    diffDaysText = "N/D Yet";
+    diffDaysText = "0";
   } else {
     diffDaysText = diffDays.toString();
   }
@@ -85,6 +84,7 @@ export const selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId = (
     return "";
   }
   const returnText = `${diffDaysText}/${chore.frequency}`;
+
   return returnText;
 };
 
