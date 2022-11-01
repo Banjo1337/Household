@@ -10,8 +10,8 @@ import { selectActiveProfile } from "../features/profile/profileSelector";
 import { deleteProfile, editProfile } from "../features/profile/profileSlice";
 import { Avatar, Avatars } from "../features/profile/profileTypes";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import useModalStyles from "../hooks/useModalStyles";
 import { RootStackParamList } from "../NavContainer";
-import { styles as modalStyles } from "./EditHouseholdScreen";
 
 export default function EditProfileScreen(
   Props: NativeStackScreenProps<RootStackParamList, "EditProfile">,
@@ -21,6 +21,7 @@ export default function EditProfileScreen(
   const profile = useAppSelector(selectActiveProfile);
   const householdProfiles = useAppSelector(selectProfileByHousehold);
   const [selectedAvatar, setSelectedAvatar] = useState<Avatar>(profile.avatar);
+  const modalStyles = useModalStyles();
   const availableAvatars = Object.keys(Avatars)
     .filter((a) => !householdProfiles.map((p) => p.avatar).includes(a as Avatar))
     .concat(profile.avatar)

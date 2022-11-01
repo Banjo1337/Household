@@ -6,11 +6,10 @@ import { Button, ProgressBar, Text, Title } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { selectAuthUserId } from "../features/authentication/authenticationSelectors";
 import { Household } from "../features/household/householdTypes";
-import { selectActiveProfile } from "../features/profile/profileSelector";
 import { createProfile } from "../features/profile/profileSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import useModalStyles from "../hooks/useModalStyles";
 import { RootStackParamList } from "../NavContainer";
-import { styles as modalStyles } from "./EditHouseholdScreen";
 
 type FormValue = {
   name: string;
@@ -32,6 +31,7 @@ export default function ParsingJoinHouseholdScreen({
   const [foundHouseholdBool, setHouseholdFound] = useState(false);
   const [searching, setSearching] = useState(true);
   const [showRequestSent, setShowRequestSent] = useState(false);
+  const modalStyles = useModalStyles();
 
   useEffect(() => {
     (async function getHousehold() {

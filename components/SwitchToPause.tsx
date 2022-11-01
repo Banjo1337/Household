@@ -10,6 +10,7 @@ import { selectHousehold } from "../features/household/householdSelectors";
 import { newDateInClientTimezone } from "../app/dateUtils";
 import {PauseCreateDto, PauseUpdateDto} from "../features/pause/pauseTypes";
 import { selectCurrentlyPausedByProfileId } from "../features/pause/pauseSelectors";
+import useModalStyles from "../hooks/useModalStyles";
 
 interface Props {
   profile: Profile;
@@ -44,7 +45,7 @@ export default function SwitchToPause({ profile }: Props) {
     const initialDate = newDateInClientTimezone();
     initialDate.setDate(pauseDuration);
     const endPauseDate = initialDate;
-
+    
     const pauseCreateDto : PauseCreateDto  = {
         startDate: todaysDate.toISOString(),
         endDate: endPauseDate.toISOString(),
@@ -62,6 +63,7 @@ export default function SwitchToPause({ profile }: Props) {
   const thumbColorOff = Platform.OS === "android" ? "#f04141" : "#f3f3f3";
   const trackColorOn = Platform.OS === "android" ? "#98e7f0" : "#0cd1e8";
   const trackColorOff = Platform.OS === "android" ? "#f3adad" : "#f04141";
+  const modalStyles = useModalStyles();
 
   return (
     <View>
@@ -81,8 +83,8 @@ export default function SwitchToPause({ profile }: Props) {
           }}
         >
           <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Define the pause</Text>
+            <View style={modalStyles.modalView}>
+              <Text style={modalStyles.modalText}>Define the pause</Text>
               <Text>
                 the pause will start today, {todaysDate.getDate()}/{todaysDate.getMonth() + 1}/
                 {todaysDate.getFullYear()}
@@ -121,8 +123,8 @@ export default function SwitchToPause({ profile }: Props) {
           }}
         >
           <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>The ongoing pause is now stopped!</Text>
+            <View style={modalStyles.modalView}>
+              <Text style={modalStyles.modalText}>The ongoing pause is now stopped!</Text>
               
               <Pressable
                 style={[styles.button, styles.buttonClose]}
@@ -155,21 +157,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 22,
   },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
   pressable: {
     fontSize: 70,
     fontWeight: "bold",
@@ -193,9 +180,5 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
-  },
+  }
 });
