@@ -7,7 +7,7 @@ import ChoreDetailsScreen from "./screens/ChoreDetailsScreen";
 import EditProfileScreen from "./screens/EditProfileScreen";
 import JoinOrCreateHouseholdPromptScreen from "./screens/JoinOrCreateHouseholdPromptScreen";
 import MegaNavigationGodScreen from "./screens/MegaNavigationGodScreen";
-import PendingRequestScreen from "./screens/PendingRequest";
+import PendingRequestScreen from "./screens/PendingRequestScreen";
 import SelectProfileScreen from "./screens/SelectProfileScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import SignInScreen from "./screens/SignInScreen";
@@ -39,7 +39,7 @@ export type RootStackParamList = {
   SelectProfile: undefined;
   EditProfile: undefined;
   PendingRequest: undefined;
-  ParsingJoinHousehold: { householdCode: string; profileName: string };
+  ParsingJoinHousehold: { householdCode: string; };
   Settings: undefined;
   MegaNavigationGod: undefined;
 };

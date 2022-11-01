@@ -1,46 +1,65 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { StyleSheet, View } from "react-native";
-import { Button, ProgressBar, Text } from "react-native-paper";
+import { FieldValues, useForm } from "react-hook-form";
+import { Modal, StyleSheet, View } from "react-native";
+import { Button, ProgressBar, Text, Title } from "react-native-paper";
+import CustomInput from "../components/CustomInput";
+import { selectAuthUserId } from "../features/authentication/authenticationSelectors";
 import { Household } from "../features/household/householdTypes";
+import { selectActiveProfile } from "../features/profile/profileSelector";
+import { createProfile } from "../features/profile/profileSlice";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
+import { styles as modalStyles } from "./EditHouseholdScreen";
+
+type FormValue = {
+  name: string;
+};
 
 export default function ParsingJoinHouseholdScreen({
   route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "ParsingJoinHousehold">) {
   const {
+    control,
     handleSubmit,
     formState: {},
-  } = useForm();
-
+  } = useForm<FormValue>();
+  const dispatch = useAppDispatch();
+  const { householdCode } = route.params;
+  const authUserId = useAppSelector(selectAuthUserId);
   const [household, setHousehold] = useState<Household>();
   const [foundHouseholdBool, setHouseholdFound] = useState(false);
   const [searching, setSearching] = useState(true);
+  const [showRequestSent, setShowRequestSent] = useState(false);
 
   useEffect(() => {
     (async function getHousehold() {
-      console.log("Initiate fetch...");
       const response = await fetch(
         "https://household-backend.azurewebsites.net/api/V01/household/GetHouseholdByHouseholdCode/" +
-          route.params.householdCode,
+          householdCode,
       );
-      console.log("Fetch complete");
       if (response.ok) {
-        console.log("Response OK. Setting values...");
         setSearching(false);
         setHousehold(await response.json());
         setHouseholdFound(true);
       } else {
-        console.log("Fetch failed.");
         setSearching(false);
       }
     })();
-  }, [route.params.householdCode]);
+  }, [householdCode]);
 
-  const onJoinHouseholdPressed = () => {
-    // TODO Join a household, send request to admin, etc
+  const onJoinHouseholdPressed = (data: FieldValues) => {
+    dispatch(
+      createProfile({
+        alias: data.name,
+        isAdmin: false,
+        householdId: household?.id,
+        authUserId: authUserId,
+      }),
+    );
+
+    setShowRequestSent(true);
   };
 
   return (
@@ -53,9 +72,7 @@ export default function ParsingJoinHouseholdScreen({
       )}
       {!foundHouseholdBool && !searching && (
         <>
-          <Text style={styles.title}>
-            No household by the code {route.params.householdCode} was found!
-          </Text>
+          <Text style={styles.title}>No household by the code {householdCode} was found!</Text>
 
           <Button
             mode='contained'
@@ -70,20 +87,49 @@ export default function ParsingJoinHouseholdScreen({
       )}
       {foundHouseholdBool && !searching && (
         <>
-          <Text variant='titleMedium'>You have successfully joined</Text>
+          <Text variant='titleMedium'>This code belongs to</Text>
           <Text variant='headlineMedium' style={{ textAlign: "center" }}>
             {household?.name}
           </Text>
-
+          <CustomInput
+            placeholder='Name'
+            name='name'
+            control={control}
+            rules={{
+              required: "Name is required",
+              minLength: { value: 2, message: "Must be 2 or more letters." },
+              maxLength: {
+                value: 20,
+                message: "Name can be maximum 20 letters.",
+              },
+            }}
+          />
           <Button
             mode='contained'
             onPress={handleSubmit(onJoinHouseholdPressed)}
             style={{ marginTop: 100 }}
           >
-            Awesome!
+            Ask to join!
           </Button>
         </>
       )}
+      <Modal
+        animationType='slide'
+        transparent={true}
+        visible={showRequestSent}
+        onRequestClose={() => {
+          navigation.navigate("SelectProfile");
+        }}
+      >
+        <View style={modalStyles.centeredView}>
+          <View style={modalStyles.modalView}>
+            <Title style={modalStyles.modalText}>Your request has been sent</Title>
+            <Button mode='contained' onPress={() => navigation.navigate("SelectProfile")}>
+              <Text>Ok!</Text>
+            </Button>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }

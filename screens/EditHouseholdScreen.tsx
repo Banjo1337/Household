@@ -13,11 +13,13 @@ import {
 } from "react-native";
 
 import CustomInput from "../components/CustomInput";
+import PendingRequestButton from "../components/PendingRequestButton";
 import ProfileListItem from "../components/ProfileListItem";
 import SwitchToPause from "../components/SwitchToPause";
 import {
   selectHousehold,
-  selectProfileByHousholdId,
+  selectPendingRequestProfilesCount,
+  selectProfileByHousehold,
 } from "../features/household/householdSelectors";
 import { deleteHouseholdThunk, editHouseholdThunk } from "../features/household/householdSlice";
 import { deleteProfile, editProfile } from "../features/profile/profileSlice";
@@ -25,7 +27,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 
 export function ContainAdminFalse() {
-  const members = useAppSelector(selectProfileByHousholdId);
+  const members = useAppSelector(selectProfileByHousehold);
   var r = [];
   members.forEach((element) => {
     if (element.isAdmin == false) {
@@ -40,7 +42,7 @@ export function ContainAdminFalse() {
 }
 
 export function ContainTwoAdmin() {
-  const members = useAppSelector(selectProfileByHousholdId);
+  const members = useAppSelector(selectProfileByHousehold);
   var r = [];
   members.forEach((element) => {
     if (element.isAdmin == true) {
@@ -57,7 +59,8 @@ export function ContainTwoAdmin() {
 export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootStackParamList>) {
   const dispatch = useAppDispatch();
   const household = useAppSelector(selectHousehold);
-  const members = useAppSelector(selectProfileByHousholdId);
+  const members = useAppSelector(selectProfileByHousehold);
+  const pendingRequestCount = useAppSelector(selectPendingRequestProfilesCount);
   //const pauses = useAppSelector(selectPauses);
   //console.log(members);
   //console.log(pauses);
@@ -92,7 +95,16 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
     <ScrollView>
       <View style={styles.container}>
         <View>
-          <Image source={require(householdPicture)} style={styles.householdPicture} />
+          <View style={styles.icons}>
+            <Image source={require(householdPicture)} style={styles.householdPicture} />
+            {pendingRequestCount ? 
+              <PendingRequestButton 
+                navigation={Props.navigation} 
+                pendingRequestCount={pendingRequestCount} 
+              /> : null
+            }
+
+          </View>
           <Text>Household's name: </Text>
           <Text style={styles.showProperty}>{household.name}</Text>
 
@@ -266,9 +278,10 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
           <View style={styles.avatarIcon}>
             {members.map((member, memberindex) => {
               return (
-                <View key={memberindex}>
+                <View key={memberindex} style={{alignItems: "center"}}>
                   <ProfileListItem profile={member} />
                   <SwitchToPause profile={member} />
+                  <Text style={{fontSize: 12, margin:0}}>pause</Text>
                 </View>
               );
             })}
@@ -364,4 +377,8 @@ export const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
   },
+  icons: {
+    flexDirection: "row",
+    justifyContent: "space-between"
+  }
 });

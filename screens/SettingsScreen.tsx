@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { Button, Switch, Text } from "react-native-paper";
 import { logout } from "../features/authentication/authenticationSlice";
 import { useTheme } from "../features/theme/ThemeContext";
@@ -27,9 +27,26 @@ export default function SettingsScreen(
         <Text variant='titleMedium'>Darkmode</Text>
         <Switch value={darkmode} onValueChange={setDarkmode} disabled={systemTheme} />
       </View>
-
-      <View>
-        <Button onPress={onLogoutPressed}>Log out</Button>
+      <View style={styles.container}>
+        <ScrollView style={styles.scrollview}>
+          <Button
+            mode='contained'
+            style={styles.button}
+            onPress={() => Props.navigation.navigate("HouseholdDetails")}
+          >
+            Household Details
+          </Button>
+          <Button
+            mode='contained'
+            style={styles.button}
+            onPress={() => Props.navigation.navigate("SelectProfile")}
+          >
+            Switch Profile
+          </Button>
+          <Button mode='contained' onPress={onLogoutPressed} style={styles.button}>
+            Log out
+          </Button>
+        </ScrollView>
       </View>
     </View>
   );
@@ -41,5 +58,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  container: {
+    alignItems: "center",
+  },
+  scrollview: {
+    width: "80%",
+  },
+  button: {
+    marginVertical: 15,
+    width: "100%",
   },
 });
