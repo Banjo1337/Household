@@ -1,13 +1,9 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
-import { Button, Checkbox, IconButton, Text, Title } from "react-native-paper";
+import { Button, Checkbox, Text, Title } from "react-native-paper";
 import { newDateInClientTimezone } from "../app/dateUtils";
-import {
-  selectChoreById,
-  selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId,
-  selectIsChoreOverdueByChoreId,
-} from "../features/chore/choreSelectors";
+import { selectChoreById, selectIsChoreOverdueByChoreId } from "../features/chore/choreSelectors";
 import { updateChore } from "../features/chore/choreSlice";
 import { ChoreUpdateDto } from "../features/chore/choreTypes";
 import { addChoreCompleted } from "../features/choreCompleted/choreCompletedSlice";
@@ -28,10 +24,6 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
   const profile = useAppSelector(selectActiveProfile);
   const isOverDue = useAppSelector((state) => selectIsChoreOverdueByChoreId(state, chore.id));
   const dispatch = useAppDispatch();
-
-  const daysPassedAndFrequency = useAppSelector((state) =>
-    selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId(state, chore.id),
-  );
 
   const onCheckedPressed = () => {
     if (checked) {
