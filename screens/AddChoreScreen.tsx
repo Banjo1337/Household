@@ -1,10 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Audio } from "expo-av";
-import * as ImagePicker from "expo-image-picker";
-import * as Sharing from "expo-sharing";
 import React, { useCallback, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Button } from "react-native-paper";
 import CustomInput from "../components/CustomInput";

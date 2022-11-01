@@ -1,6 +1,6 @@
 import React from "react";
 import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Surface, Text, Button, IconButton } from "react-native-paper";
+import { Surface, Text, IconButton } from "react-native-paper";
 
 import {
   selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId,

@@ -1,13 +1,9 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
-import { Button, Checkbox, IconButton, Text, Title } from "react-native-paper";
+import { Button, Checkbox, Text, Title } from "react-native-paper";
 import { newDateInClientTimezone } from "../app/dateUtils";
-import {
-  selectChoreById,
-  selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId,
-  selectIsChoreOverdueByChoreId,
-} from "../features/chore/choreSelectors";
+import { selectChoreById, selectIsChoreOverdueByChoreId } from "../features/chore/choreSelectors";
 import { updateChore } from "../features/chore/choreSlice";
 import { ChoreUpdateDto } from "../features/chore/choreTypes";
 import { addChoreCompleted } from "../features/choreCompleted/choreCompletedSlice";
@@ -28,10 +24,6 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
   const profile = useAppSelector(selectActiveProfile);
   const isOverDue = useAppSelector((state) => selectIsChoreOverdueByChoreId(state, chore.id));
   const dispatch = useAppDispatch();
-
-  const daysPassedAndFrequency = useAppSelector((state) =>
-    selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId(state, chore.id),
-  );
 
   const onCheckedPressed = () => {
     if (checked) {
@@ -136,7 +128,7 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
         )}
       </View>
       <View style={styles.container}>
-        <Pressable onPress={onCheckedPressed}>
+        <Pressable style={{ width: "100%" }} onPress={onCheckedPressed}>
           <Text style={styles.text}>Mark this chore as complete</Text>
         </Pressable>
         <Checkbox
@@ -174,6 +166,7 @@ const styles = StyleSheet.create({
     height: 70,
   },
   text: {
+    width: "100%",
     color: "black",
     elevation: 15,
     fontWeight: "bold",
@@ -185,6 +178,7 @@ const styles = StyleSheet.create({
     margin: 3,
   },
   descriptionField: {
+    width: "100%",
     fontSize: 15,
     margin: "auto",
     borderwidth: 1,
