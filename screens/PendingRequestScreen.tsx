@@ -1,16 +1,15 @@
-import { useEffect } from "react";
 import { useState } from "react";
 import { View, StyleSheet, Modal } from "react-native";
 import { Surface, Text, Button, Title } from "react-native-paper";
+import useModalStyles from "../hooks/useModalStyles";
 import {
   selectHousehold,
   selectPendingRequestProfiles,
 } from "../features/household/householdSelectors";
 import { denyPendingRequest } from "../features/household/householdSlice";
-import profileSlice, { editProfile } from "../features/profile/profileSlice";
+import { editProfile } from "../features/profile/profileSlice";
 import { Profile } from "../features/profile/profileTypes";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { styles as modalStyles } from "./EditHouseholdScreen";
 
 export default function PendingRequestScreen() {
   const dispatch = useAppDispatch();
@@ -19,6 +18,7 @@ export default function PendingRequestScreen() {
   const [isApprove, setIsApprove] = useState(true);
   const [showConfirmationWindow, setShowConfirmationWindow] = useState<boolean>(false);
   const [selectedProfile, setSelectedProfile] = useState({} as Profile);
+  const modalStyles = useModalStyles();
 
   function approveRequest() {
     dispatch(
