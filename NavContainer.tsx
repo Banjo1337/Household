@@ -39,7 +39,7 @@ export type RootStackParamList = {
   SelectProfile: undefined;
   EditProfile: undefined;
   PendingRequest: undefined;
-  ParsingJoinHousehold: { householdCode: string; };
+  ParsingJoinHousehold: { householdCode: string };
   Settings: undefined;
   MegaNavigationGod: undefined;
 };
@@ -78,7 +78,13 @@ export default function NavContainer() {
               name='JoinOrCreateHouseholdPrompt'
               component={JoinOrCreateHouseholdPromptScreen}
             />
-            <Stack.Screen name='EditHousehold' component={EditHouseholdScreen} />
+            <Stack.Screen
+              name='EditHousehold'
+              component={EditHouseholdScreen}
+              options={() => ({
+                headerShown: false,
+              })}
+            />
             <Stack.Screen name='HouseholdDetails' component={HouseholdDetailsScreen} />
             <Stack.Screen name='SelectProfile' component={SelectProfileScreen} />
             <Stack.Screen name='EditProfile' component={EditProfileScreen} />
