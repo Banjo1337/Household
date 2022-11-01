@@ -17,12 +17,12 @@ export type PauseCreateDto = Omit<Pause, "id">;
 export type PauseUpdateDto = Pick<PauseCreateDto, "householdId"> & Partial<PauseCreateDto>;
 
 export type pausePercentageDictionary = {
-  fox: number;
-  pig: number;
-  frog: number;
-  chicken: number;
-  octopus: number;
-  dolphin: number;
-  owl: number;
-  unicorn: number;
+  "🦊": number;
+  "🐷": number;
+  "🐸": number;
+  "🐥": number;
+  "🐙": number;
+  "🐬": number;
+  "🦉": number;
+  "🦄": number;
 };

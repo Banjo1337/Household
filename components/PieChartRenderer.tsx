@@ -6,7 +6,7 @@ import {
   selectChoreCompletedStatisticsListForAllChores,
   selectChoreCompletedStatisticsForAllChores,
 } from "../features/choreCompleted/choreCompletedSelectors";
-import { StatisticsList } from "../features/choreCompleted/choreCompletedTypes";
+import { Statistics, StatisticsList } from "../features/choreCompleted/choreCompletedTypes";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../NavContainer";
 import { useRef } from "react";
@@ -49,21 +49,32 @@ export default function PieChartRenderer({ start, end, navigation }: Props) {
       </View>
     );
   }
-
+  //console.log("start date: " + start + " end date: " + end);
   //console.log("pausePercentageDictionary", pausePercentageDictionary);
 
+  console.log("statsAllChores:");
+  console.log(statsAllChores);
+  //console.log("pausePercentageDictionary:");
+  //console.log(pausePercentageDictionary);
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const statsAllChoresJimmyTest = statsAllChores.map((stat) => {
+  const statsAllChoresJimmyTest: Statistics[] = statsAllChores.map((stat) => {
     const key = stat.emoji as keyof pausePercentageDictionary;
+    console.log("key: " + key);
     const pausePercentage = pausePercentageDictionary[key];
+    console.log("pausePercentage: " + pausePercentage);
+    console.log("stat.value " + stat.value);
     return {
       ...stat,
       value: stat.value / (1 - pausePercentage),
     };
   });
 
+  console.log("statsAllChoresJimmyTest");
+  console.log(statsAllChoresJimmyTest);
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const statsForEachChoreJimmyTest = statsForEachChore.map((statList) => {
+  const statsForEachChoreJimmyTest: StatisticsList[] = statsForEachChore.map((statList) => {
     return {
       ...statList,
       data: statList.data.map((stat) => {
