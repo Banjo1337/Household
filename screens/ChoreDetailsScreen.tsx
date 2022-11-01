@@ -128,7 +128,7 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
         )}
       </View>
       <View style={styles.container}>
-        <Pressable onPress={onCheckedPressed}>
+        <Pressable style={{ width: "100%" }} onPress={onCheckedPressed}>
           <Text style={styles.text}>Mark this chore as complete</Text>
         </Pressable>
         <Checkbox
@@ -166,6 +166,7 @@ const styles = StyleSheet.create({
     height: 70,
   },
   text: {
+    width: "100%",
     color: "black",
     elevation: 15,
     fontWeight: "bold",
@@ -177,6 +178,7 @@ const styles = StyleSheet.create({
     margin: 3,
   },
   descriptionField: {
+    width: "100%",
     fontSize: 15,
     margin: "auto",
     borderwidth: 1,
