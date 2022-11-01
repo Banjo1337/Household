@@ -24,6 +24,7 @@ import {
 import { deleteHouseholdThunk, editHouseholdThunk } from "../features/household/householdSlice";
 import { deleteProfile, editProfile } from "../features/profile/profileSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import useModalStyles from "../hooks/useModalStyles";
 import { RootStackParamList } from "../NavContainer";
 
 export function ContainAdminFalse() {
@@ -61,6 +62,7 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
   const household = useAppSelector(selectHousehold);
   const members = useAppSelector(selectProfileByHousehold);
   const pendingRequestCount = useAppSelector(selectPendingRequestProfilesCount);
+  const modalStyles = useModalStyles();
   //const pauses = useAppSelector(selectPauses);
   //console.log(members);
   //console.log(pauses);
@@ -125,9 +127,9 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
               setModalAddAdminVisible(!modalAddAdminVisible);
             }}
           >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>Click profile to add as admin</Text>
+            <View style={modalStyles.centeredView}>
+              <View style={modalStyles.modalView}>
+                <Text style={modalStyles.modalText}>Click profile to add as admin</Text>
                 <View style={styles.avatarIcon}>
                   {membersContainsNonAdmin ? (
                     members.map((member, memberindex) => {
@@ -171,9 +173,9 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
               setModalRemoveAdminVisible(!modalRemoveAdminVisible);
             }}
           >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>Click admin profile to remove</Text>
+            <View style={modalStyles.centeredView}>
+              <View style={modalStyles.modalView}>
+                <Text style={modalStyles.modalText}>Click admin profile to remove</Text>
                 <View style={styles.avatarIcon}>
                   {membersContainsAtLeastTwoAdmin ? (
                     members.map((member, memberindex) => {
@@ -342,21 +344,6 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 22,
   },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
   button: {
     borderRadius: 20,
     padding: 10,
@@ -371,10 +358,6 @@ export const styles = StyleSheet.create({
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
     textAlign: "center",
   },
   icons: {
