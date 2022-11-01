@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { Image, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet, View, Text } from "react-native";
 import { Button } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { selectToken } from "../features/authentication/authenticationSelectors";
@@ -43,6 +43,7 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
       <View style={styles.container}>
         <Image style={styles.image} source={require("../assets/household.png")} />
         <CustomInput
+          style={styles.input}
           placeholder='Username'
           name='username'
           control={control}
@@ -61,18 +62,21 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
           />
         </Pressable>
         <CustomInput
+          style={styles.input}
           placeholder='Password'
           name='password'
           control={control}
           secureTextEntry={passwordVisibility}
           rules={{ required: "Password is required" }}
         />
-        <Button style={styles.button} onPress={handleSubmit(onLoginPressed)}>
-          Sign In
-        </Button>
-        <Button style={styles.button} onPress={onLogoutPressed}>
-          Logout
-        </Button>
+        <View style={{ display: "flex", flexDirection: "row" }}>
+          <Button mode='outlined' style={styles.button} onPress={handleSubmit(onLoginPressed)}>
+            <Text style={styles.text}>Sign In</Text>
+          </Button>
+          <Button mode='outlined' style={styles.button} onPress={onLogoutPressed}>
+            <Text style={styles.text}>Logout</Text>
+          </Button>
+        </View>
       </View>
     </ScrollView>
   );
@@ -89,6 +93,17 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginVertical: 30,
   },
-  button: { marginTop: 50 },
+  button: { width: "50%", height: "auto", justifyContent: "center", backgroundColor: "white" },
+  input: { backgroundColor: "white", borderWidth: 2 },
   eye: { position: "relative", left: 150, top: 45, zIndex: 1 },
+  text: {
+    color: "black",
+    elevation: 2,
+    fontWeight: "bold",
+    backgroundColor: "white",
+    textAlignVertical: "center",
+    textAlign: "center",
+    fontSize: 20,
+    height: 70,
+  },
 });

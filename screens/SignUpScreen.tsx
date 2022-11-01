@@ -3,7 +3,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { Image, Pressable, ScrollView, StyleSheet, View } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { useTheme } from "../features/theme/ThemeContext";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
@@ -95,6 +95,7 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
       <View style={styles.container}>
         <Image style={styles.image} source={require("../assets/household.png")} />
         <CustomInput
+          style={styles.input}
           placeholder='Username'
           name='username'
           control={control}
@@ -105,6 +106,7 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
           }}
         />
         <CustomInput
+          style={styles.input}
           placeholder='Password'
           name='password'
           control={control}
@@ -130,6 +132,7 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
           />
         </Pressable>
         <CustomInput
+          style={styles.input}
           placeholder='Repeat password'
           name='passwordRepeat'
           control={control}
@@ -139,8 +142,12 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
             validate: (value: string) => value === pwd || "Password not matching",
           }}
         />
-        <Button style={styles.button} onPress={handleSubmit(onRegisterPressed, onRegisterFailed)}>
-          Register
+        <Button
+          mode='outlined'
+          style={styles.button}
+          onPress={handleSubmit(onRegisterPressed, onRegisterFailed)}
+        >
+          <Text style={styles.text}>Register</Text>
         </Button>
       </View>
     </ScrollView>
@@ -158,6 +165,18 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginVertical: 30,
   },
+  text: {
+    color: "black",
+    elevation: 2,
+    fontWeight: "bold",
+    backgroundColor: "white",
+    textAlignVertical: "center",
+    textAlign: "center",
+    fontSize: 20,
+    height: 70,
+  },
+  input: { backgroundColor: "white", borderWidth: 2 },
+
   eye: { position: "relative", left: 150, top: 45, zIndex: 1 },
-  button: { backgroundColor: "lightgrey", paddingHorizontal: 30, marginTop: 40 },
+  button: { width: "50%", height: "auto", justifyContent: "center", backgroundColor: "white" },
 });
