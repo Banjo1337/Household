@@ -1,6 +1,9 @@
 import { newDateInClientTimezone } from "../../app/dateUtils";
 import { RootStateType } from "../../app/store";
+import { selectProfileByHousehold } from "../household/householdSelectors";
+import { Profile } from "../profile/profileTypes";
 import { Pause } from "./pauseTypes";
+import { pausePercentageDictionary } from "./pauseTypes";
 
 export const selectPauseErrorText = (state: RootStateType) => state.pauseReducer.error;
 export const selectPauseIsLoading = (state: RootStateType) => state.pauseReducer.isLoading;
@@ -17,10 +20,13 @@ export const selectPauseByProfileId = (state: RootStateType, profileId: string) 
 export const selectCurrentlyPausedByProfileId = (state: RootStateType, profileId: string) => {
   const pauses = selectPauses(state);
   const pausesByProfileId = pauses.filter((pause: Pause) => pause.profileIdQol === profileId);
-  const currentPauses:Pause[] = [];
-  pausesByProfileId.map((pause)=>{
-    if(pause.startDate<newDateInClientTimezone().toISOString()&&pause.endDate>newDateInClientTimezone().toISOString()){
-    currentPauses.push(pause);
+  const currentPauses: Pause[] = [];
+  pausesByProfileId.map((pause) => {
+    if (
+      pause.startDate < newDateInClientTimezone().toISOString() &&
+      pause.endDate > newDateInClientTimezone().toISOString()
+    ) {
+      currentPauses.push(pause);
     }
   });
   return currentPauses;
@@ -49,7 +55,6 @@ export const selectHasUserPauseAtThisTime = (
 //EdgeCase2: Everything is paus in this timePeriod
 //EdgeCase3: A pause start outside this period and ends inside this period
 //EdgeCase4: A pause start inside this period and ends outside this period
-
 export const selectPausePercentageAsDecimalInTimePeriodByProfileId = (
   state: RootStateType,
   profileId: string,
@@ -139,5 +144,92 @@ export const selectPausePercentageAsDecimalInTimePeriodByProfileId = (
     pausesStartOutsideTimePeriodButEndInsideTimePeriodTime +
     pausesStartInsideTimePeriodButEndOutsideTimePeriodTime;
 
-  return accumulatedPauseTime / totalTime;
+  let returnValue = accumulatedPauseTime / totalTime;
+  //För att undvika division med 0 hos de som konsumerar denna.
+  if (returnValue >= 1) {
+    return 0.99;
+  }
+  return returnValue;
 };
+
+function getProfileIdFromEmoji(profiles: Profile[], emoji: string): string {
+  const profile = profiles.find((profile) => profile.avatar === emoji);
+  if (profile) {
+    return profile.id;
+  } else {
+    return "";
+  }
+}
+
+export const selectPausePercentageDictionaryFromTimePeriodFromCurrentHousehold = (
+  state: RootStateType,
+  startDate: string,
+  endDate: string,
+): pausePercentageDictionary => {
+  const profiles = selectProfileByHousehold(state);
+  const pausePercentageDictionary: pausePercentageDictionary = {
+    fox: selectPausePercentageAsDecimalInTimePeriodByProfileId(
+      state,
+      startDate,
+      endDate,
+      getProfileIdFromEmoji(profiles, "fox"),
+    ),
+    pig: selectPausePercentageAsDecimalInTimePeriodByProfileId(
+      state,
+      startDate,
+      endDate,
+      getProfileIdFromEmoji(profiles, "pig"),
+    ),
+    frog: selectPausePercentageAsDecimalInTimePeriodByProfileId(
+      state,
+      startDate,
+      endDate,
+      getProfileIdFromEmoji(profiles, "frog"),
+    ),
+    chicken: selectPausePercentageAsDecimalInTimePeriodByProfileId(
+      state,
+      startDate,
+      endDate,
+      getProfileIdFromEmoji(profiles, "chicken"),
+    ),
+    octopus: selectPausePercentageAsDecimalInTimePeriodByProfileId(
+      state,
+      startDate,
+      endDate,
+      getProfileIdFromEmoji(profiles, "octopus"),
+    ),
+    dolphin: selectPausePercentageAsDecimalInTimePeriodByProfileId(
+      state,
+      startDate,
+      endDate,
+      getProfileIdFromEmoji(profiles, "dolphin"),
+    ),
+    owl: selectPausePercentageAsDecimalInTimePeriodByProfileId(
+      state,
+      startDate,
+      endDate,
+      getProfileIdFromEmoji(profiles, "owl"),
+    ),
+    unicorn: selectPausePercentageAsDecimalInTimePeriodByProfileId(
+      state,
+      startDate,
+      endDate,
+      getProfileIdFromEmoji(profiles, "unicorn"),
+    ),
+  };
+  return pausePercentageDictionary;
+};
+
+/*
+export const selectPausePercentageAsDecimalInTimePeriodFromHousehold = (
+  state: RootStateType,
+  householdId: string,
+  startDate: string,
+  endDate: string,
+) => {
+  const profiles = selectProfileByHousehold(state);
+  //redux returenrar ny referens här, vilket gererar rendering. Fix är createSelector i nästa projekt :)
+  return profiles.map((profile) => 
+    selectPausePercentageAsDecimalInTimePeriodByProfileId(state, profile.id, startDate, endDate);
+};
+*/

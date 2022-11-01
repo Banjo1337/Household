@@ -72,7 +72,9 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
                 position: "absolute",
                 justifyContent: "flex-start",
               }}
-            ></Button>
+            >
+              .
+            </Button>
           )}
           <View
             style={{
@@ -94,7 +96,6 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
                 justifyContent: "center",
               }}
             >
-
               {daysPassedAndFrequency}
               {!daysPassedAndFrequency && <Text>✅</Text>}
             </Text>
@@ -112,7 +113,6 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
               </Text>
             )}
           </View>
-
         </Pressable>
       </Surface>
     </View>
