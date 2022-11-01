@@ -36,7 +36,6 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
   const { currentTheme } = useTheme();
 
   const onRegisterPressed = (data: FieldValues) => {
-    console.log(data.username + data.password);
     const signUpDto: SignUpDto = {
       username: data.username,
       password: data.password,
@@ -52,10 +51,6 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
 
   const onSignInPressed = () => {
     navigation.navigate("SignIn");
-  };
-
-  const onRegisterFailed = () => {
-    alert("Failed");
   };
 
   async function signUp(signUpDto: SignUpDto) {
@@ -99,8 +94,8 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
       <View style={styles.container}>
         <Image style={styles.image} source={require("../assets/household.png")} />
         <CustomInput
-          style={[styles.input, { marginBottom: 26 }]}
           placeholder='Username'
+          defaultValue=''
           name='username'
           control={control}
           rules={{
@@ -110,7 +105,6 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
           }}
         />
         <CustomInput
-          style={styles.input}
           placeholder='Password'
           name='password'
           control={control}
@@ -127,16 +121,17 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
                 "Password too weak. Requires: A number\nOne lower and one uppercase character.\nOne special character. Minimum length: 6.",
             },
           }}
-        />
-        <Pressable onPress={handlePasswordVisibility} style={styles.eye}>
-          <MaterialCommunityIcons
-            name={rightIcon}
-            size={32}
-            color={currentTheme.dark ? "#dedede" : "#232323"}
-          />
-        </Pressable>
+        >
+          <Pressable onPress={handlePasswordVisibility} style={styles.eye}>
+            <MaterialCommunityIcons
+              name={rightIcon}
+              size={32}
+              color={currentTheme.dark ? "#dedede" : "#232323"}
+            />
+          </Pressable>
+        </CustomInput>
+
         <CustomInput
-          style={styles.input}
           placeholder='Repeat password'
           name='passwordRepeat'
           control={control}
@@ -150,7 +145,7 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
           <Button
             mode='outlined'
             style={[styles.button, { marginTop: 15 }]}
-            onPress={handleSubmit(onRegisterPressed, onRegisterFailed)}
+            onPress={handleSubmit(onRegisterPressed)}
           >
             <Text style={styles.text}>Register</Text>
           </Button>
@@ -190,6 +185,12 @@ const styles = StyleSheet.create({
   },
   input: { backgroundColor: "white", borderWidth: 2 },
 
-  eye: { position: "relative", left: 150, top: 45, zIndex: 1 },
-  button: { width: "50%", height: "auto", justifyContent: "center", backgroundColor: "white" },
+  eye: { position: "absolute", right: 25, top: 25, zIndex: 1 },
+  button: {
+    width: "50%",
+    height: "auto",
+    justifyContent: "center",
+    backgroundColor: "white",
+    margin: 5,
+  },
 });
