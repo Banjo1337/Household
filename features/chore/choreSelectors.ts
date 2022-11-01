@@ -65,8 +65,6 @@ export const selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId = (
   choreId: string,
 ): string => {
   const thisChoreCompletedLastDone = getLatestChoreCompletedByChoreId(state, choreId);
-  console.log(choreId);
-  console.log(thisChoreCompletedLastDone);
   const chore = selectChoreById(state, choreId);
 
   const choreCompletedDate = new Date(thisChoreCompletedLastDone.completedAt);
