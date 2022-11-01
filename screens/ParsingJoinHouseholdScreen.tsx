@@ -4,6 +4,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import { Modal, StyleSheet, View } from "react-native";
 import { Button, ProgressBar, Text, Title } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
+import { selectAuthUserId } from "../features/authentication/authenticationSelectors";
 import { Household } from "../features/household/householdTypes";
 import { selectActiveProfile } from "../features/profile/profileSelector";
 import { createProfile } from "../features/profile/profileSlice";
@@ -26,7 +27,7 @@ export default function ParsingJoinHouseholdScreen({
   } = useForm<FormValue>();
   const dispatch = useAppDispatch();
   const { householdCode } = route.params;
-  const profile = useAppSelector(selectActiveProfile);
+  const authUserId = useAppSelector(selectAuthUserId);
   const [household, setHousehold] = useState<Household>();
   const [foundHouseholdBool, setHouseholdFound] = useState(false);
   const [searching, setSearching] = useState(true);
@@ -54,7 +55,7 @@ export default function ParsingJoinHouseholdScreen({
         alias: data.name,
         isAdmin: false,
         householdId: household?.id,
-        authUserId: profile.authUserId,
+        authUserId: authUserId,
       }),
     );
 

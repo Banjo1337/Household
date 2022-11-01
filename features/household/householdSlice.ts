@@ -34,7 +34,7 @@ export const hydrateHouseholdSliceFromBackendThunk = createAsyncThunk<
     thunkApi.dispatch(getProfilesByHouseholdId(household.id));
     return household as Household;
   } else {
-    return thunkApi.rejectWithValue(JSON.stringify(response.body));
+    return thunkApi.rejectWithValue(response.statusText);
   }
 });
 
@@ -60,7 +60,7 @@ export const createHouseholdThunk = createAsyncThunk<
       return (await response.json()) as Household;
     }
 
-    return thunkApi.rejectWithValue(JSON.stringify(response.body));
+    return thunkApi.rejectWithValue(response.statusText);
   } catch (err) {
     if (err instanceof Error) {
       return thunkApi.rejectWithValue(err.message);
@@ -92,7 +92,7 @@ export const editHouseholdThunk = createAsyncThunk<
       return (await response.json()) as Household;
     }
 
-    return thunkApi.rejectWithValue(JSON.stringify(response.body));
+    return thunkApi.rejectWithValue(response.statusText);
   } catch (err) {
     if (err instanceof Error) {
       return thunkApi.rejectWithValue(err.message);
@@ -121,7 +121,7 @@ export const deleteHouseholdThunk = createAsyncThunk<Household, string, { reject
         return {} as Household;
       }
 
-      return thunkApi.rejectWithValue(JSON.stringify(response.body));
+      return thunkApi.rejectWithValue(response.statusText);
     } catch (err) {
       if (err instanceof Error) {
         return thunkApi.rejectWithValue(err.message);
@@ -144,7 +144,7 @@ export const getProfilesByHouseholdId = createAsyncThunk<
     if (response.ok) {
       return await response.json();
     } else {
-      return isRejectedWithValue(response.status);
+      return thunkApi.rejectWithValue(response.statusText);
     }
   } catch (err) {
     if (err instanceof Error) {
@@ -154,6 +154,31 @@ export const getProfilesByHouseholdId = createAsyncThunk<
     }
   }
 });
+
+export const denyPendingRequest = createAsyncThunk<string, string, { rejectValue: string }>(
+  "household/denyPendingRequest",
+  async (profileId: string, thunkApi) => {
+    try {
+      const response = await fetch(
+        "https://household-backend.azurewebsites.net/api/V01/profile/deleteprofile/" + profileId,
+        {
+          method: "DELETE",
+        },
+      );
+      if (response.status === 204) {
+        return profileId;
+      } else {
+        return thunkApi.rejectWithValue(response.statusText);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        return thunkApi.rejectWithValue(err.message);
+      } else {
+        return thunkApi.rejectWithValue("Unknown error in denyPendingRequest");
+      }
+    }
+  },
+);
 
 interface HouseholdState {
   error: string;
@@ -178,6 +203,9 @@ const householdSlice = createSlice({
       state.household = action.payload;
       state.isLoading = false;
     }),
+      builder.addCase(denyPendingRequest.fulfilled, (state, action) => {
+        state.profiles = state.profiles.filter((p) => p.id !== action.payload);
+      }),
       builder.addCase(createHouseholdThunk.fulfilled, (state, action) => {
         state.household = action.payload;
       }),
@@ -214,6 +242,7 @@ const householdSlice = createSlice({
           createHouseholdThunk.pending,
           editHouseholdThunk.pending,
           hydrateHouseholdSliceFromBackendThunk.pending,
+          denyPendingRequest.pending,
         ),
         (state, _) => {
           state.isLoading = true;
@@ -226,6 +255,7 @@ const householdSlice = createSlice({
           createHouseholdThunk.rejected,
           editHouseholdThunk.rejected,
           hydrateHouseholdSliceFromBackendThunk.rejected,
+          denyPendingRequest.rejected,
         ),
         (state, action) => {
           if (action.payload) {

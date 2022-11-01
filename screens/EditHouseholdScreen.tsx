@@ -278,12 +278,15 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
         </Button>
 
         <Text style={{ marginTop: 20 }}>Household members: </Text>
+        <Text style={styles.showProperty}>{household.code}</Text>
+        <Text>Household members: </Text>
         <View style={styles.avatarIcon}>
           {members.map((member, memberindex) => {
             return (
-              <View key={memberindex}>
+              <View key={memberindex} style={{ alignItems: "center" }}>
                 <ProfileListItem profile={member} />
                 <SwitchToPause profile={member} />
+                <Text style={{ fontSize: 12, margin: 0 }}>pause</Text>
               </View>
             );
           })}
