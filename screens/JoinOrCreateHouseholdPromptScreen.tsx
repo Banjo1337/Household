@@ -35,10 +35,7 @@ export default function JoinOrCreateHouseholdPromptScreen(
   };
 
   const onJoinHouseholdPressed = (data: FieldValues) => {
-    console.log(
-      "you have pressed join household " + data.householdCode + " as " + data.profileName,
-    );
-    // Props.navigation.navigate();
+    Props.navigation.navigate("ParsingJoinHousehold", { householdCode: data.householdCode });
   };
 
   return (

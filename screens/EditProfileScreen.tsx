@@ -5,7 +5,7 @@ import { Modal, ScrollView, StyleSheet, View } from "react-native";
 import { Button, Text, Title } from "react-native-paper";
 import AvatarSelectorItem from "../components/AvatarSelectorItem";
 import CustomInput from "../components/CustomInput";
-import { selectProfileByHousholdId } from "../features/household/householdSelectors";
+import { selectProfileByHousehold } from "../features/household/householdSelectors";
 import { selectActiveProfile } from "../features/profile/profileSelector";
 import { deleteProfile, editProfile } from "../features/profile/profileSlice";
 import { Avatar, Avatars } from "../features/profile/profileTypes";
@@ -19,7 +19,7 @@ export default function EditProfileScreen(
   const dispatch = useAppDispatch();
   const [deleteProfileWarning, setDeleteProfileWarning] = useState(false);
   const profile = useAppSelector(selectActiveProfile);
-  const householdProfiles = useAppSelector(selectProfileByHousholdId);
+  const householdProfiles = useAppSelector(selectProfileByHousehold);
   const [selectedAvatar, setSelectedAvatar] = useState<Avatar>(profile.avatar);
   const availableAvatars = Object.keys(Avatars)
     .filter((a) => !householdProfiles.map((p) => p.avatar).includes(a as Avatar))

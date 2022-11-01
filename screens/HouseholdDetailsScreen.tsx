@@ -7,7 +7,7 @@ import { Feather } from "@expo/vector-icons";
 import ProfileListItem from "../components/ProfileListItem";
 import {
   selectHousehold,
-  selectProfileByHousholdId,
+  selectProfileByHousehold,
 } from "../features/household/householdSelectors";
 import { deleteHouseholdThunk } from "../features/household/householdSlice";
 import { deleteProfile } from "../features/profile/profileSlice";
@@ -16,7 +16,7 @@ import { RootStackParamList } from "../NavContainer";
 import { ContainTwoAdmin } from "../screens/EditHouseholdScreen";
 
 export function CurrentProfileisAdmin() {
-  const members = useAppSelector(selectProfileByHousholdId);
+  const members = useAppSelector(selectProfileByHousehold);
   const currentProfileId = useAppSelector((state) => state.profileReducer.profile).id;
   var currentProfile = members.find((element) => element.id == currentProfileId);
   if (currentProfile?.isAdmin) {
@@ -32,7 +32,7 @@ export default function HouseholdDetailsScreen({
 }: NativeStackScreenProps<RootStackParamList>) {
   const currentProfileId = useAppSelector((state) => state.profileReducer.profile).id;
   const household = useAppSelector(selectHousehold);
-  const members = useAppSelector(selectProfileByHousholdId);
+  const members = useAppSelector(selectProfileByHousehold);
   console.log(members);
   //console.log(membersOnPause);
   const [modalLeaveVisible, setModalLeaveVisible] = useState(false);
