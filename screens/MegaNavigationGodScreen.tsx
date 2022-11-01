@@ -83,20 +83,6 @@ export default function MegaNavigationGodScreen(
         <Button
           mode='contained'
           style={styles.button}
-          onPress={() => Props.navigation.navigate("HouseholdDetails")}
-        >
-          HouseholdDetails
-        </Button>
-        <Button
-          mode='contained'
-          style={styles.button}
-          onPress={() => Props.navigation.navigate("SelectProfile")}
-        >
-          SelectProfile
-        </Button>
-        <Button
-          mode='contained'
-          style={styles.button}
           onPress={() => Props.navigation.navigate("EditProfile")}
         >
           EditProfile
