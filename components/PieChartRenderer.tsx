@@ -10,6 +10,8 @@ import { StatisticsList } from "../features/choreCompleted/choreCompletedTypes";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../NavContainer";
 import { useRef } from "react";
+import { selectPausePercentageDictionaryFromTimePeriodFromCurrentHousehold } from "../features/pause/pauseSelectors";
+import { pausePercentageDictionary } from "../features/pause/pauseTypes";
 
 interface Props {
   start: Date;
@@ -28,6 +30,14 @@ export default function PieChartRenderer({ start, end, navigation }: Props) {
     selectChoreCompletedStatisticsForAllChores(state, start, new Date(end.getTime() + 60000)),
   );
 
+  const pausePercentageDictionary: pausePercentageDictionary = useAppSelector((state) =>
+    selectPausePercentageDictionaryFromTimePeriodFromCurrentHousehold(
+      state,
+      start.toString(),
+      end.toString(),
+    ),
+  );
+
   function renderItem(item: StatisticsList) {
     const name = item.name.split(" ");
     return (
@@ -39,6 +49,38 @@ export default function PieChartRenderer({ start, end, navigation }: Props) {
       </View>
     );
   }
+
+  //console.log("pausePercentageDictionary", pausePercentageDictionary);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const statsAllChoresJimmyTest = statsAllChores.map((stat) => {
+    const key = stat.emoji as keyof pausePercentageDictionary;
+    const pausePercentage = pausePercentageDictionary[key];
+    return {
+      ...stat,
+      value: stat.value / (1 - pausePercentage),
+    };
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const statsForEachChoreJimmyTest = statsForEachChore.map((statList) => {
+    return {
+      ...statList,
+      data: statList.data.map((stat) => {
+        const key = stat.emoji as keyof pausePercentageDictionary;
+        const pausePercentage = pausePercentageDictionary[key];
+        return {
+          ...stat,
+          value: stat.value / (1 - pausePercentage),
+        };
+      }),
+    };
+  });
+
+  //Varje piechart byggs på en Statistics[], vilket makes sence då varje Statistics blir en slice i piecharten.
+  //a) varje choreCompleted (efter groupby baserat på Chore) blir en Statistics
+  //b) statsAllChores är en Statistics[] vilket är den storaste piecharten överst
+  //c) statsForEachChore är typ en Statistics[][], dvs en array av Statistics[], dvs alla de små pieshartsen under den stora
 
   return (
     <View
