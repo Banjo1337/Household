@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { Text } from "react-native-paper";
+import { View, StyleSheet, TouchableOpacity, Modal } from "react-native";
+import { Text, Title, Button } from "react-native-paper";
 import { useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 import { Profile } from "../features/profile/profileTypes";
@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { selectAuthUserId } from "../features/authentication/authenticationSelectors";
 import { useSetAndHydrateProfile } from "../hooks/useSetAndHydrateProfile";
 import { selectActiveProfile } from "../features/profile/profileSelector";
+import { styles as modalStyles } from "./EditHouseholdScreen";
 
 export default function SelectProfileScreen({
   navigation,
@@ -18,6 +19,7 @@ export default function SelectProfileScreen({
   const profile = useAppSelector(selectActiveProfile);
   const [profiles, setProfiles] = useState<Profile[]>();
   const setAndHydrateProfile = useSetAndHydrateProfile();
+  const [showProfilePending, setShowProfilePending] = useState(false);
 
   useEffect(() => {
     (async function getProfiles() {
@@ -31,8 +33,12 @@ export default function SelectProfileScreen({
   }, [authUserId, profile]);
 
   function handleSelectUser(profile: Profile) {
-    setAndHydrateProfile(profile);
-    navigation.goBack();
+    if (profile.pendingRequest) {
+      setShowProfilePending(true);
+    } else {
+      setAndHydrateProfile(profile);
+      navigation.goBack();
+    }
   }
 
   return (
@@ -45,6 +51,23 @@ export default function SelectProfileScreen({
           <Text style={styles.avatar}>➕</Text>
         </TouchableOpacity>
       </View>
+      <Modal
+        animationType='slide'
+        transparent={true}
+        visible={showProfilePending}
+        onRequestClose={() => {
+          setShowProfilePending(false);
+        }}
+      >
+        <View style={modalStyles.centeredView}>
+          <View style={modalStyles.modalView}>
+            <Title style={modalStyles.modalText}>This profile is still pending</Title>
+            <Button mode='contained' onPress={() => setShowProfilePending(false)}>
+              <Text>Ok!</Text>
+            </Button>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
