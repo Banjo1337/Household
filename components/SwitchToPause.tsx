@@ -122,7 +122,7 @@ export default function SwitchToPause({ profile }: Props) {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>The ongoing pause is now stopped</Text>
+              <Text style={styles.modalText}>The ongoing pause is now stopped!</Text>
               
               <Pressable
                 style={[styles.button, styles.buttonClose]}
