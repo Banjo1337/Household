@@ -34,6 +34,10 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
     dispatch(postSignInThunk({ username: data.username, password: data.password }));
   };
 
+  const onSignupPressed = () => {
+    navigation.navigate("SignUp");
+  };
+
   const onLogoutPressed = () => {
     dispatch(logout());
   };
@@ -77,6 +81,9 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
             <Text style={styles.text}>Logout</Text>
           </Button>
         </View>
+        <Button mode='outlined' style={styles.button} onPress={onSignupPressed}>
+          <Text style={styles.text}>Sign up</Text>
+        </Button>
       </View>
     </ScrollView>
   );
