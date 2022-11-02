@@ -9,7 +9,7 @@ import { useTheme } from "../features/theme/ThemeContext";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
 import { RootStackParamList } from "../NavContainer";
 
-const PWD_REGEX = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|).{6,32}$/;
+const PWD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@_$%^&*-]).{8,}$/;
 
 interface SignUpDto {
   username: string;
@@ -30,7 +30,7 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
     control,
     handleSubmit,
     watch,
-    formState: {},
+    formState: { },
   } = useForm({});
   const pwd = watch("password");
   const { currentTheme } = useTheme();
@@ -118,7 +118,7 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
             pattern: {
               value: PWD_REGEX,
               message:
-                "Password too weak. Requires: A number\nOne lower and one uppercase character.\nOne special character. Minimum length: 6.",
+                "Password too weak."
             },
           }}
         >
