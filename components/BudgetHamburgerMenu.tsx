@@ -63,6 +63,16 @@ export default function BudgetHambugerMenu({
           <TouchableOpacity
             style={[styles.menuListItem, {borderColor: currentTheme.colors.border}]}
             onPress={() => {
+              setShowBudgetHambugerMenu(false);
+              navigation.navigate("EditProfile");
+            }}
+          >
+            <Text>Edit profile</Text>
+            <MaterialCommunityIcons name='account-cog' {...iconSettings} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.menuListItem, {borderColor: currentTheme.colors.border}]}
+            onPress={() => {
               dispatch(logout());
               setShowBudgetHambugerMenu(false);
               navigation.navigate("SignIn");
@@ -126,6 +136,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   switchContainer: {
+    marginVertical: 10,
     borderRadius: 5,
     borderWidth: 1,
     flexDirection: "row",
