@@ -94,7 +94,7 @@ export default function HouseholdDetailsScreen({
                           setModalLeaveVisible(!modalLeaveVisible);
                           dispatch(deleteProfile({ profileId: currentProfileId }));
                           // TSC above: should there be more props other than profileId?
-                          navigation.navigate("MegaNavigationGod");
+                          navigation.navigate("SelectProfile");
                         }}
                       >
                         <Text style={styles.textStyle}>Yes</Text>
@@ -129,7 +129,7 @@ export default function HouseholdDetailsScreen({
                           setModalLeaveVisible(!modalLeaveVisible);
                           dispatch(deleteProfile({ profileId: currentProfileId }));
                           dispatch(deleteHouseholdThunk(household.id));
-                          navigation.navigate("MegaNavigationGod");
+                          navigation.navigate("SelectProfile");
                         }}
                       >
                         <Text style={styles.textStyle}>Leave and delete it</Text>
