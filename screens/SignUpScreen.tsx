@@ -79,10 +79,6 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
         },
         body: JSON.stringify(signUpDto),
       });
-
-      //const jsonBody = await response.json();
-      //console.log("Response.status in PostSingUp: ", response.status);
-      //console.log("jsonBody in PostSingUp: ", jsonBody);
       return response;
     } catch (error) {
       console.log("Error in PostSignUp in SignUpScreen.tsx: ", error);
