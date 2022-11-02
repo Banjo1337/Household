@@ -1,12 +1,12 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { selectToken } from "../features/authentication/authenticationSelectors";
-import { logout, postSignInThunk } from "../features/authentication/authenticationSlice";
+import { postSignInThunk } from "../features/authentication/authenticationSlice";
 import { useTheme } from "../features/theme/ThemeContext";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
@@ -15,7 +15,7 @@ import { RootStackParamList } from "../NavContainer";
 export default function SignInScreen({ navigation }: NativeStackScreenProps<RootStackParamList>) {
   const dispatch = useAppDispatch();
   const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, setValue } = useForm();
   const { currentTheme } = useTheme();
 
   const Token = useAppSelector(selectToken);
@@ -26,16 +26,21 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
     }
   }, [navigation, Token]);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setValue("username", "");
+      setValue("password", "");
+    });
+
+    return unsubscribe;
+  }, [navigation, setValue]);
+
   const onLoginPressed = (data: FieldValues) => {
     dispatch(postSignInThunk({ username: data.username, password: data.password }));
   };
 
   const onSignupPressed = () => {
     navigation.navigate("SignUp");
-  };
-
-  const onLogoutPressed = () => {
-    dispatch(logout());
   };
 
   return (
@@ -77,9 +82,6 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
           <Text style={styles.text}>Sign up</Text>
         </Button>
       </View>
-      {/* <Button mode='outlined' style={styles.button} onPress={onLogoutPressed}>
-          <Text style={styles.text}>Logout</Text>
-        </Button> */}
     </View>
   );
 }
