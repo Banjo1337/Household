@@ -196,7 +196,14 @@ const initialState: HouseholdState = {
 const householdSlice = createSlice({
   name: "household",
   initialState,
-  reducers: {},
+  reducers: {
+    deHydrateHouseholdSlice(state) {
+      state.household = {} as Household;
+      state.error = "";
+      state.isLoading = false;
+      state.profiles = [];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(hydrateHouseholdSliceFromBackendThunk.fulfilled, (state, action) => {
       state.household = action.payload;
@@ -279,3 +286,5 @@ const householdSlice = createSlice({
 });
 
 export const householdReducer: Reducer<HouseholdState, AnyAction> = householdSlice.reducer;
+
+export const { deHydrateHouseholdSlice } = householdSlice.actions;

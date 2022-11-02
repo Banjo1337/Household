@@ -49,7 +49,6 @@ export const createChore = createAsyncThunk<Chore, ChoreCreateDto, { rejectValue
         return (await response.json()) as Chore;
       }
       return thunkApi.rejectWithValue(JSON.stringify(response.body));
-
     } catch (err) {
       if (err instanceof Error) {
         return thunkApi.rejectWithValue(err.message);
@@ -101,7 +100,7 @@ export const deleteChore = createAsyncThunk<string, string, { rejectValue: strin
       const response = await fetch(baseUrl + "DeleteChore/" + choreId, {
         method: "DELETE",
         headers: {
-          authorization: "Bearer " + Token
+          authorization: "Bearer " + Token,
         },
       });
 
@@ -109,7 +108,6 @@ export const deleteChore = createAsyncThunk<string, string, { rejectValue: strin
         return choreId;
       }
       return thunkApi.rejectWithValue(JSON.stringify(response.body));
-
     } catch (err) {
       if (err instanceof Error) {
         return thunkApi.rejectWithValue(err.message);
@@ -129,7 +127,11 @@ const initialState: ChoreState = {
 const choreSlice = createSlice({
   name: "chore",
   initialState,
-  reducers: {},
+  reducers: {
+    deHydrateChoresSlice: () => {
+      return initialState;
+    },
+  },
 
   extraReducers: (builder) => {
     builder.addCase(
@@ -183,3 +185,5 @@ const choreSlice = createSlice({
 });
 
 export default choreSlice.reducer;
+
+export const { deHydrateChoresSlice } = choreSlice.actions;

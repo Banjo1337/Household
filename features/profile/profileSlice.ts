@@ -71,8 +71,7 @@ export const deleteProfile = createAsyncThunk<
   try {
     const response = await fetch(baseUrl + "DeleteProfile/" + profileId, {
       method: "DELETE",
-      headers: {
-      },
+      headers: {},
     });
 
     if (response.status == 204) {
@@ -112,19 +111,22 @@ const profileSlice = createSlice({
     setActiveProfile(state, action: PayloadAction<Profile>) {
       state.profile = action.payload;
     },
+    resetActiveProfile(state) {
+      state.profile = {} as Profile;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(createProfile.fulfilled, (state, action: PayloadAction<Profile>) => {
-        state.profile = action.payload;
-      }),
-    builder.addCase(
-      editProfile.fulfilled,
-      (state, action: PayloadAction<EditProfilePayloadAction>) => {
-        if (action.payload.isActiveProfile) {
-          state.profile = action.payload.profile;
-        }
-      },
-    ),
+      state.profile = action.payload;
+    }),
+      builder.addCase(
+        editProfile.fulfilled,
+        (state, action: PayloadAction<EditProfilePayloadAction>) => {
+          if (action.payload.isActiveProfile) {
+            state.profile = action.payload.profile;
+          }
+        },
+      ),
       builder.addCase(
         deleteProfile.fulfilled,
         (state, action: PayloadAction<DeleteProfilePayloadAction>) => {
@@ -160,4 +162,4 @@ const profileSlice = createSlice({
 
 export default profileSlice.reducer;
 
-export const { setActiveProfile } = profileSlice.actions;
+export const { setActiveProfile, resetActiveProfile } = profileSlice.actions;
