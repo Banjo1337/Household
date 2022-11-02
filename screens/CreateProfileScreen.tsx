@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { selectAuthUserId } from "../features/authentication/authenticationSelectors";
@@ -39,37 +39,35 @@ export default function CreateProfileScreen(
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Create Profile</Text>
-        <CustomInput
-          name='profileName'
-          placeholder='Name of profile to create'
-          control={control}
-          rules={{
-            required: "Name of profile is required",
-            maxLength: {
-              value: 10,
-              message: "Cant be more than 10 letters",
-            },
-          }}
-        />
-        <Button
-          mode={"elevated"}
-          style={styles.button}
-          onPress={handleSubmit(onCreateProfilePressed)}
-        >
-          <Text style={styles.text}>Create Profile</Text>
-        </Button>
-      </View>
-    </ScrollView>
+    <View style={styles.container}>
+      <Text style={styles.title}>Create Profile</Text>
+      <CustomInput
+        name='profileName'
+        placeholder='Name of profile to create'
+        control={control}
+        rules={{
+          required: "Name of profile is required",
+          maxLength: {
+            value: 10,
+            message: "Cant be more than 10 letters",
+          },
+        }}
+      />
+      <Button
+        mode={"elevated"}
+        style={styles.button}
+        onPress={handleSubmit(onCreateProfilePressed)}
+      >
+        <Text style={styles.text}>Create Profile</Text>
+      </Button>
+    </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    justifyContent: "center",
     paddingHorizontal: 20,
+    marginTop: "45%",
   },
   button: { width: "50%", height: 50, justifyContent: "center", margin: 10 },
   title: {
