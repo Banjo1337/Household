@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useCallback, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import { Button } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { createChore } from "../features/chore/choreSlice";
 import { ChoreCreateDto } from "../features/chore/choreTypes";
@@ -65,7 +65,6 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
       <Text style={styles.title}>Add Chore</Text>
       <View>
         <CustomInput
-          style={styles.input}
           placeholder='Name'
           name='name'
           defaultValue={""}
@@ -80,7 +79,6 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
           }}
         />
         <CustomInput
-          style={styles.input}
           placeholder='Description'
           name='description'
           defaultValue={""}
@@ -106,7 +104,6 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
         >
           <Text style={{ fontSize: 14, fontWeight: "600", marginTop: 7 }}>Frequency of chore</Text>
           <DropDownPicker
-            style={styles.dropDownPicker}
             listMode='SCROLLVIEW'
             open={openFrequency}
             onOpen={onOpenFrequency}
@@ -127,7 +124,6 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
         >
           <Text style={{ fontSize: 14, fontWeight: "600", marginTop: 7 }}>Difficulty of chore</Text>
           <DropDownPicker
-            style={styles.dropDownPicker}
             modalTitle='Select how difficult this task is'
             listMode='SCROLLVIEW'
             open={openPoint}
@@ -145,10 +141,10 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
         </View>
       </View>
       <View style={{ display: "flex", flexDirection: "row" }}>
-        <Button mode='outlined' onPress={handleSubmit(onAddChorePressed)} style={styles.button}>
+        <Button mode='contained' onPress={handleSubmit(onAddChorePressed)} style={styles.button}>
           <Text style={styles.text}>Save</Text>
         </Button>
-        <Button mode='outlined' style={styles.button} onPress={onClosePressed}>
+        <Button mode='contained-tonal' style={styles.button} onPress={onClosePressed}>
           <Text style={styles.text}>Close</Text>
         </Button>
       </View>
@@ -173,28 +169,13 @@ const styles = StyleSheet.create({
   sectionDark: {
     backgroundColor: "#333",
   },
-  button: {
-    width: "50%",
-    height: "auto",
-    justifyContent: "center",
-    backgroundColor: "white",
-    margin: 15,
-  },
-  input: {
-    justifyContent: "flex-start",
-    backgroundColor: "white",
-    borderWidth: 2,
-    padding: 0,
-  },
-  dropDownPicker: {},
+  button: { width: "50%", height: "auto", justifyContent: "center", margin: 10 },
   text: {
-    color: "black",
     elevation: 2,
     fontWeight: "bold",
-    backgroundColor: "white",
     textAlignVertical: "center",
     textAlign: "center",
     fontSize: 20,
-    height: 70,
+    height: "auto",
   },
 });

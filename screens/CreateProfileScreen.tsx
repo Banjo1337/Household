@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Button, Text, Title } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { selectAuthUserId } from "../features/authentication/authenticationSelectors";
 import { selectHousehold } from "../features/household/householdSelectors";
@@ -41,7 +41,7 @@ export default function CreateProfileScreen(
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        <Title style={styles.title}>Create Profile Screen</Title>
+        <Text style={styles.title}>Create Profile</Text>
         <CustomInput
           name='profileName'
           placeholder='Name of profile to create'
@@ -55,11 +55,11 @@ export default function CreateProfileScreen(
           }}
         />
         <Button
-          mode={"contained"}
+          mode={"elevated"}
           style={styles.button}
           onPress={handleSubmit(onCreateProfilePressed)}
         >
-          <Text>Create Profile</Text>
+          <Text style={styles.text}>Create Profile</Text>
         </Button>
       </View>
     </ScrollView>
@@ -71,7 +71,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 20,
   },
-  title: {},
-  button: {},
-  input: {},
+  button: { width: "50%", height: "auto", justifyContent: "center", margin: 10 },
+  title: {
+    fontSize: 40,
+  },
+  text: {
+    elevation: 2,
+    fontWeight: "bold",
+    textAlignVertical: "center",
+    textAlign: "center",
+    fontSize: 20,
+    height: "auto",
+  },
 });

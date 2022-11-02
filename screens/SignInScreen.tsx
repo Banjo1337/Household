@@ -2,8 +2,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { Image, Pressable, ScrollView, StyleSheet, View, Text } from "react-native";
-import { Button } from "react-native-paper";
+import { Image, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { Button, Text } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { selectToken } from "../features/authentication/authenticationSelectors";
 import { logout, postSignInThunk } from "../features/authentication/authenticationSlice";
@@ -71,15 +71,15 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
           </Pressable>
         </CustomInput>
         <View style={{ display: "flex", flexDirection: "row" }}>
-          <Button mode='outlined' style={styles.button} onPress={handleSubmit(onLoginPressed)}>
-            <Text style={styles.text}>Sign In</Text>
+          <Button mode='contained' style={styles.button} onPress={handleSubmit(onLoginPressed)}>
+            <Text style={styles.text}>Sign in</Text>
           </Button>
-          <Button mode='outlined' style={styles.button} onPress={onLogoutPressed}>
-            <Text style={styles.text}>Logout</Text>
+          <Button mode='contained-tonal' style={styles.button} onPress={onSignupPressed}>
+            <Text style={styles.text}>Sign up</Text>
           </Button>
         </View>
-        <Button mode='outlined' style={styles.button} onPress={onSignupPressed}>
-          <Text style={styles.text}>Sign up</Text>
+        <Button mode='outlined' style={styles.button} onPress={onLogoutPressed}>
+          <Text style={styles.text}>Logout</Text>
         </Button>
       </View>
     </ScrollView>
@@ -99,20 +99,15 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "50%",
-    height: "auto",
+    height: 60,
     justifyContent: "center",
-    backgroundColor: "white",
-    margin: 7,
+    marginTop: 5,
   },
   eye: { position: "absolute", right: 25, top: 25, zIndex: 1 },
   text: {
-    color: "black",
-    elevation: 2,
     fontWeight: "bold",
-    backgroundColor: "white",
     textAlignVertical: "center",
     textAlign: "center",
-    fontSize: 20,
-    height: 70,
+    fontSize: 18,
   },
 });

@@ -143,14 +143,14 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
         />
         <View style={{ display: "flex", flexDirection: "row" }}>
           <Button
-            mode='outlined'
+            mode='contained'
             style={[styles.button, { marginTop: 15 }]}
             onPress={handleSubmit(onRegisterPressed)}
           >
             <Text style={styles.text}>Register</Text>
           </Button>
           <Button
-            mode='outlined'
+            mode='contained-tonal'
             style={[styles.button, { marginTop: 15 }]}
             onPress={onSignInPressed}
           >
@@ -174,23 +174,18 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   text: {
-    color: "black",
-    elevation: 2,
     fontWeight: "bold",
-    backgroundColor: "white",
     textAlignVertical: "center",
     textAlign: "center",
-    fontSize: 20,
-    height: 70,
+    fontSize: 18,
   },
-  input: { backgroundColor: "white", borderWidth: 2 },
+  input: { borderWidth: 2 },
 
   eye: { position: "absolute", right: 25, top: 25, zIndex: 1 },
   button: {
     width: "50%",
-    height: "auto",
+    height: 60,
     justifyContent: "center",
-    backgroundColor: "white",
-    margin: 5,
+    margin: 3,
   },
 });
