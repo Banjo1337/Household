@@ -8,7 +8,7 @@ import { createPause, updatePause } from "../features/pause/pauseSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { selectHousehold } from "../features/household/householdSelectors";
 import { newDateInClientTimezone } from "../app/dateUtils";
-import {PauseCreateDto, PauseUpdateDto} from "../features/pause/pauseTypes";
+import { PauseCreateDto, PauseUpdateDto } from "../features/pause/pauseTypes";
 import { selectCurrentlyPausedByProfileId } from "../features/pause/pauseSelectors";
 import useModalStyles from "../hooks/useModalStyles";
 
@@ -21,13 +21,14 @@ export default function SwitchToPause({ profile }: Props) {
   const household = useAppSelector(selectHousehold);
   const pause = useAppSelector((state) => selectCurrentlyPausedByProfileId(state, profile.id));
   const isPaused = () => {
-    if (pause.length>0){
+    if (pause.length > 0) {
       return true;
     }
     return false;
-  }; 
-  
+  };
+
   const [enabled, setEnabled] = useState(isPaused);
+  const [errorText, setErrorText] = useState<string>("");
   const [modalPauseVisible, setModalPauseVisible] = useState(false);
 
   const todaysDate = newDateInClientTimezone();
@@ -45,14 +46,22 @@ export default function SwitchToPause({ profile }: Props) {
     const initialDate = newDateInClientTimezone();
     initialDate.setDate(pauseDuration);
     const endPauseDate = initialDate;
-    
-    const pauseCreateDto : PauseCreateDto  = {
-        startDate: todaysDate.toISOString(),
-        endDate: endPauseDate.toISOString(),
-        householdId: household.id,
-        profileIdQol: profile.id,
+
+    const pauseCreateDto: PauseCreateDto = {
+      startDate: todaysDate.toISOString(),
+      endDate: endPauseDate.toISOString(),
+      householdId: household.id,
+      profileIdQol: profile.id,
     };
-    dispatch(createPause(pauseCreateDto));
+    const reply = dispatch(createPause(pauseCreateDto));
+
+    reply.then((res) => {
+      if (res.meta.requestStatus === "rejected") {
+        console.log("Fucking rejected ");
+        const rejectErrorText = res.payload?.toString();
+        setErrorText(rejectErrorText?.toString() ?? "");
+      }
+    });
   };
 
   const toggleSwitch = () => {
@@ -95,11 +104,12 @@ export default function SwitchToPause({ profile }: Props) {
                 placeholder='Duration of the pause'
                 control={control}
               ></CustomInput>
+              <Text>{errorText}</Text>
               <TouchableOpacity
                 style={styles.pressable}
                 onPress={handleSubmit(onDefinePauseDurationPressed)}
               >
-                <Text style={{fontSize: 15}}>Validate</Text>
+                <Text style={{ fontSize: 15 }}>Validate</Text>
               </TouchableOpacity>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
@@ -125,12 +135,12 @@ export default function SwitchToPause({ profile }: Props) {
           <View style={styles.centeredView}>
             <View style={modalStyles.modalView}>
               <Text style={modalStyles.modalText}>The ongoing pause is now stopped!</Text>
-              
+
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
                   setModalPauseVisible(!modalPauseVisible);
-                  if (pause.length>0) {
+                  if (pause.length > 0) {
                     const pauseId = pause[0].id;
                     const pauseUpdateDto: PauseUpdateDto = {
                       endDate: newDateInClientTimezone().toISOString(),
@@ -180,5 +190,5 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
-  }
+  },
 });
