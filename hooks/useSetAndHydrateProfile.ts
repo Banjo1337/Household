@@ -9,11 +9,11 @@ import { hydrateChoresCompletedSliceFromBackendThunk } from "../features/choreCo
 export function useSetAndHydrateProfile() {
   const dispatch = useAppDispatch();
 
-  return function (profile: Profile) {
+  return async function (profile: Profile) {
     dispatch(setActiveProfile(profile));
-    dispatch(hydrateHouseholdSliceFromBackendThunk(profile.householdId));
-    dispatch(hydratePauseSliceFromBackendThunk(profile.householdId));
-    dispatch(hydrateChoresSliceFromBackendThunk(profile.householdId));
-    dispatch(hydrateChoresCompletedSliceFromBackendThunk(profile.householdId));
+    await dispatch(hydrateHouseholdSliceFromBackendThunk(profile.householdId));
+    await dispatch(hydratePauseSliceFromBackendThunk(profile.householdId));
+    await dispatch(hydrateChoresSliceFromBackendThunk(profile.householdId));
+    await dispatch(hydrateChoresCompletedSliceFromBackendThunk(profile.householdId));
   };
 }

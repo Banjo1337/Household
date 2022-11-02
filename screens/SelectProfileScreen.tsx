@@ -38,8 +38,8 @@ export default function SelectProfileScreen({
     if (profile.pendingRequest) {
       setShowProfilePending(true);
     } else {
-      setAndHydrateProfile(profile);
-      navigation.goBack();
+      setAndHydrateProfile(profile)
+        .then(() => navigation.navigate("Home", {screen: "Chores"}));
     }
   }
 
