@@ -9,14 +9,13 @@ import { useTheme } from "../features/theme/ThemeContext";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
 import { RootStackParamList } from "../NavContainer";
 
-const PWD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@_$%^&*-]).{8,}$/;
+const PWD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@_$%^&*-]).{6,32}$/;
 
 interface SignUpDto {
   username: string;
   password: string;
 }
 
-//This is the body from BE. Note that status here is not a HTTP status code.
 type SignUpResponse = {
   status: string;
   message: string;
