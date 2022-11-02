@@ -28,10 +28,12 @@ export default function PendingRequestScreen() {
         profileId: selectedProfile.id,
       }),
     );
+    setShowConfirmationWindow(false);
   }
 
   function denyRequest() {
     dispatch(denyPendingRequest(selectedProfile?.id));
+    setShowConfirmationWindow(false);
   }
 
   function openModalAndSetState(profile: Profile, isApprove: boolean) {
