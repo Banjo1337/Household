@@ -6,6 +6,7 @@ import { Button, Text } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { createHouseholdThunk } from "../features/household/householdSlice";
 import { useAppDispatch } from "../hooks/reduxHooks";
+import { useResetAndDeHydrateProfile } from "../hooks/useResetAndDehydrateProfile";
 import { RootStackParamList } from "../NavContainer";
 
 export default function JoinOrCreateHouseholdPromptScreen(
@@ -17,7 +18,8 @@ export default function JoinOrCreateHouseholdPromptScreen(
     formState: {},
   } = useForm();
   const dispatch = useAppDispatch();
-
+  const resetState = useResetAndDeHydrateProfile();
+  resetState();
   const toggleInput = () => {
     setInput((joinHousehold) => !joinHousehold);
     console.log("toggle pressed" + joinAsAdmin);
