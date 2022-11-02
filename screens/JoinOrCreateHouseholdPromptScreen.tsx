@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
@@ -19,7 +20,11 @@ export default function JoinOrCreateHouseholdPromptScreen(
   } = useForm();
   const dispatch = useAppDispatch();
   const resetState = useResetAndDeHydrateProfile();
-  resetState();
+
+  useEffect(() => {
+    resetState();
+  });
+  
   const toggleInput = () => {
     setInput((joinHousehold) => !joinHousehold);
     console.log("toggle pressed" + joinAsAdmin);
