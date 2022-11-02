@@ -2,23 +2,20 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import { FlatList, StyleSheet, TouchableHighlight, TouchableOpacity, View } from "react-native";
 import { Button, Text } from "react-native-paper";
+import BudgetHambugerMenu from "../components/BudgetHamburgerMenu";
 import ChoreCard from "../components/ChoreCard";
 import { selectChoresToShowInChoreScreen } from "../features/chore/choreSelectors";
-
 import { selectHousehold } from "../features/household/householdSelectors";
 import { selectActiveProfile } from "../features/profile/profileSelector";
 import { useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
-//import { TopTabParamsList } from "../navigation/TopTabsNavigator";
-
-//type Props = NativeStackScreenProps<RootStackParamList>;
 
 export default function ChoresScreen(Props: NativeStackScreenProps<RootStackParamList>) {
   const [editableMode, setEditableMode] = useState(false);
   const household = useAppSelector(selectHousehold);
   const chores = useAppSelector(selectChoresToShowInChoreScreen);
   const profile = useAppSelector(selectActiveProfile);
-
+  const [showBudgetHambugerMenu, setShowBudgetHambugerMenu] = useState(false);
   const onAddChorePressed = () => {
     Props.navigation.navigate("AddChore");
   };
@@ -33,7 +30,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
         <View style={{ alignItems: "center" }}>
           <TouchableOpacity
             style={styles.settingsText}
-            onPress={() => Props.navigation.navigate("Settings")}
+            onPress={() => setShowBudgetHambugerMenu(true)}
           >
             <Text
               style={{
@@ -82,11 +79,17 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
           )}
         </View>
       </View>
+      <BudgetHambugerMenu 
+        navigation={Props.navigation} 
+        setVisible={setShowBudgetHambugerMenu}
+        visible={showBudgetHambugerMenu}
+      />
+
     </>
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
