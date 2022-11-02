@@ -71,14 +71,12 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
       </Text>
       <View style={styles.segment}></View>
       {chore.frequency == 0 ? (
-        <Text style={styles.text}>This task is do be done once</Text>
+        <Text style={styles.text}>This is a one-and-done task.</Text>
       ) : chore.frequency == 1 ? (
-        <Text style={styles.text}>
-          It should be done every other<Title style={styles.title}>{chore.frequency} </Title> day.
-        </Text>
+        <Text style={styles.text}>Do this task every day.</Text>
       ) : (
         <Text style={styles.text}>
-          Repeat every <Title style={styles.title}>{chore.frequency}</Title> days.
+          Repeat this task every <Title style={styles.title}>{chore.frequency}</Title> days.
         </Text>
       )}
       <View style={styles.segment}></View>
