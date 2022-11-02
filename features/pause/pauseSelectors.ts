@@ -1,5 +1,10 @@
 import { newDateInClientTimezone } from "../../app/dateUtils";
 import { RootStateType } from "../../app/store";
+import {
+  selectChoreCompletedStatisticsForAllChores,
+  selectChoreCompletedStatisticsListForAllChores,
+} from "../choreCompleted/choreCompletedSelectors";
+import { StatisticsList } from "../choreCompleted/choreCompletedTypes";
 import { selectProfileByHousehold } from "../household/householdSelectors";
 import { Profile } from "../profile/profileTypes";
 import { Pause } from "./pauseTypes";
@@ -226,4 +231,45 @@ export const selectPausePercentageDictionaryFromTimePeriodFromCurrentHousehold =
     ),
   };
   return pausePercentageDictionary;
+};
+
+export const selectStatsForEachChoreNormalized = (
+  state: RootStateType,
+  start: Date,
+  end: Date,
+): StatisticsList[] => {
+  const pausePercentageDictionary =
+    selectPausePercentageDictionaryFromTimePeriodFromCurrentHousehold(
+      state,
+      start.toString(),
+      end.toString(),
+    );
+  return selectChoreCompletedStatisticsListForAllChores(state, start, end).map((statList) => ({
+    ...statList,
+    data: statList.data.map((stat) => {
+      const key = stat.emoji as keyof pausePercentageDictionary;
+      const pausePercentage = pausePercentageDictionary[key];
+      return {
+        ...stat,
+        value: stat.value / (1 - pausePercentage),
+      };
+    }),
+  }));
+};
+
+export const selectStatsAllChoresNormalized = (state: RootStateType, start: Date, end: Date) => {
+  const pausePercentageDictionary =
+    selectPausePercentageDictionaryFromTimePeriodFromCurrentHousehold(
+      state,
+      start.toString(),
+      end.toString(),
+    );
+  return selectChoreCompletedStatisticsForAllChores(state, start, end).map((stat) => {
+    const key = stat.emoji as keyof pausePercentageDictionary;
+    const pausePercentage = pausePercentageDictionary[key];
+    return {
+      ...stat,
+      value: stat.value / (1 - pausePercentage),
+    };
+  });
 };
