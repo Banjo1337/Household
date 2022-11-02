@@ -15,6 +15,7 @@ export default function SettingsScreen(
 
   const onLogoutPressed = () => {
     dispatch(logout());
+    Props.navigation.navigate("SignIn");
   };
   return (
     <View>
@@ -42,6 +43,13 @@ export default function SettingsScreen(
             onPress={() => Props.navigation.navigate("SelectProfile")}
           >
             Switch Profile
+          </Button>
+          <Button
+            mode='contained'
+            style={styles.button}
+            onPress={() => Props.navigation.navigate("MegaNavigationGod")}
+          >
+            Mega Navigation Screen
           </Button>
           <Button mode='contained' onPress={onLogoutPressed} style={styles.button}>
             Log out
