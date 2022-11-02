@@ -42,7 +42,7 @@ export default function JoinOrCreateHouseholdPromptScreen(
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
         <Text variant='headlineMedium' style={styles.headlineText}>
-          Be ready to create a profile on the next screen!
+          Be ready to create a profile shortly!
         </Text>
         <View>
           <View style={{ marginTop: "5%" }}>
