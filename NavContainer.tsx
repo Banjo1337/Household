@@ -68,9 +68,27 @@ export default function NavContainer() {
                 headerShown: false,
               })}
             />
-            <Stack.Screen name='AddChore' component={AddChoreScreen} />
-            <Stack.Screen name='ChoreDetails' component={ChoreDetailsScreen} />
-            <Stack.Screen name='EditChore' component={EditChoreScreen} />
+            <Stack.Screen
+              name='AddChore'
+              component={AddChoreScreen}
+              options={() => ({
+                headerShown: false,
+              })}
+            />
+            <Stack.Screen
+              name='ChoreDetails'
+              component={ChoreDetailsScreen}
+              options={() => ({
+                headerShown: false,
+              })}
+            />
+            <Stack.Screen
+              name='EditChore'
+              component={EditChoreScreen}
+              options={() => ({
+                headerShown: false,
+              })}
+            />
             <Stack.Screen name='SignIn' component={SignInScreen} />
             <Stack.Screen name='SignUp' component={SignUpScreen} />
             <Stack.Screen name='CreateProfile' component={CreateProfileScreen} />

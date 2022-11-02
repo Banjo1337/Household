@@ -75,14 +75,14 @@ export default function EditChoreScreen({ route, navigation }: Props) {
             householdId: household.id,
           };
           dispatch(updateChore({ choreUpdateDto: choreUpdateDto, choreId: chore.id }));
-          navigation.goBack();
+          navigation.navigate("Home", { screen: "Chores" });
         },
       },
       {
         text: "Delete the chore!",
         onPress: () => {
           dispatch(deleteChore(chore.id));
-          navigation.goBack();
+          navigation.navigate("Home", { screen: "Chores" });
         },
       },
     ]);
@@ -192,10 +192,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 20,
   },
   title: {
     fontSize: 50,
+    marginBottom: 40,
   },
   text: {
     elevation: 2,

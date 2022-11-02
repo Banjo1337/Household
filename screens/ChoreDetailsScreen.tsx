@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Surface, Text, Title } from "react-native-paper";
 import { newDateInClientTimezone } from "../app/dateUtils";
@@ -58,7 +58,6 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
   return (
     <Surface style={styles.container}>
       <Title style={styles.title}>{chore.name}</Title>
-      <View style={styles.segment}></View>
       {chore.description && (
         <>
           <ScrollView style={styles.descriptionField}>
@@ -112,13 +111,15 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 30,
     elevation: 3,
-    width: "95%",
+    marginTop: "auto",
+    marginBottom: "auto",
     marginLeft: "auto",
     marginRight: "auto",
+    width: "95%",
     borderRadius: 5,
-    marginTop: 20,
   },
   segment: {
     borderBottomWidth: StyleSheet.hairlineWidth,
