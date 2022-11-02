@@ -301,7 +301,7 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
             );
           })}
         </View>
-        <Button onPress={() => Props.navigation.goBack()} style={{ marginVertical: 40 }}>
+        <Button mode={'contained'} onPress={() => Props.navigation.goBack()} style={{ marginVertical: 40 }}>
           Close
         </Button>
       </View>
