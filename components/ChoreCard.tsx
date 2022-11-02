@@ -43,7 +43,7 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
               textAlign: "left",
               marginLeft: 2,
               marginRight: 2,
-              fontSize: 20,
+              fontSize: 22,
               fontWeight: "bold",
             }}
           >
@@ -85,7 +85,7 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
               style={{
                 marginLeft: 2,
                 marginRight: 2,
-                fontSize: 20,
+                fontSize: 22,
                 fontWeight: "bold",
                 textAlign: "center",
                 justifyContent: "center",

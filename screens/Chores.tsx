@@ -105,10 +105,8 @@ const styles = StyleSheet.create({
   button: { width: "50%", height: 50, justifyContent: "center", margin: 7 },
 
   text: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
-    textAlign: "center",
-    justifyContent: "center",
     height: "auto",
   },
 });
