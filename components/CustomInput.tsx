@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingBottom: 20,
   },
-  input: { backgroundColor: "white", marginTop: 10, height: 60, borderWidth: 2, borderRadius: 5 },
+  input: { marginTop: 10, height: 60, borderWidth: 2, borderRadius: 5 },
 });
 
 export default CustomInput;

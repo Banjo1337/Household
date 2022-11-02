@@ -40,7 +40,6 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
         >
           <Text
             style={{
-              color: "black",
               textAlign: "left",
               marginLeft: 2,
               marginRight: 2,
@@ -84,7 +83,6 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
           >
             <Text
               style={{
-                color: "black",
                 marginLeft: 2,
                 marginRight: 2,
                 fontSize: 20,
@@ -98,7 +96,6 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
                   <IconButton
                     icon='clipboard-edit-outline'
                     size={50}
-                    iconColor='black'
                     onPress={() => navigation.navigate("EditChore", { choreId: chore.id })}
                     style={{
                       zIndex: 1,
@@ -116,8 +113,6 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
                 style={{
                   borderRadius: 50,
                   fontSize: 50,
-                  borderWidth: 1,
-                  borderColor: "white",
                   backgroundColor: avatar?.color,
                 }}
               >
@@ -132,13 +127,9 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
 }
 const styles = StyleSheet.create({
   surface: {
-    backgroundColor: "white",
     flexDirection: "row",
     height: 70,
     margin: 6,
     elevation: 5,
-  },
-  text: {
-    color: "black",
   },
 });

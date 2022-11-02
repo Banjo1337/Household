@@ -319,7 +319,6 @@ export const styles = StyleSheet.create({
     width: 200,
     height: 50,
     color: "blue",
-    backgroundColor: "white",
     borderRadius: 5,
     margin: 2,
     borderColor: "red",

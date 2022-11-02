@@ -31,31 +31,25 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
     <>
       <View style={{ justifyContent: "center" }}>
         <View style={{ alignItems: "center" }}>
-          <Pressable onPress={()=> Props.navigation.navigate("Settings")}>
-            <Title
-              style={{
-                color: "black",
-                textAlignVertical: "center",
-                textAlign: "center",
-                justifyContent: "center",
-                fontSize: 30,
-                backgroundColor: "white",
-                width: 350,
-                height: 50,
-                elevation: 5,
-              }}
-            >
-              Household
-            </Title>
-          </Pressable>
           <Title
             style={{
-              color: "black",
+              textAlignVertical: "center",
+              textAlign: "center",
+              justifyContent: "center",
+              fontSize: 30,
+              width: 350,
+              height: 50,
+              elevation: 5,
+            }}
+          >
+            Household
+          </Title>
+          <Title
+            style={{
               textAlignVertical: "center",
               textAlign: "center",
               justifyContent: "center",
               fontSize: 20,
-              backgroundColor: "white",
               width: 350,
               height: 30,
               elevation: 1,
@@ -63,19 +57,12 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
           >
             {household.name}
           </Title>
-          <Title
-            style={{ textAlign: "center", backgroundColor: "white", color: "black", elevation: 5 }}
-          >
-            Code: {household.code}
-          </Title>
+          <Title style={{ textAlign: "center", elevation: 5 }}>Code: {household.code}</Title>
         </View>
         <View
           style={{
             justifyContent: "center",
             height: "75%",
-            borderColor: "white",
-            borderRadius: 2,
-            borderWidth: 2,
           }}
         >
           <FlatList
@@ -92,58 +79,17 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
               </TouchableHighlight>
             )}
           />
+          {profile.isAdmin && (
+            <View style={{ flexDirection: "row", justifyContent: "center", margin: 10 }}>
+              <Button mode='contained' style={styles.button} onPress={onAddChorePressed}>
+                <Text style={styles.text}>Add Chore</Text>
+              </Button>
+              <Button mode='contained-tonal' style={styles.button} onPress={toggleIsEditable}>
+                <Text style={styles.text}>Edit Chore</Text>
+              </Button>
+            </View>
+          )}
         </View>
-
-        {profile.isAdmin && (
-          <View style={{ flexDirection: "row", marginTop: 10 }}>
-            <Button
-              mode='outlined'
-              style={{
-                width: "50%",
-                alignSelf: "flex-end",
-                height: 50,
-                justifyContent: "flex-end",
-                backgroundColor: "white",
-              }}
-              onPress={onAddChorePressed}
-            >
-              <Text
-                style={{
-                  color: "black",
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  justifyContent: "center",
-                }}
-              >
-                Add Chore
-              </Text>
-            </Button>
-            <Button
-              mode='outlined'
-              style={{
-                width: "50%",
-                height: 50,
-                alignSelf: "flex-end",
-                justifyContent: "flex-end",
-                backgroundColor: "white",
-              }}
-              onPress={toggleIsEditable}
-            >
-              <Text
-                style={{
-                  color: "black",
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  justifyContent: "center",
-                }}
-              >
-                Edit Chore
-              </Text>
-            </Button>
-          </View>
-        )}
       </View>
     </>
   );
@@ -156,10 +102,13 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: "center",
   },
-  title: {
-    backgroundColor: "white",
+  button: { width: "50%", height: 50, justifyContent: "center", margin: 7 },
+
+  text: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    justifyContent: "center",
+    height: "auto",
   },
-  card: {},
-  button: { backgroundColor: "hotpink" },
-  input: { backgroundColor: "brown" },
 });

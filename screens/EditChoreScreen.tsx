@@ -92,7 +92,6 @@ export default function EditChoreScreen({ route, navigation }: Props) {
       <Text style={styles.title}>Edit Chore</Text>
       <View>
         <CustomInput
-          style={styles.input}
           defaultValue={chore?.name && ""}
           placeholder='Name'
           name='name'
@@ -107,7 +106,6 @@ export default function EditChoreScreen({ route, navigation }: Props) {
           }}
         />
         <CustomInput
-          style={styles.input}
           defaultValue={chore?.description && ""}
           placeholder='Description'
           name='description'
@@ -174,10 +172,10 @@ export default function EditChoreScreen({ route, navigation }: Props) {
         </View>
       </View>
       <View style={{ display: "flex", flexDirection: "row" }}>
-        <Button mode='outlined' onPress={handleSubmit(onEditChorePressed)} style={styles.button}>
+        <Button mode='contained' onPress={handleSubmit(onEditChorePressed)} style={styles.button}>
           <Text style={styles.text}>Save</Text>
         </Button>
-        <Button mode='outlined' onPress={onClosePressed} style={styles.button}>
+        <Button mode='contained-tonal' onPress={onClosePressed} style={styles.button}>
           <Text style={styles.text}>Close</Text>
         </Button>
       </View>
@@ -200,29 +198,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 50,
   },
-  section: {
-    borderRadius: 20,
-    marginVertical: 10,
-    padding: 30,
-  },
-  sectionLight: {
-    backgroundColor: "#aaa",
-  },
-  sectionDark: {
-    backgroundColor: "#333",
-  },
   text: {
-    color: "black",
     elevation: 2,
     fontWeight: "bold",
-    backgroundColor: "white",
     textAlignVertical: "center",
     textAlign: "center",
     fontSize: 20,
-    height: 70,
+    height: "auto",
   },
-  input: { backgroundColor: "white", borderWidth: 2 },
-
   dropDownPicker: {},
-  button: { width: "50%", height: "auto", justifyContent: "center", backgroundColor: "white" },
+  button: { width: "50%", height: "auto", justifyContent: "center", margin: 7 },
 });
