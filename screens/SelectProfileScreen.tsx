@@ -41,6 +41,7 @@ export default function SelectProfileScreen({
       setAndHydrateProfile(profile);
       //navigation.navigate("Home", {screen: "Chores"});
        navigation.navigate("Settings");
+       //navigation.goBack();
     }
   }
 
