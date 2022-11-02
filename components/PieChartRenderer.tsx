@@ -49,16 +49,8 @@ export default function PieChartRenderer({ start, end, navigation }: Props) {
       </View>
     );
   }
-  //console.log("start date: " + start + " end date: " + end);
-  //console.log("pausePercentageDictionary", pausePercentageDictionary);
 
-  console.log("statsAllChores:");
-  console.log(statsAllChores);
-  //console.log("pausePercentageDictionary:");
-  //console.log(pausePercentageDictionary);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const statsAllChoresJimmyTest: Statistics[] = statsAllChores.map((stat) => {
+  const statsAllChoresNormalized: Statistics[] = statsAllChores.map((stat) => {
     const key = stat.emoji as keyof pausePercentageDictionary;
     console.log("key: " + key);
     const pausePercentage = pausePercentageDictionary[key];
@@ -70,11 +62,7 @@ export default function PieChartRenderer({ start, end, navigation }: Props) {
     };
   });
 
-  console.log("statsAllChoresJimmyTest");
-  console.log(statsAllChoresJimmyTest);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const statsForEachChoreJimmyTest: StatisticsList[] = statsForEachChore.map((statList) => {
+  const statsForEachChoreNormalized: StatisticsList[] = statsForEachChore.map((statList) => {
     return {
       ...statList,
       data: statList.data.map((stat) => {
@@ -90,8 +78,8 @@ export default function PieChartRenderer({ start, end, navigation }: Props) {
 
   //Varje piechart byggs på en Statistics[], vilket makes sence då varje Statistics blir en slice i piecharten.
   //a) varje choreCompleted (efter groupby baserat på Chore) blir en Statistics
-  //b) statsAllChores är en Statistics[] vilket är den storaste piecharten överst
-  //c) statsForEachChore är typ en Statistics[][], dvs en array av Statistics[], dvs alla de små pieshartsen under den stora
+  //b) statsAllChores är en Statistics[] vilket blir den stora piecharten överst
+  //c) statsForEachChore är typ en Statistics[][], dvs en array av Statistics[], dvs alla de små pieshartsen i undre delen av skärmen
 
   return (
     <View
@@ -100,14 +88,14 @@ export default function PieChartRenderer({ start, end, navigation }: Props) {
         e.nativeEvent.pageX - touchX.current > 20 && navigation.goBack();
       }}
     >
-      {statsAllChores && (
+      {statsAllChoresNormalized && (
         <View style={styles.bigPieContainer}>
           <TouchableOpacity onPress={() => navigation.navigate("Home", { screen: "Chores" })}>
             <PieChartCustom data={statsAllChores} subtitle='Total' isSmall={false} />
           </TouchableOpacity>
         </View>
       )}
-      {statsForEachChore && (
+      {statsForEachChoreNormalized && (
         <View style={styles.miniPieContainer}>
           <FlatList
             numColumns={3}
