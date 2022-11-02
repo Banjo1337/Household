@@ -1,16 +1,16 @@
-import { Switch, Text } from "react-native-paper";
-import { Modal, Platform, Pressable, View, StyleSheet, TouchableOpacity } from "react-native";
-import { Profile } from "../features/profile/profileTypes";
 import React, { useState } from "react";
-import CustomInput from "./CustomInput";
 import { FieldValues, useForm } from "react-hook-form";
-import { createPause, updatePause } from "../features/pause/pauseSlice";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { selectHousehold } from "../features/household/householdSelectors";
+import { Modal, Platform, Pressable, StyleSheet, View } from "react-native";
+import { Button, Switch, Text } from "react-native-paper";
 import { newDateInClientTimezone } from "../app/dateUtils";
-import { PauseCreateDto, PauseUpdateDto } from "../features/pause/pauseTypes";
+import { selectHousehold } from "../features/household/householdSelectors";
 import { selectCurrentlyPausedByProfileId } from "../features/pause/pauseSelectors";
+import { createPause, updatePause } from "../features/pause/pauseSlice";
+import { PauseCreateDto, PauseUpdateDto } from "../features/pause/pauseTypes";
+import { Profile } from "../features/profile/profileTypes";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import useModalStyles from "../hooks/useModalStyles";
+import CustomInput from "./CustomInput";
 
 interface Props {
   profile: Profile;
@@ -104,14 +104,9 @@ export default function SwitchToPause({ profile }: Props) {
                 control={control}
               ></CustomInput>
               <Text>{errorText}</Text>
-              <TouchableOpacity
-                style={styles.pressable}
-                onPress={handleSubmit(onDefinePauseDurationPressed)}
-              >
-                <Text style={{ fontSize: 15 }}>Validate</Text>
-              </TouchableOpacity>
+              <Button onPress={handleSubmit(onDefinePauseDurationPressed)}>Validate</Button>
               <Pressable
-                style={[styles.button, styles.buttonClose]}
+                style={[styles.button, styles.buttonClose, { marginTop: 20 }]}
                 onPress={() => {
                   setModalPauseVisible(!modalPauseVisible);
                 }}
