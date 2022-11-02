@@ -26,8 +26,6 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
     }
   }, [navigation, Token]);
 
-
-
   const onLoginPressed = (data: FieldValues) => {
     dispatch(postSignInThunk({ username: data.username, password: data.password }));
   };
