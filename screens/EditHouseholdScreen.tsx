@@ -257,7 +257,10 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
             marginTop: 10,
           }}
         >
-          <Button>
+          <Button
+            style={[styles.button, styles.buttonOpen]}
+            onPress={() => setModalAddAdminVisible(true)}
+          >
             <Text style={styles.textStyle}>add admin</Text>
           </Button>
           <Button

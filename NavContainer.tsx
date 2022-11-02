@@ -85,7 +85,13 @@ export default function NavContainer() {
                 headerShown: false,
               })}
             />
-            <Stack.Screen name='HouseholdDetails' component={HouseholdDetailsScreen} />
+            <Stack.Screen
+              name='HouseholdDetails'
+              component={HouseholdDetailsScreen}
+              options={() => ({
+                headerShown: false,
+              })}
+            />
             <Stack.Screen name='SelectProfile' component={SelectProfileScreen} />
             <Stack.Screen name='EditProfile' component={EditProfileScreen} />
             <Stack.Screen name='PendingRequest' component={PendingRequestScreen} />
