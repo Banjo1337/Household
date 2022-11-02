@@ -80,7 +80,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
             )}
           />
           {profile.isAdmin && (
-            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <View style={{ flexDirection: "row", justifyContent: "center", margin: 10 }}>
               <Button mode='contained' style={styles.button} onPress={onAddChorePressed}>
                 <Text style={styles.text}>Add Chore</Text>
               </Button>
