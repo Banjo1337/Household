@@ -32,10 +32,10 @@ namnet ska gå att ändra. 🚨⚠🚨
 
 - [X] En ägare ska kunna göra andra till ägare.
 
-- [ ] En ägare ska kunna pausa en användare och under pausade perioder ska användare inte
+- [x] En ägare ska kunna pausa en användare och under pausade perioder ska användare inte
 tas med i statistiken.
 
-- [ ] Om en använder har pausats under en del av en period i statistiken ska graferna
+- [x] Om en använder har pausats under en del av en period i statistiken ska graferna
 normaliseras.
 
 ## Konto (5)
