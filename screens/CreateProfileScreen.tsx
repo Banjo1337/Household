@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 20,
   },
-  button: { width: "50%", height: "auto", justifyContent: "center", margin: 10 },
+  button: { width: "50%", height: 50, justifyContent: "center", margin: 10 },
   title: {
     fontSize: 40,
   },
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlignVertical: "center",
     textAlign: "center",
-    fontSize: 20,
+    fontSize: 18,
     height: "auto",
   },
 });

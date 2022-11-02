@@ -111,7 +111,6 @@ export default function EditChoreScreen({ route, navigation }: Props) {
           name='description'
           control={control}
           rules={{
-            required: "Description of chore is required",
             minLength: { value: 2, message: "Must be 2 or more letters" },
             maxLength: {
               value: 1000,
@@ -181,7 +180,7 @@ export default function EditChoreScreen({ route, navigation }: Props) {
       </View>
       <Button
         mode='outlined'
-        style={(styles.button, { width: "70%" })}
+        style={(styles.button, { width: "60%" })}
         onPress={createThreeButtonAlert}
       >
         <Text style={styles.text}>Delete the chore</Text>
@@ -203,9 +202,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlignVertical: "center",
     textAlign: "center",
-    fontSize: 20,
+    fontSize: 18,
     height: "auto",
   },
   dropDownPicker: {},
-  button: { width: "50%", height: "auto", justifyContent: "center", margin: 7 },
+  button: { width: "50%", height: 50, justifyContent: "center", margin: 7 },
 });
