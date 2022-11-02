@@ -49,16 +49,8 @@ export default function PieChartRenderer({ start, end, navigation }: Props) {
       </View>
     );
   }
-  //console.log("start date: " + start + " end date: " + end);
-  //console.log("pausePercentageDictionary", pausePercentageDictionary);
 
-  console.log("statsAllChores:");
-  console.log(statsAllChores);
-  //console.log("pausePercentageDictionary:");
-  //console.log(pausePercentageDictionary);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const statsAllChoresJimmyTest: Statistics[] = statsAllChores.map((stat) => {
+  const statsAllChoresNormalized: Statistics[] = statsAllChores.map((stat) => {
     const key = stat.emoji as keyof pausePercentageDictionary;
     console.log("key: " + key);
     const pausePercentage = pausePercentageDictionary[key];
@@ -70,11 +62,7 @@ export default function PieChartRenderer({ start, end, navigation }: Props) {
     };
   });
 
-  console.log("statsAllChoresJimmyTest");
-  console.log(statsAllChoresJimmyTest);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const statsForEachChoreJimmyTest: StatisticsList[] = statsForEachChore.map((statList) => {
+  const statsForEachChoreNormalized: StatisticsList[] = statsForEachChore.map((statList) => {
     return {
       ...statList,
       data: statList.data.map((stat) => {
