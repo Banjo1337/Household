@@ -62,9 +62,7 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
       {chore.description && (
         <>
           <ScrollView style={styles.descriptionField}>
-            <Text>
-              {chore.description}
-            </Text>
+            <Text>{chore.description}</Text>
           </ScrollView>
           <View style={styles.segment}></View>
         </>
@@ -96,11 +94,11 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
       </View>
       <View style={styles.segment}></View>
       <View style={styles.buttonContainer}>
-        <Button onPress={onBackPressed} mode='elevated' style={styles.button}>
+        <Button onPress={onBackPressed} mode='contained' style={styles.button}>
           <Text style={styles.text}>Go back</Text>
         </Button>
         {profile.isAdmin && (
-          <Button onPress={onEditPressed} mode='elevated' style={styles.button}>
+          <Button onPress={onEditPressed} mode='contained-tonal' style={styles.button}>
             <Text style={styles.text}>Edit</Text>
           </Button>
         )}
@@ -150,9 +148,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     maxHeight: 150,
   },
-  button: {
-    width: "50%",
-  },
+  button: { width: "50%", height: 50, justifyContent: "center", margin: 7 },
+
   completeChore: {
     marginTop: 10,
     height: 70,
