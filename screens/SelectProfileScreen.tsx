@@ -39,7 +39,8 @@ export default function SelectProfileScreen({
       setShowProfilePending(true);
     } else {
       setAndHydrateProfile(profile);
-      navigation.goBack();
+      navigation.navigate("Home", {screen: "Chores"});
+       //navigation.navigate("Settings");
     }
   }
 
