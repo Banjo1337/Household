@@ -121,7 +121,7 @@ export const deleteChore = createAsyncThunk<string, string, { rejectValue: strin
 );
 
 const initialState: ChoreState = {
-  chores: {} as Chore[],
+  chores: [] as Chore[],
   isLoading: false,
   error: "",
 };

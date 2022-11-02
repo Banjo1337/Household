@@ -81,10 +81,9 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
         <CustomInput
           placeholder='Description'
           name='description'
-          defaultValue={""}
+          defaultValue=''
           control={control}
           rules={{
-            required: "Description of chore is required",
             minLength: { value: 2, message: "Must be 2 or more letters" },
             maxLength: {
               value: 1000,
@@ -171,13 +170,13 @@ const styles = StyleSheet.create({
   sectionDark: {
     backgroundColor: "#333",
   },
-  button: { width: "50%", height: "auto", justifyContent: "center", margin: 10 },
+  button: { width: "50%", height: 50, justifyContent: "center", textAlign: "center", margin: 10 },
   text: {
     elevation: 2,
     fontWeight: "bold",
     textAlignVertical: "center",
     textAlign: "center",
-    fontSize: 20,
+    fontSize: 18,
     height: "auto",
   },
 });

@@ -89,7 +89,7 @@ export const updatePause = createAsyncThunk<
 });
 
 const initialState: PauseState = {
-  pauses: {} as Pause[],
+  pauses: [] as Pause[],
   isLoading: false,
   error: "",
 };

@@ -2,16 +2,12 @@ import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import PieChartCustom from "../components/PieChartCustom";
 import { Text } from "react-native-paper";
 import { useAppSelector } from "../hooks/reduxHooks";
-import {
-  selectChoreCompletedStatisticsListForAllChores,
-  selectChoreCompletedStatisticsForAllChores,
-} from "../features/choreCompleted/choreCompletedSelectors";
-import { Statistics, StatisticsList } from "../features/choreCompleted/choreCompletedTypes";
+import { StatisticsList } from "../features/choreCompleted/choreCompletedTypes";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../NavContainer";
 import { useRef } from "react";
-import { selectPausePercentageDictionaryFromTimePeriodFromCurrentHousehold } from "../features/pause/pauseSelectors";
-import { pausePercentageDictionary } from "../features/pause/pauseTypes";
+import { selectStatsAllChoresNormalized, selectStatsForEachChoreNormalized } from "../features/pause/pauseSelectors";
+
 
 interface Props {
   start: Date;
@@ -21,22 +17,8 @@ interface Props {
 
 export default function PieChartRenderer({ start, end, navigation }: Props) {
   const touchX = useRef(0);
-
-  const statsForEachChore = useAppSelector((state) =>
-    selectChoreCompletedStatisticsListForAllChores(state, start, new Date(end.getTime() + 60000)),
-  );
-
-  const statsAllChores = useAppSelector((state) =>
-    selectChoreCompletedStatisticsForAllChores(state, start, new Date(end.getTime() + 60000)),
-  );
-
-  const pausePercentageDictionary: pausePercentageDictionary = useAppSelector((state) =>
-    selectPausePercentageDictionaryFromTimePeriodFromCurrentHousehold(
-      state,
-      start.toString(),
-      end.toString(),
-    ),
-  );
+  const statsForEachChoreNormalized = useAppSelector(state => selectStatsForEachChoreNormalized(state, start, new Date(end.getTime() + 60000)));
+  const statsAllChoresNormalized = useAppSelector(state => selectStatsAllChoresNormalized(state, start, new Date(end.getTime() + 60000)));
 
   function renderItem(item: StatisticsList) {
     const name = item.name.split(" ");
@@ -50,37 +32,6 @@ export default function PieChartRenderer({ start, end, navigation }: Props) {
     );
   }
 
-  const statsAllChoresNormalized: Statistics[] = statsAllChores.map((stat) => {
-    const key = stat.emoji as keyof pausePercentageDictionary;
-    console.log("key: " + key);
-    const pausePercentage = pausePercentageDictionary[key];
-    console.log("pausePercentage: " + pausePercentage);
-    console.log("stat.value " + stat.value);
-    return {
-      ...stat,
-      value: stat.value / (1 - pausePercentage),
-    };
-  });
-
-  const statsForEachChoreNormalized: StatisticsList[] = statsForEachChore.map((statList) => {
-    return {
-      ...statList,
-      data: statList.data.map((stat) => {
-        const key = stat.emoji as keyof pausePercentageDictionary;
-        const pausePercentage = pausePercentageDictionary[key];
-        return {
-          ...stat,
-          value: stat.value / (1 - pausePercentage),
-        };
-      }),
-    };
-  });
-
-  //Varje piechart byggs på en Statistics[], vilket makes sence då varje Statistics blir en slice i piecharten.
-  //a) varje choreCompleted (efter groupby baserat på Chore) blir en Statistics
-  //b) statsAllChores är en Statistics[] vilket blir den stora piecharten överst
-  //c) statsForEachChore är typ en Statistics[][], dvs en array av Statistics[], dvs alla de små pieshartsen i undre delen av skärmen
-
   return (
     <View
       onTouchStart={(e) => (touchX.current = e.nativeEvent.pageX)}
@@ -91,7 +42,7 @@ export default function PieChartRenderer({ start, end, navigation }: Props) {
       {statsAllChoresNormalized && (
         <View style={styles.bigPieContainer}>
           <TouchableOpacity onPress={() => navigation.navigate("Home", { screen: "Chores" })}>
-            <PieChartCustom data={statsAllChores} subtitle='Total' isSmall={false} />
+            <PieChartCustom data={statsAllChoresNormalized} subtitle='Total' isSmall={false} />
           </TouchableOpacity>
         </View>
       )}
@@ -99,7 +50,7 @@ export default function PieChartRenderer({ start, end, navigation }: Props) {
         <View style={styles.miniPieContainer}>
           <FlatList
             numColumns={3}
-            data={statsForEachChore
+            data={statsForEachChoreNormalized
               .filter((stats) => stats.data.length)
               .sort((a, b) => b.data.length - a.data.length)
               .slice(0, 6)}
