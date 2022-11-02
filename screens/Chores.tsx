@@ -1,18 +1,14 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { FlatList, Pressable, StyleSheet, TouchableHighlight, View } from "react-native";
-import { Button, Text, Title } from "react-native-paper";
+import { FlatList, StyleSheet, TouchableHighlight, TouchableOpacity, View } from "react-native";
+import { Button, Text } from "react-native-paper";
 import BudgetHambugerMenu from "../components/BudgetHamburgerMenu";
 import ChoreCard from "../components/ChoreCard";
 import { selectChoresToShowInChoreScreen } from "../features/chore/choreSelectors";
-
 import { selectHousehold } from "../features/household/householdSelectors";
 import { selectActiveProfile } from "../features/profile/profileSelector";
 import { useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
-//import { TopTabParamsList } from "../navigation/TopTabsNavigator";
-
-//type Props = NativeStackScreenProps<RootStackParamList>;
 
 export default function ChoresScreen(Props: NativeStackScreenProps<RootStackParamList>) {
   const [editableMode, setEditableMode] = useState(false);
@@ -32,27 +28,29 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
     <>
       <View style={{ justifyContent: "center" }}>
         <View style={{ alignItems: "center" }}>
-          <Pressable onPress={() => setShowBudgetHambugerMenu(true)}>
-            <Title
+          <TouchableOpacity
+            style={styles.settingsText}
+            onPress={() => setShowBudgetHambugerMenu(true)}
+          >
+            <Text
               style={{
                 textAlignVertical: "center",
                 textAlign: "center",
                 justifyContent: "center",
                 fontSize: 30,
-                width: 350,
-                height: 50,
                 elevation: 5,
+                padding: 10,
               }}
             >
-              {household.name}
-            </Title>
-            <View style={{ borderBottomWidth: StyleSheet.hairlineWidth }}></View>
-          </Pressable>
+              {household.name} ⚙️
+            </Text>
+          </TouchableOpacity>
         </View>
         <View
           style={{
             justifyContent: "center",
-            height: "75%",
+            height: "85%",
+            marginTop: 20,
           }}
         >
           <FlatList
@@ -91,7 +89,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
@@ -104,5 +102,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     height: "auto",
+  },
+  settingsText: {
+    elevation: 3,
+    borderWidth: 1,
+    borderColor: "white",
   },
 });

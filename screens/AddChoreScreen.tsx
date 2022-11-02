@@ -153,10 +153,12 @@ export default function AddChoreScreen({ navigation }: NativeStackScreenProps<Ro
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 30,
     height: "100%",
   },
   title: {
+    marginBottom: 40,
     fontSize: 50,
   },
   section: {
