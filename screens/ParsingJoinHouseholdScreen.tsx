@@ -91,8 +91,9 @@ export default function ParsingJoinHouseholdScreen({
           <Text variant='headlineMedium' style={{ textAlign: "center" }}>
             {household?.name}
           </Text>
+          <Text style={{ marginTop: 20, fontSize: 20 }}>Profile Name</Text>
           <CustomInput
-            placeholder='Name'
+            placeholder='Profile Name'
             name='name'
             control={control}
             rules={{
