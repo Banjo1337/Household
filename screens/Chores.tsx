@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import { FlatList, Pressable, StyleSheet, TouchableHighlight, View } from "react-native";
 import { Button, Text, Title } from "react-native-paper";
+import BudgetHambugerMenu from "../components/BudgetHamburgerMenu";
 import ChoreCard from "../components/ChoreCard";
 import { selectChoresToShowInChoreScreen } from "../features/chore/choreSelectors";
 
@@ -18,7 +19,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
   const household = useAppSelector(selectHousehold);
   const chores = useAppSelector(selectChoresToShowInChoreScreen);
   const profile = useAppSelector(selectActiveProfile);
-
+  const [showBudgetHambugerMenu, setShowBudgetHambugerMenu] = useState(false);
   const onAddChorePressed = () => {
     Props.navigation.navigate("AddChore");
   };
@@ -31,7 +32,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
     <>
       <View style={{ justifyContent: "center" }}>
         <View style={{ alignItems: "center" }}>
-          <Pressable onPress={()=>Props.navigation.navigate("Settings")}>
+          <Pressable onPress={() => setShowBudgetHambugerMenu(true)}>
             <Title
               style={{
                 textAlignVertical: "center",
@@ -43,23 +44,10 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
                 elevation: 5,
               }}
             >
-              Household
+              {household.name}
             </Title>
+            <View style={{ borderBottomWidth: StyleSheet.hairlineWidth }}></View>
           </Pressable>
-          <Title
-            style={{
-              textAlignVertical: "center",
-              textAlign: "center",
-              justifyContent: "center",
-              fontSize: 20,
-              width: 350,
-              height: 30,
-              elevation: 1,
-            }}
-          >
-            {household.name}
-          </Title>
-          <Title style={{ textAlign: "center", elevation: 5 }}>Code: {household.code}</Title>
         </View>
         <View
           style={{
@@ -93,6 +81,12 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
           )}
         </View>
       </View>
+      <BudgetHambugerMenu 
+        navigation={Props.navigation} 
+        setVisible={setShowBudgetHambugerMenu}
+        visible={showBudgetHambugerMenu}
+      />
+
     </>
   );
 }
