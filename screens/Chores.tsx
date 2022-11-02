@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { FlatList, StyleSheet, TouchableHighlight, View } from "react-native";
+import { FlatList, Pressable, StyleSheet, TouchableHighlight, View } from "react-native";
 import { Button, Text, Title } from "react-native-paper";
 import ChoreCard from "../components/ChoreCard";
 import { selectChoresToShowInChoreScreen } from "../features/chore/choreSelectors";
@@ -31,19 +31,21 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
     <>
       <View style={{ justifyContent: "center" }}>
         <View style={{ alignItems: "center" }}>
-          <Title
-            style={{
-              textAlignVertical: "center",
-              textAlign: "center",
-              justifyContent: "center",
-              fontSize: 30,
-              width: 350,
-              height: 50,
-              elevation: 5,
-            }}
-          >
-            Household
-          </Title>
+          <Pressable onPress={()=>Props.navigation.navigate("Settings")}>
+            <Title
+              style={{
+                textAlignVertical: "center",
+                textAlign: "center",
+                justifyContent: "center",
+                fontSize: 30,
+                width: 350,
+                height: 50,
+                elevation: 5,
+              }}
+            >
+              Household
+            </Title>
+          </Pressable>
           <Title
             style={{
               textAlignVertical: "center",
