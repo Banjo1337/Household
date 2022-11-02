@@ -193,10 +193,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 20,
   },
   title: {
     fontSize: 50,
+    marginBottom: 40,
   },
   text: {
     elevation: 2,

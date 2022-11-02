@@ -1,17 +1,16 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { View, StyleSheet, TouchableOpacity, Modal } from "react-native";
-import { Text, Title, Button } from "react-native-paper";
-import { useAppSelector } from "../hooks/reduxHooks";
-import { RootStackParamList } from "../NavContainer";
-import { Profile } from "../features/profile/profileTypes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Modal, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Button, Text, Title } from "react-native-paper";
 import SelectProfileButton from "../components/SelectProfileButton";
-import { useEffect } from "react";
 import { selectAuthUserId } from "../features/authentication/authenticationSelectors";
-import { useSetAndHydrateProfile } from "../hooks/useSetAndHydrateProfile";
+import { logout } from "../features/authentication/authenticationSlice";
 import { selectActiveProfile } from "../features/profile/profileSelector";
+import { Profile } from "../features/profile/profileTypes";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import useModalStyles from "../hooks/useModalStyles";
-
+import { useSetAndHydrateProfile } from "../hooks/useSetAndHydrateProfile";
+import { RootStackParamList } from "../NavContainer";
 
 export default function SelectProfileScreen({
   navigation,
@@ -38,10 +37,15 @@ export default function SelectProfileScreen({
     if (profile.pendingRequest) {
       setShowProfilePending(true);
     } else {
-      setAndHydrateProfile(profile)
-        .then(() => navigation.navigate("Home", {screen: "Chores"}));
+      setAndHydrateProfile(profile).then(() => navigation.navigate("Home", { screen: "Chores" }));
     }
   }
+  const dispatch = useAppDispatch();
+
+  const onLogoutPressed = () => {
+    dispatch(logout());
+    navigation.navigate("SignIn");
+  };
 
   return (
     <View style={styles.profileContainer}>
@@ -53,6 +57,9 @@ export default function SelectProfileScreen({
           <Text style={styles.avatar}>➕</Text>
         </TouchableOpacity>
       </View>
+      <Button mode={"elevated"} onPress={onLogoutPressed}>
+        <Text style={styles.logoutText}>Log Out</Text>
+      </Button>
       <Modal
         animationType='slide'
         transparent={true}
@@ -96,5 +103,12 @@ const styles = StyleSheet.create({
   avatar: {
     fontSize: 50,
     textAlign: "center",
+  },
+  logoutButton: {
+    width: 40,
+    height: 20,
+  },
+  logoutText: {
+    fontSize: 18,
   },
 });
