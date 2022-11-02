@@ -1,6 +1,6 @@
 import React from "react";
 import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Surface, Text, Button } from "react-native-paper";
+import { Surface, Text, IconButton } from "react-native-paper";
 
 import {
   selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId,
@@ -40,7 +40,7 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
         >
           <Text
             style={{
-              color: "#E2D1F9",
+              color: "black",
               textAlign: "left",
               marginLeft: 2,
               marginRight: 2,
@@ -49,9 +49,9 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
             }}
           >
             {chore.name}
-            {isOverdue && chore.frequency != 0 && <Text style={{ fontSize: 30 }}> ⚠️</Text>}
           </Text>
         </TouchableOpacity>
+
         <Pressable
           onPress={() => navigation.navigate("ChoreDetails", { choreId: chore.id })}
           style={{
@@ -61,18 +61,17 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
             marginRight: 5,
           }}
         >
-          {editableMode && (
-            <Button
-              icon='clipboard-edit-outline'
-              textColor='#E2D1F9'
-              labelStyle={{ fontSize: 30 }}
-              onPress={() => navigation.navigate("EditChore", { choreId: chore.id })}
+          {isOverdue && chore.frequency != 0 && (
+            <Text
               style={{
+                fontSize: 30,
                 zIndex: 1,
                 position: "absolute",
                 justifyContent: "flex-start",
               }}
-            ></Button>
+            >
+              ⚠️
+            </Text>
           )}
           <View
             style={{
@@ -85,7 +84,7 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
           >
             <Text
               style={{
-                color: "#E2D1F9",
+                color: "black",
                 marginLeft: 2,
                 marginRight: 2,
                 fontSize: 20,
@@ -94,11 +93,25 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
                 justifyContent: "center",
               }}
             >
-
-              {daysPassedAndFrequency}
-              {!daysPassedAndFrequency && <Text>✅</Text>}
+              {editableMode && (
+                <>
+                  <IconButton
+                    icon='clipboard-edit-outline'
+                    size={50}
+                    iconColor='black'
+                    onPress={() => navigation.navigate("EditChore", { choreId: chore.id })}
+                    style={{
+                      zIndex: 1,
+                      position: "absolute",
+                      justifyContent: "flex-start",
+                    }}
+                  ></IconButton>
+                </>
+              )}
+              {!chore.isArchived && !editableMode && daysPassedAndFrequency}
+              {chore.isArchived && !editableMode && <Text>✅</Text>}
             </Text>
-            {avatar?.emoji && (
+            {avatar?.emoji && !editableMode && (
               <Text
                 style={{
                   borderRadius: 50,
@@ -112,7 +125,6 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
               </Text>
             )}
           </View>
-
         </Pressable>
       </Surface>
     </View>
@@ -120,12 +132,13 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
 }
 const styles = StyleSheet.create({
   surface: {
-    backgroundColor: "#317773",
+    backgroundColor: "white",
     flexDirection: "row",
     height: 70,
     margin: 6,
+    elevation: 5,
   },
   text: {
-    color: "#EEA47FFF",
+    color: "black",
   },
 });

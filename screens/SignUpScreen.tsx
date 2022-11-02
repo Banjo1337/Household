@@ -3,7 +3,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { Image, Pressable, ScrollView, StyleSheet, View } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import CustomInput from "../components/CustomInput";
 import { useTheme } from "../features/theme/ThemeContext";
 import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
@@ -36,7 +36,6 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
   const { currentTheme } = useTheme();
 
   const onRegisterPressed = (data: FieldValues) => {
-    console.log(data.username + data.password);
     const signUpDto: SignUpDto = {
       username: data.username,
       password: data.password,
@@ -50,8 +49,8 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
     })();
   };
 
-  const onRegisterFailed = () => {
-    alert("Failed");
+  const onSignInPressed = () => {
+    navigation.navigate("SignIn");
   };
 
   async function signUp(signUpDto: SignUpDto) {
@@ -96,6 +95,7 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
         <Image style={styles.image} source={require("../assets/household.png")} />
         <CustomInput
           placeholder='Username'
+          defaultValue=''
           name='username'
           control={control}
           rules={{
@@ -121,14 +121,16 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
                 "Password too weak. Requires: A number\nOne lower and one uppercase character.\nOne special character. Minimum length: 6.",
             },
           }}
-        />
-        <Pressable onPress={handlePasswordVisibility} style={styles.eye}>
-          <MaterialCommunityIcons
-            name={rightIcon}
-            size={32}
-            color={currentTheme.dark ? "#dedede" : "#232323"}
-          />
-        </Pressable>
+        >
+          <Pressable onPress={handlePasswordVisibility} style={styles.eye}>
+            <MaterialCommunityIcons
+              name={rightIcon}
+              size={32}
+              color={currentTheme.dark ? "#dedede" : "#232323"}
+            />
+          </Pressable>
+        </CustomInput>
+
         <CustomInput
           placeholder='Repeat password'
           name='passwordRepeat'
@@ -139,9 +141,22 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
             validate: (value: string) => value === pwd || "Password not matching",
           }}
         />
-        <Button style={styles.button} onPress={handleSubmit(onRegisterPressed, onRegisterFailed)}>
-          Register
-        </Button>
+        <View style={{ display: "flex", flexDirection: "row" }}>
+          <Button
+            mode='outlined'
+            style={[styles.button, { marginTop: 15 }]}
+            onPress={handleSubmit(onRegisterPressed)}
+          >
+            <Text style={styles.text}>Register</Text>
+          </Button>
+          <Button
+            mode='outlined'
+            style={[styles.button, { marginTop: 15 }]}
+            onPress={onSignInPressed}
+          >
+            <Text style={styles.text}>Sign in</Text>
+          </Button>
+        </View>
       </View>
     </ScrollView>
   );
@@ -158,6 +173,24 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginVertical: 30,
   },
-  eye: { position: "relative", left: 150, top: 45, zIndex: 1 },
-  button: { backgroundColor: "lightgrey", paddingHorizontal: 30, marginTop: 40 },
+  text: {
+    color: "black",
+    elevation: 2,
+    fontWeight: "bold",
+    backgroundColor: "white",
+    textAlignVertical: "center",
+    textAlign: "center",
+    fontSize: 20,
+    height: 70,
+  },
+  input: { backgroundColor: "white", borderWidth: 2 },
+
+  eye: { position: "absolute", right: 25, top: 25, zIndex: 1 },
+  button: {
+    width: "50%",
+    height: "auto",
+    justifyContent: "center",
+    backgroundColor: "white",
+    margin: 5,
+  },
 });

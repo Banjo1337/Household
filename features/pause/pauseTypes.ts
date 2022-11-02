@@ -15,3 +15,14 @@ export interface Pause {
 export type PauseCreateDto = Omit<Pause, "id">;
 
 export type PauseUpdateDto = Pick<PauseCreateDto, "householdId"> & Partial<PauseCreateDto>;
+
+export type pausePercentageDictionary = {
+  "🦊": number;
+  "🐷": number;
+  "🐸": number;
+  "🐥": number;
+  "🐙": number;
+  "🐬": number;
+  "🦉": number;
+  "🦄": number;
+};

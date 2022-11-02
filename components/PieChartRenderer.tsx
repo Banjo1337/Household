@@ -6,10 +6,12 @@ import {
   selectChoreCompletedStatisticsListForAllChores,
   selectChoreCompletedStatisticsForAllChores,
 } from "../features/choreCompleted/choreCompletedSelectors";
-import { StatisticsList } from "../features/choreCompleted/choreCompletedTypes";
+import { Statistics, StatisticsList } from "../features/choreCompleted/choreCompletedTypes";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../NavContainer";
 import { useRef } from "react";
+import { selectPausePercentageDictionaryFromTimePeriodFromCurrentHousehold } from "../features/pause/pauseSelectors";
+import { pausePercentageDictionary } from "../features/pause/pauseTypes";
 
 interface Props {
   start: Date;
@@ -28,6 +30,14 @@ export default function PieChartRenderer({ start, end, navigation }: Props) {
     selectChoreCompletedStatisticsForAllChores(state, start, new Date(end.getTime() + 60000)),
   );
 
+  const pausePercentageDictionary: pausePercentageDictionary = useAppSelector((state) =>
+    selectPausePercentageDictionaryFromTimePeriodFromCurrentHousehold(
+      state,
+      start.toString(),
+      end.toString(),
+    ),
+  );
+
   function renderItem(item: StatisticsList) {
     const name = item.name.split(" ");
     return (
@@ -39,6 +49,49 @@ export default function PieChartRenderer({ start, end, navigation }: Props) {
       </View>
     );
   }
+  //console.log("start date: " + start + " end date: " + end);
+  //console.log("pausePercentageDictionary", pausePercentageDictionary);
+
+  console.log("statsAllChores:");
+  console.log(statsAllChores);
+  //console.log("pausePercentageDictionary:");
+  //console.log(pausePercentageDictionary);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const statsAllChoresJimmyTest: Statistics[] = statsAllChores.map((stat) => {
+    const key = stat.emoji as keyof pausePercentageDictionary;
+    console.log("key: " + key);
+    const pausePercentage = pausePercentageDictionary[key];
+    console.log("pausePercentage: " + pausePercentage);
+    console.log("stat.value " + stat.value);
+    return {
+      ...stat,
+      value: stat.value / (1 - pausePercentage),
+    };
+  });
+
+  console.log("statsAllChoresJimmyTest");
+  console.log(statsAllChoresJimmyTest);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const statsForEachChoreJimmyTest: StatisticsList[] = statsForEachChore.map((statList) => {
+    return {
+      ...statList,
+      data: statList.data.map((stat) => {
+        const key = stat.emoji as keyof pausePercentageDictionary;
+        const pausePercentage = pausePercentageDictionary[key];
+        return {
+          ...stat,
+          value: stat.value / (1 - pausePercentage),
+        };
+      }),
+    };
+  });
+
+  //Varje piechart byggs på en Statistics[], vilket makes sence då varje Statistics blir en slice i piecharten.
+  //a) varje choreCompleted (efter groupby baserat på Chore) blir en Statistics
+  //b) statsAllChores är en Statistics[] vilket är den storaste piecharten överst
+  //c) statsForEachChore är typ en Statistics[][], dvs en array av Statistics[], dvs alla de små pieshartsen under den stora
 
   return (
     <View
