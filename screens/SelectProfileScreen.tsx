@@ -57,7 +57,7 @@ export default function SelectProfileScreen({
           <Text style={styles.avatar}>➕</Text>
         </TouchableOpacity>
       </View>
-      <Button mode={"elevated"} onPress={onLogoutPressed}>
+      <Button style={styles.logoutButton} mode={"elevated"} onPress={onLogoutPressed}>
         <Text style={styles.logoutText}>Log Out</Text>
       </Button>
       <Modal
@@ -105,10 +105,16 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   logoutButton: {
-    width: 40,
-    height: 20,
+    width: "50%",
+    height: 50,
+    justifyContent: "center",
+    textAlign: "center",
+    margin: 10,
   },
   logoutText: {
+    fontWeight: "bold",
+    textAlignVertical: "center",
+    textAlign: "center",
     fontSize: 18,
   },
 });
