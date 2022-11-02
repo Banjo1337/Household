@@ -85,7 +85,7 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
       <View>
         {chore.isArchived ? (
           <Text style={styles.text}>Archived: ✅</Text>
-        ) : !isOverDue ? (
+        ) : !isOverDue && chore.frequency !== 0 ? (
           <Text style={styles.text}>Completed: ✅</Text>
         ) : (
           <Text style={styles.text}>Not completed.</Text>
