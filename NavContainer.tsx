@@ -55,7 +55,7 @@ export default function NavContainer() {
       <StatusBar style={currentTheme.dark ? "light" : "dark"} />
       <PaperProvider theme={currentTheme}>
         <NavigationContainer theme={currentTheme}>
-          <Stack.Navigator initialRouteName='SignIn'>
+          <Stack.Navigator initialRouteName='MegaNavigationGod'>
             <Stack.Screen
               name='MegaNavigationGod'
               component={MegaNavigationGodScreen}
