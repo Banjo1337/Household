@@ -10,6 +10,7 @@ interface Props {
   rules?: Partial<RegisterOptions>;
   placeholder: string;
   secureTextEntry?: boolean;
+  children?: JSX.Element;
   maxLength?: number;
   keyboardType?: KeyboardTypeOptions;
   value?: string;
@@ -18,7 +19,6 @@ interface Props {
   numOfLines?: number;
 }
 const CustomInput = ({
-  style,
   control,
   name,
   rules = {},
@@ -26,9 +26,11 @@ const CustomInput = ({
   secureTextEntry,
   defaultValue,
   maxLength,
+  children,
   keyboardType,
   multiline,
   numOfLines,
+  style,
 }: Props) => {
   return (
     <Controller
@@ -37,7 +39,7 @@ const CustomInput = ({
       rules={rules}
       render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
         <>
-          <View style={[styles.container, { borderColor: error ? "red" : "white" }]}>
+          <View style={styles.container}>
             <TextInput
               value={value ? value : defaultValue}
               onChangeText={onChange}
@@ -46,14 +48,27 @@ const CustomInput = ({
               keyboardType={keyboardType}
               placeholder={placeholder}
               secureTextEntry={secureTextEntry}
-              style={style}
+              style={[styles.input, style]}
               multiline={multiline}
               numberOfLines={numOfLines}
               defaultValue={defaultValue}
-
-            />
+            ></TextInput>
+            {children}
+            {error && (
+              <Text
+                style={{
+                  color: "red",
+                  alignSelf: "stretch",
+                  position: "absolute",
+                  top: 75,
+                  fontSize: 20,
+                  fontWeight: "bold",
+                }}
+              >
+                {error.message}
+              </Text>
+            )}
           </View>
-          {error && <Text style={{ color: "red", alignSelf: "stretch" }}>{error.message}</Text>}
         </>
       )}
     />
@@ -62,14 +77,11 @@ const CustomInput = ({
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
-
     minWidth: "100%",
     width: "100%",
-
-    borderWidth: 1,
+    paddingBottom: 20,
   },
-  input: {},
+  input: { backgroundColor: "white", marginTop: 10, height: 60, borderWidth: 2, borderRadius: 5 },
 });
 
 export default CustomInput;

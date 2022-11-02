@@ -1,11 +1,10 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useState } from "react";
+import { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Button, Checkbox, Text, Title } from "react-native-paper";
+import { Button, Surface, Text, Title } from "react-native-paper";
 import { newDateInClientTimezone } from "../app/dateUtils";
-import { selectChoreById } from "../features/chore/choreSelectors";
+import { selectChoreById, selectIsChoreOverdueByChoreId } from "../features/chore/choreSelectors";
 import { updateChore } from "../features/chore/choreSlice";
-import { ChoreUpdateDto } from "../features/chore/choreTypes";
 import { addChoreCompleted } from "../features/choreCompleted/choreCompletedSlice";
 import { ChoreCompletedCreateDto } from "../features/choreCompleted/choreCompletedTypes";
 import { selectHousehold } from "../features/household/householdSelectors";
@@ -13,44 +12,39 @@ import { selectActiveProfile } from "../features/profile/profileSelector";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { RootStackParamList } from "../NavContainer";
 
-
 type Props = NativeStackScreenProps<RootStackParamList, "ChoreDetails">;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ChoreDetailsScreen({ route, navigation }: Props) {
   const household = useAppSelector(selectHousehold);
   const [routeId] = useState(route.params.choreId);
   const chore = useAppSelector((state) => selectChoreById(state, routeId));
-  const [checked, setChecked] = useState(false);
   const profile = useAppSelector(selectActiveProfile);
+  const isOverDue = useAppSelector((state) => selectIsChoreOverdueByChoreId(state, chore.id));
   const dispatch = useAppDispatch();
 
-  const onSavePressed = () => {
-    if (checked) {
-      var dateTime = newDateInClientTimezone();
-      const choreCompleted: ChoreCompletedCreateDto = {
-        completedAt: dateTime.toISOString(),
-        profileIdQol: profile.id,
-        choreId: chore.id,
-        householdId: household.id,
-      };
-      dispatch(addChoreCompleted(choreCompleted));
-      if (chore.frequency === 0) {
-        const choreUpdateDto: ChoreUpdateDto = {
-          name: chore.name,
-          points: chore.points,
-          description: chore.description,
-          pictureUrl: chore.pictureUrl,
-          audioUrl: chore.audioUrl,
-          frequency: chore.frequency,
-          isArchived: true,
-          householdId: household.id
-        };
-        dispatch(updateChore({ choreUpdateDto, choreId: chore.id }));
-      }
-      navigation.navigate("Home", { screen: "Chores" });
+  const submitCompleteChore = () => {
+    var dateTime = newDateInClientTimezone();
+    const choreCompleted: ChoreCompletedCreateDto = {
+      completedAt: dateTime.toISOString(),
+      profileIdQol: profile.id,
+      choreId: chore.id,
+      householdId: household.id,
+    };
+
+    dispatch(addChoreCompleted(choreCompleted));
+    if (chore.frequency === 0) {
+      dispatch(
+        updateChore({
+          choreUpdateDto: {
+            ...chore,
+            isArchived: true,
+          },
+          choreId: chore.id,
+        }),
+      );
     }
-    else console.log("not changed");
+
+    navigation.navigate("Home", { screen: "Chores" });
   };
   const onBackPressed = () => {
     navigation.navigate("Home", { screen: "Chores" });
@@ -58,56 +52,112 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
   const onEditPressed = () => {
     navigation.navigate("EditChore", { choreId: chore.id });
   };
+
+  const profilezz = useAppSelector((state) => state.profileReducer.profile);
+  console.log(profilezz);
   return (
-    <>
-      <ScrollView >
-        <View style={styles.container}>
-          <Title>{chore.name}</Title>
-          <Text>{chore.description}</Text>
-          <Text>The chore is worth <Title>{chore.points}</Title> points.</Text>
-          {chore.frequency == 0 ? <Text>This task is do be done once</Text>
-            : chore.frequency == 1 ? <Text>It should be done every other <Title>{chore.frequency}</Title> day.</Text>
-              : <Text>It should be done every <Title>{chore.frequency}</Title> days.</Text>
-          }
-        </View>
-        <View style={styles.container}>
-          <Button onPress={onBackPressed} mode="contained" style={styles.button}>Go back</Button>
-          {profile.isAdmin && <Button onPress={onEditPressed} mode="contained" style={styles.button}>Edit this chore</Button>}
-          <Checkbox
-            status={checked ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setChecked(!checked);
-            }}
-          />
-          <Title>Mark this task as done</Title>
-          <Button onPress={onSavePressed}>Save changes</Button>
-        </View>
-      </ScrollView>
-    </>
+    <Surface style={styles.container}>
+      <Title style={styles.title}>{chore.name}</Title>
+      <View style={styles.segment}></View>
+      {chore.description && (
+        <>
+          <ScrollView style={styles.descriptionField}>
+            <Text>
+              {chore.description}
+            </Text>
+          </ScrollView>
+          <View style={styles.segment}></View>
+        </>
+      )}
+      <Text style={styles.text}>
+        The chore is worth <Title style={styles.title}>{chore.points}</Title> points.
+      </Text>
+      <View style={styles.segment}></View>
+      {chore.frequency == 0 ? (
+        <Text style={styles.text}>This task is do be done once</Text>
+      ) : chore.frequency == 1 ? (
+        <Text style={styles.text}>
+          It should be done every other<Title style={styles.title}>{chore.frequency} </Title> day.
+        </Text>
+      ) : (
+        <Text style={styles.text}>
+          Repeat every <Title style={styles.title}>{chore.frequency}</Title> days.
+        </Text>
+      )}
+      <View style={styles.segment}></View>
+      <View>
+        {chore.isArchived ? (
+          <Text style={styles.text}>Archived: ✅</Text>
+        ) : !isOverDue ? (
+          <Text style={styles.text}>Completed: ✅</Text>
+        ) : (
+          <Text style={styles.text}>Not completed.</Text>
+        )}
+      </View>
+      <View style={styles.segment}></View>
+      <View style={styles.buttonContainer}>
+        <Button onPress={onBackPressed} mode='elevated' style={styles.button}>
+          <Text style={styles.text}>Go back</Text>
+        </Button>
+        {profile.isAdmin && (
+          <Button onPress={onEditPressed} mode='elevated' style={styles.button}>
+            <Text style={styles.text}>Edit</Text>
+          </Button>
+        )}
+      </View>
+      <Button onPress={submitCompleteChore} mode='elevated' style={styles.completeChore}>
+        <Text style={styles.text}>Mark this chore as complete</Text>
+      </Button>
+    </Surface>
   );
 }
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     paddingHorizontal: 30,
-
+    elevation: 3,
+    width: "95%",
+    marginLeft: "auto",
+    marginRight: "auto",
+    borderRadius: 5,
+    marginTop: 20,
+  },
+  segment: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginVertical: 5,
+    width: "100%",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    marginTop: 10,
   },
   title: {
-    fontSize: 50,
-    backgroundColor: "black",
+    textAlignVertical: "center",
+    fontWeight: "400",
+    textAlign: "center",
+    fontSize: 30,
+    height: 70,
   },
-  section: {
-    borderRadius: 20,
+  text: {
+    fontWeight: "400",
+    textAlignVertical: "center",
+    textAlign: "center",
+    fontSize: 20,
+    height: 70,
+    padding: 3,
+  },
+  descriptionField: {
     marginVertical: 10,
-    padding: 30,
+    maxHeight: 150,
   },
-  sectionLight: {
-    backgroundColor: "#aaa",
+  button: {
+    width: "50%",
   },
-  sectionDark: {
-    backgroundColor: "#333",
+  completeChore: {
+    marginTop: 10,
+    height: 70,
+    justifyContent: "center",
+    marginBottom: 20,
+    backgroundColor: "#5fd980",
   },
-  button: { backgroundColor: "green", width: 150, height: 50, marginTop: 15 },
-  input: {},
-  dropDownPicker: {},
 });

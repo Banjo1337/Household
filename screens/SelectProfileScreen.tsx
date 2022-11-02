@@ -10,7 +10,8 @@ import { useEffect } from "react";
 import { selectAuthUserId } from "../features/authentication/authenticationSelectors";
 import { useSetAndHydrateProfile } from "../hooks/useSetAndHydrateProfile";
 import { selectActiveProfile } from "../features/profile/profileSelector";
-import { styles as modalStyles } from "./EditHouseholdScreen";
+import useModalStyles from "../hooks/useModalStyles";
+
 
 export default function SelectProfileScreen({
   navigation,
@@ -20,6 +21,7 @@ export default function SelectProfileScreen({
   const [profiles, setProfiles] = useState<Profile[]>();
   const setAndHydrateProfile = useSetAndHydrateProfile();
   const [showProfilePending, setShowProfilePending] = useState(false);
+  const modalStyles = useModalStyles();
 
   useEffect(() => {
     (async function getProfiles() {
