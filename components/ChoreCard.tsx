@@ -26,6 +26,14 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
     selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId(state, chore.id),
   );
   const isOverdue = useAppSelector((state) => selectIsChoreOverdueByChoreId(state, chore.id));
+    console.log("############# daysPassedAndFrequency ##############");
+    console.log(daysPassedAndFrequency);
+    console.log("############# daysPassedAndFrequency END ##############");
+
+  if(daysPassedAndFrequency === "0/undefined") {
+    return null;
+  }
+  
   return (
     <View style={{ alignItems: "center" }}>
       <Surface style={styles.surface}>
