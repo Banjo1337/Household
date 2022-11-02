@@ -57,7 +57,6 @@ export default function SwitchToPause({ profile }: Props) {
 
     reply.then((res) => {
       if (res.meta.requestStatus === "rejected") {
-        console.log("Fucking rejected ");
         const rejectErrorText = res.payload?.toString();
         setErrorText(rejectErrorText?.toString() ?? "");
       }

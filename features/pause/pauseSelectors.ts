@@ -66,11 +66,6 @@ export const selectPausePercentageAsDecimalInTimePeriodByProfileId = (
   timePeriodStart: string,
   timePeriodEnd: string,
 ): number => {
-  //console.log("selectPausePercentageAsDecimalInTimePeriodByProfileId");
-  //console.log("profileId=" + profileId);
-  //console.log("timePeriodStart=" + timePeriodStart);
-  //console.log("timePeriodEnd=" + timePeriodEnd);
-
   const inTimePeriodStartAsUnix: number = new Date(timePeriodStart).getTime();
   const inTimePeriodEndAsUnix: number = new Date(timePeriodEnd).getTime();
   const totalTime: number = inTimePeriodEndAsUnix - inTimePeriodStartAsUnix;
@@ -87,7 +82,6 @@ export const selectPausePercentageAsDecimalInTimePeriodByProfileId = (
     );
   });
   if (everythingIsAPause) {
-    //console.log("Everything is a pause");
     return 1;
   }
 
@@ -100,7 +94,6 @@ export const selectPausePercentageAsDecimalInTimePeriodByProfileId = (
     );
   });
   if (nothingIsAPause) {
-    //console.log("nothingIsAPause");
     return 0;
   }
 
@@ -161,7 +154,6 @@ export const selectPausePercentageAsDecimalInTimePeriodByProfileId = (
   if (returnValue >= 1) {
     return 0.99;
   }
-  //console.log("returnValue", returnValue);
   return returnValue;
 };
 

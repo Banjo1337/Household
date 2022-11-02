@@ -117,7 +117,11 @@ const initialState: PauseState = {
 const pauseSlice = createSlice({
   name: "pause",
   initialState,
-  reducers: {},
+  reducers: {
+    deHydratePauseSlice: () => {
+      return initialState;
+    },
+  },
 
   extraReducers: (builder) => {
     builder.addCase(
@@ -153,7 +157,6 @@ const pauseSlice = createSlice({
       (state, action) => {
         if (action.payload) {
           state.error = action.payload;
-          console.log(action.payload);
         }
         state.isLoading = false;
       },
@@ -162,3 +165,5 @@ const pauseSlice = createSlice({
 });
 
 export default pauseSlice.reducer;
+
+export const { deHydratePauseSlice } = pauseSlice.actions;

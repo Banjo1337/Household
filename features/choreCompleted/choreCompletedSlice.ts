@@ -27,8 +27,8 @@ export const addChoreCompleted = createAsyncThunk<
       },
       body: JSON.stringify(choreCompleted),
     });
-    
-    if(response.ok) {
+
+    if (response.ok) {
       return (await response.json()) as ChoreCompleted;
     }
 
@@ -36,7 +36,7 @@ export const addChoreCompleted = createAsyncThunk<
   } catch (err) {
     if (err instanceof Error) {
       thunkApi.rejectWithValue(err.message);
-    } 
+    }
   }
   return thunkApi.rejectWithValue("Something went wrong when posting choreCompleted");
 });
@@ -64,7 +64,11 @@ export const hydrateChoresCompletedSliceFromBackendThunk = createAsyncThunk<
 const choreCompletedSlice = createSlice({
   name: "choreCompleted",
   initialState,
-  reducers: {},
+  reducers: {
+    deHydrateChoresCompletedSlice: () => {
+      return initialState;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(addChoreCompleted.fulfilled, (state, action: PayloadAction<ChoreCompleted>) => {
       state.completedChores.push(action.payload);
@@ -93,3 +97,4 @@ const choreCompletedSlice = createSlice({
 });
 
 export default choreCompletedSlice.reducer;
+export const { deHydrateChoresCompletedSlice } = choreCompletedSlice.actions;

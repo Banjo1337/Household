@@ -10,6 +10,7 @@ import { Profile } from "../features/profile/profileTypes";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import useModalStyles from "../hooks/useModalStyles";
 import { useSetAndHydrateProfile } from "../hooks/useSetAndHydrateProfile";
+import { useResetAndDeHydrateProfile } from "../hooks/useResetAndDehydrateProfile";
 import { RootStackParamList } from "../NavContainer";
 
 export default function SelectProfileScreen({
@@ -19,6 +20,7 @@ export default function SelectProfileScreen({
   const profile = useAppSelector(selectActiveProfile);
   const [profiles, setProfiles] = useState<Profile[]>();
   const setAndHydrateProfile = useSetAndHydrateProfile();
+  const resetAndDeHydrateProfile = useResetAndDeHydrateProfile();
   const [showProfilePending, setShowProfilePending] = useState(false);
   const modalStyles = useModalStyles();
 
@@ -48,6 +50,7 @@ export default function SelectProfileScreen({
   const dispatch = useAppDispatch();
 
   const onLogoutPressed = () => {
+    resetAndDeHydrateProfile();
     dispatch(logout());
     navigation.navigate("SignIn");
   };

@@ -1,18 +1,13 @@
 import { Drawer, Switch, Text } from "react-native-paper";
-import {
-  Modal,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Modal, Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Dispatch } from "react";
 import { useTheme } from "../features/theme/ThemeContext";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../NavContainer";
 import { useAppDispatch } from "../hooks/reduxHooks";
 import { logout } from "../features/authentication/authenticationSlice";
+import { useResetAndDeHydrateProfile } from "../hooks/useResetAndDehydrateProfile";
 interface Props {
   visible: boolean;
   setVisible: Dispatch<React.SetStateAction<boolean>>;
@@ -25,9 +20,10 @@ export default function BudgetHambugerMenu({
 }: Props) {
   const { darkmode, setDarkmode, systemTheme, setSystemTheme, currentTheme } = useTheme();
   const dispatch = useAppDispatch();
+  const resetAndDeHydrateProfile = useResetAndDeHydrateProfile();
   const iconSettings = {
     color: currentTheme.dark ? "white" : "black",
-    size: 20
+    size: 20,
   };
   return (
     <Modal
@@ -38,10 +34,12 @@ export default function BudgetHambugerMenu({
         setShowBudgetHambugerMenu(false);
       }}
     >
-      <View style={[styles.budgetHambugerMenu, {backgroundColor: currentTheme.colors.background}]}>
+      <View
+        style={[styles.budgetHambugerMenu, { backgroundColor: currentTheme.colors.background }]}
+      >
         <Drawer.Section title='Navigation'>
           <TouchableOpacity
-            style={[styles.menuListItem, {borderColor: currentTheme.colors.border}]}
+            style={[styles.menuListItem, { borderColor: currentTheme.colors.border }]}
             onPress={() => {
               setShowBudgetHambugerMenu(false);
               navigation.navigate("HouseholdDetails");
@@ -51,7 +49,7 @@ export default function BudgetHambugerMenu({
             <MaterialCommunityIcons name='account-details' {...iconSettings} />
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.menuListItem, {borderColor: currentTheme.colors.border}]}
+            style={[styles.menuListItem, { borderColor: currentTheme.colors.border }]}
             onPress={() => {
               setShowBudgetHambugerMenu(false);
               navigation.navigate("SelectProfile");
@@ -61,7 +59,7 @@ export default function BudgetHambugerMenu({
             <MaterialCommunityIcons name='account-cancel' {...iconSettings} />
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.menuListItem, {borderColor: currentTheme.colors.border}]}
+            style={[styles.menuListItem, { borderColor: currentTheme.colors.border }]}
             onPress={() => {
               setShowBudgetHambugerMenu(false);
               navigation.navigate("EditProfile");
@@ -71,8 +69,9 @@ export default function BudgetHambugerMenu({
             <MaterialCommunityIcons name='account-cog' {...iconSettings} />
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.menuListItem, {borderColor: currentTheme.colors.border}]}
+            style={[styles.menuListItem, { borderColor: currentTheme.colors.border }]}
             onPress={() => {
+              resetAndDeHydrateProfile();
               dispatch(logout());
               setShowBudgetHambugerMenu(false);
               navigation.navigate("SignIn");
@@ -83,26 +82,27 @@ export default function BudgetHambugerMenu({
           </TouchableOpacity>
         </Drawer.Section>
         <Drawer.Section title='Theme'>
-          <View style={[styles.switchContainer, {borderColor: currentTheme.colors.border}]}>
+          <View style={[styles.switchContainer, { borderColor: currentTheme.colors.border }]}>
             <Text>System theme</Text>
             <Switch value={systemTheme} onValueChange={setSystemTheme} />
           </View>
-          <View style={[styles.switchContainer, {borderColor: currentTheme.colors.border}]}>
+          <View style={[styles.switchContainer, { borderColor: currentTheme.colors.border }]}>
             <Text>Darkmode</Text>
             <Switch value={darkmode} onValueChange={setDarkmode} disabled={systemTheme} />
           </View>
         </Drawer.Section>
         <Drawer.Section title='For Jimmy'>
-            <TouchableOpacity
-            style={[styles.menuListItem, {borderColor: currentTheme.colors.border}]}
+          <TouchableOpacity
+            style={[styles.menuListItem, { borderColor: currentTheme.colors.border }]}
             onPress={() => {
+              resetAndDeHydrateProfile();
               dispatch(logout());
               setShowBudgetHambugerMenu(false);
               navigation.navigate("MegaNavigationGod");
             }}
           >
             <Text>NavScreen</Text>
-            <MaterialCommunityIcons name="account-cowboy-hat" {...iconSettings} />
+            <MaterialCommunityIcons name='account-cowboy-hat' {...iconSettings} />
           </TouchableOpacity>
         </Drawer.Section>
       </View>
