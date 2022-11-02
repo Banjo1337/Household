@@ -75,14 +75,14 @@ export default function EditChoreScreen({ route, navigation }: Props) {
             householdId: household.id,
           };
           dispatch(updateChore({ choreUpdateDto: choreUpdateDto, choreId: chore.id }));
-          navigation.goBack();
+          navigation.navigate("Home", { screen: "Chores" });
         },
       },
       {
         text: "Delete the chore!",
         onPress: () => {
           dispatch(deleteChore(chore.id));
-          navigation.goBack();
+          navigation.navigate("Home", { screen: "Chores" });
         },
       },
     ]);
