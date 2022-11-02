@@ -129,7 +129,7 @@ export default function HouseholdDetailsScreen({
                           setModalLeaveVisible(!modalLeaveVisible);
                           dispatch(deleteProfile({ profileId: currentProfileId }));
                           dispatch(deleteHouseholdThunk(household.id));
-                          navigation.navigate("MegaNavigationGod");
+                          navigation.navigate("SelectProfile");
                         }}
                       >
                         <Text style={styles.textStyle}>Leave and delete it</Text>
