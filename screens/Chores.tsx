@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { FlatList, Pressable, StyleSheet, TouchableHighlight, View } from "react-native";
-import { Button, Text, Title } from "react-native-paper";
+import { FlatList, StyleSheet, TouchableHighlight, TouchableOpacity, View } from "react-native";
+import { Button, Text } from "react-native-paper";
 import ChoreCard from "../components/ChoreCard";
 import { selectChoresToShowInChoreScreen } from "../features/chore/choreSelectors";
 
@@ -31,40 +31,29 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
     <>
       <View style={{ justifyContent: "center" }}>
         <View style={{ alignItems: "center" }}>
-          <Pressable onPress={()=>Props.navigation.navigate("Settings")}>
-            <Title
+          <TouchableOpacity
+            style={styles.settingsText}
+            onPress={() => Props.navigation.navigate("Settings")}
+          >
+            <Text
               style={{
                 textAlignVertical: "center",
                 textAlign: "center",
                 justifyContent: "center",
                 fontSize: 30,
-                width: 350,
-                height: 50,
                 elevation: 5,
+                padding: 10,
               }}
             >
-              Household
-            </Title>
-          </Pressable>
-          <Title
-            style={{
-              textAlignVertical: "center",
-              textAlign: "center",
-              justifyContent: "center",
-              fontSize: 20,
-              width: 350,
-              height: 30,
-              elevation: 1,
-            }}
-          >
-            {household.name}
-          </Title>
-          <Title style={{ textAlign: "center", elevation: 5 }}>Code: {household.code}</Title>
+              {household.name} ⚙️
+            </Text>
+          </TouchableOpacity>
         </View>
         <View
           style={{
             justifyContent: "center",
-            height: "75%",
+            height: "85%",
+            marginTop: 20,
           }}
         >
           <FlatList
@@ -112,5 +101,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     justifyContent: "center",
     height: "auto",
+  },
+  settingsText: {
+    elevation: 3,
+    borderWidth: 1,
+    borderColor: "white",
   },
 });
