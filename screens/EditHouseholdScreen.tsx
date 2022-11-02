@@ -288,8 +288,6 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
         </Button>
 
         <Text style={{ marginTop: 20 }}>Household members: </Text>
-        <Text style={styles.showProperty}>{household.code}</Text>
-        <Text>Household members: </Text>
         <View style={styles.avatarIcon}>
           {members.map((member, memberindex) => {
             return (
