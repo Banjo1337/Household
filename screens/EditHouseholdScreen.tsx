@@ -263,13 +263,13 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
             style={[styles.button, styles.buttonOpen]}
             onPress={() => setModalAddAdminVisible(true)}
           >
-            <Text style={styles.textStyle}>add admin</Text>
+            <Text style={styles.textStyle}>Add Admin</Text>
           </Button>
           <Button
             style={[styles.button, styles.buttonOpen]}
             onPress={() => setModalRemoveAdminVisible(true)}
           >
-            <Text style={styles.textStyle}>remove admin</Text>
+            <Text style={styles.textStyle}>Remove Admin</Text>
           </Button>
         </View>
 
@@ -296,7 +296,7 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
               <View key={memberindex} style={{ alignItems: "center" }}>
                 <ProfileListItem profile={member} />
                 <SwitchToPause profile={member} />
-                <Text style={{ fontSize: 12, margin: 0 }}>pause</Text>
+                <Text style={{ fontSize: 12, margin: 0 }}>Paused</Text>
               </View>
             );
           })}
