@@ -53,18 +53,22 @@ export default function SelectProfileScreen({
   };
 
   return (
-    <View style={styles.profileContainer}>
-      {profiles?.map((p) => (
-        <SelectProfileButton key={p.id} profile={p} handleSelectUser={handleSelectUser} />
-      ))}
-      <View style={[styles.profilePortrait, { backgroundColor: "#474747" }]}>
-        <TouchableOpacity onPress={() => navigation.navigate("JoinOrCreateHouseholdPrompt")}>
-          <Text style={styles.avatar}>➕</Text>
-        </TouchableOpacity>
+    <View>
+      <View style={styles.contentContainer}>
+        <View style={styles.profileCircles}>
+          {profiles?.map((p) => (
+            <SelectProfileButton key={p.id} profile={p} handleSelectUser={handleSelectUser} />
+          ))}
+          <View style={[styles.profilePortrait, { backgroundColor: "#474747" }]}>
+            <TouchableOpacity onPress={() => navigation.navigate("JoinOrCreateHouseholdPrompt")}>
+              <Text style={styles.avatar}>➕</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <Button style={styles.logoutButton} mode={"elevated"} onPress={onLogoutPressed}>
+          <Text style={styles.logoutText}>Log Out</Text>
+        </Button>
       </View>
-      <Button style={styles.logoutButton} mode={"elevated"} onPress={onLogoutPressed}>
-        <Text style={styles.logoutText}>Log Out</Text>
-      </Button>
       <Modal
         animationType='slide'
         transparent={true}
@@ -87,12 +91,16 @@ export default function SelectProfileScreen({
 }
 
 const styles = StyleSheet.create({
-  profileContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignContent: "center",
+  contentContainer: {
+    justifyContent: "center",
+    alignItems: "center",
     height: "100%",
-    justifyContent: "space-around",
+  },
+  profileCircles: {
+    flexWrap: "wrap",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "80%",
   },
   profilePortrait: {
     width: 150,

@@ -218,11 +218,13 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
                     style={[styles.button, styles.buttonClose]}
                     onPress={() => {
                       setModalRemoveAdminVisible(!modalRemoveAdminVisible);
-                      dispatch(
+                      const result = dispatch(
                         deleteProfile({ profileId: currentProfileId, isActiveProfile: false }),
                       );
                       dispatch(deleteHouseholdThunk(household.id));
-                      Props.navigation.navigate("MegaNavigationGod");
+                      result.then(() => {
+                        Props.navigation.navigate("SelectProfile");
+                      });
                     }}
                   >
                     <Text style={styles.textStyle}>Delete Household</Text>
