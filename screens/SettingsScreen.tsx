@@ -11,7 +11,11 @@ export default function SettingsScreen(
   Props: NativeStackScreenProps<RootStackParamList, "Settings">,
 ) {
   const { darkmode, setDarkmode, systemTheme, setSystemTheme } = useTheme();
+  const dispatch = useAppDispatch();
 
+  const onLogoutPressed = () => {
+    dispatch(logout());
+  };
   return (
     <View>
       <View style={styles.switchContainer}>
@@ -39,18 +43,7 @@ export default function SettingsScreen(
           >
             Switch Profile
           </Button>
-          <Button
-            mode='contained'
-            style={styles.button}
-            onPress={() => Props.navigation.navigate("MegaNavigationGod")}
-          >
-            Mega NavigationGod
-          </Button>
-          <Button
-            mode='contained'
-            onPress={() => Props.navigation.navigate("SignIn")}
-            style={styles.button}
-          >
+          <Button mode='contained' onPress={onLogoutPressed} style={styles.button}>
             Log out
           </Button>
         </ScrollView>

@@ -43,7 +43,6 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
       <View style={styles.container}>
         <Image style={styles.image} source={require("../assets/household.png")} />
         <CustomInput
-          style={styles.input}
           defaultValue=''
           placeholder='Username'
           name='username'
@@ -54,36 +53,32 @@ export default function SignInScreen({ navigation }: NativeStackScreenProps<Root
             maxLength: { value: 50, message: "Cant be more than 50 letters" },
           }}
         />
-        <Pressable onPress={handlePasswordVisibility} style={styles.eye}>
-          <MaterialCommunityIcons
-            name={rightIcon}
-            size={32}
-            color={currentTheme.dark ? "#dedede" : "#232323"}
-            // Places the icon between the two inputs, and draws it on top of the below CustomInput because of zIndex.
-          />
-        </Pressable>
+
         <CustomInput
-          style={[styles.input, { marginBottom: 20 }]}
-          defaultValue=''
           placeholder='Password'
+          defaultValue=''
           name='password'
           control={control}
           secureTextEntry={passwordVisibility}
           rules={{ required: "Password is required" }}
-        />
+        >
+          <Pressable onPress={handlePasswordVisibility} style={styles.eye}>
+            <MaterialCommunityIcons
+              name={rightIcon}
+              size={32}
+              color={currentTheme.dark ? "#dedede" : "#232323"}
+            />
+          </Pressable>
+        </CustomInput>
         <View style={{ display: "flex", flexDirection: "row" }}>
-          <Button
-            mode='outlined'
-            style={[styles.button, { margin: 5 }]}
-            onPress={handleSubmit(onLoginPressed)}
-          >
+          <Button mode='outlined' style={styles.button} onPress={handleSubmit(onLoginPressed)}>
             <Text style={styles.text}>Sign In</Text>
           </Button>
-          <Button mode='outlined' style={[styles.button, { margin: 5 }]} onPress={onLogoutPressed}>
+          <Button mode='outlined' style={styles.button} onPress={onLogoutPressed}>
             <Text style={styles.text}>Logout</Text>
           </Button>
         </View>
-        <Button mode='outlined' style={[styles.button, { margin: 5 }]} onPress={onSignupPressed}>
+        <Button mode='outlined' style={styles.button} onPress={onSignupPressed}>
           <Text style={styles.text}>Sign up</Text>
         </Button>
       </View>
@@ -102,9 +97,14 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginVertical: 30,
   },
-  button: { width: "50%", height: "auto", justifyContent: "center", backgroundColor: "white" },
-  input: { backgroundColor: "white", borderWidth: 2 },
-  eye: { position: "relative", left: 150, top: 45, zIndex: 1 },
+  button: {
+    width: "50%",
+    height: "auto",
+    justifyContent: "center",
+    backgroundColor: "white",
+    margin: 7,
+  },
+  eye: { position: "absolute", right: 25, top: 25, zIndex: 1 },
   text: {
     color: "black",
     elevation: 2,

@@ -39,7 +39,7 @@ export type RootStackParamList = {
   SelectProfile: undefined;
   EditProfile: undefined;
   PendingRequest: undefined;
-  ParsingJoinHousehold: { householdCode: string; };
+  ParsingJoinHousehold: { householdCode: string };
   Settings: undefined;
   MegaNavigationGod: undefined;
 };
@@ -55,7 +55,7 @@ export default function NavContainer() {
       <StatusBar style={currentTheme.dark ? "light" : "dark"} />
       <PaperProvider theme={currentTheme}>
         <NavigationContainer theme={currentTheme}>
-          <Stack.Navigator initialRouteName='SignIn'>
+          <Stack.Navigator initialRouteName='MegaNavigationGod'>
             <Stack.Screen
               name='MegaNavigationGod'
               component={MegaNavigationGodScreen}
@@ -78,8 +78,20 @@ export default function NavContainer() {
               name='JoinOrCreateHouseholdPrompt'
               component={JoinOrCreateHouseholdPromptScreen}
             />
-            <Stack.Screen name='EditHousehold' component={EditHouseholdScreen} />
-            <Stack.Screen name='HouseholdDetails' component={HouseholdDetailsScreen} />
+            <Stack.Screen
+              name='EditHousehold'
+              component={EditHouseholdScreen}
+              options={() => ({
+                headerShown: false,
+              })}
+            />
+            <Stack.Screen
+              name='HouseholdDetails'
+              component={HouseholdDetailsScreen}
+              options={() => ({
+                headerShown: false,
+              })}
+            />
             <Stack.Screen name='SelectProfile' component={SelectProfileScreen} />
             <Stack.Screen name='EditProfile' component={EditProfileScreen} />
             <Stack.Screen name='PendingRequest' component={PendingRequestScreen} />

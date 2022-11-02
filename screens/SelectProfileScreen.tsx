@@ -39,7 +39,7 @@ export default function SelectProfileScreen({
       setShowProfilePending(true);
     } else {
       setAndHydrateProfile(profile)
-      .then(() => navigation.navigate("Home", {screen: "Chores"}));
+        .then(() => navigation.navigate("Home", {screen: "Chores"}));
     }
   }
 
