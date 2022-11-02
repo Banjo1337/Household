@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { Modal, StyleSheet, TouchableOpacity, View } from "react-native";
+import { BackHandler, Modal, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Button, Text, Title } from "react-native-paper";
 import SelectProfileButton from "../components/SelectProfileButton";
 import { selectAuthUserId } from "../features/authentication/authenticationSelectors";
@@ -40,6 +40,11 @@ export default function SelectProfileScreen({
       setAndHydrateProfile(profile).then(() => navigation.navigate("Home", { screen: "Chores" }));
     }
   }
+
+  BackHandler.addEventListener("hardwareBackPress", () => {
+    return true;
+  });
+
   const dispatch = useAppDispatch();
 
   const onLogoutPressed = () => {

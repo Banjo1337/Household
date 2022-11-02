@@ -1,6 +1,13 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { FlatList, StyleSheet, TouchableHighlight, TouchableOpacity, View } from "react-native";
+import {
+  BackHandler,
+  FlatList,
+  StyleSheet,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Button, Text } from "react-native-paper";
 import BudgetHambugerMenu from "../components/BudgetHamburgerMenu";
 import ChoreCard from "../components/ChoreCard";
@@ -23,6 +30,10 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
   const toggleIsEditable = () => {
     setEditableMode((current: boolean) => !current);
   };
+
+  BackHandler.addEventListener("hardwareBackPress", () => {
+    return true;
+  });
 
   return (
     <>
@@ -79,16 +90,14 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
           )}
         </View>
       </View>
-      <BudgetHambugerMenu 
-        navigation={Props.navigation} 
+      <BudgetHambugerMenu
+        navigation={Props.navigation}
         setVisible={setShowBudgetHambugerMenu}
         visible={showBudgetHambugerMenu}
       />
-
     </>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
