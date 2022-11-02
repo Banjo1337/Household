@@ -1,11 +1,10 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
-import { Button, Checkbox, Text, Title } from "react-native-paper";
+import { useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Button, Surface, Text, Title } from "react-native-paper";
 import { newDateInClientTimezone } from "../app/dateUtils";
 import { selectChoreById, selectIsChoreOverdueByChoreId } from "../features/chore/choreSelectors";
 import { updateChore } from "../features/chore/choreSlice";
-import { ChoreUpdateDto } from "../features/chore/choreTypes";
 import { addChoreCompleted } from "../features/choreCompleted/choreCompletedSlice";
 import { ChoreCompletedCreateDto } from "../features/choreCompleted/choreCompletedTypes";
 import { selectHousehold } from "../features/household/householdSelectors";
@@ -15,41 +14,37 @@ import { RootStackParamList } from "../NavContainer";
 
 type Props = NativeStackScreenProps<RootStackParamList, "ChoreDetails">;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ChoreDetailsScreen({ route, navigation }: Props) {
   const household = useAppSelector(selectHousehold);
   const [routeId] = useState(route.params.choreId);
   const chore = useAppSelector((state) => selectChoreById(state, routeId));
-  const [checked, setChecked] = useState(false);
   const profile = useAppSelector(selectActiveProfile);
   const isOverDue = useAppSelector((state) => selectIsChoreOverdueByChoreId(state, chore.id));
   const dispatch = useAppDispatch();
 
-  const onCheckedPressed = () => {
-    if (checked) {
-      var dateTime = newDateInClientTimezone();
-      const choreCompleted: ChoreCompletedCreateDto = {
-        completedAt: dateTime.toISOString(),
-        profileIdQol: profile.id,
-        choreId: chore.id,
-        householdId: household.id,
-      };
-      dispatch(addChoreCompleted(choreCompleted));
-      if (chore.frequency === 0) {
-        const choreUpdateDto: ChoreUpdateDto = {
-          name: chore.name,
-          points: chore.points,
-          description: chore.description,
-          pictureUrl: chore.pictureUrl,
-          audioUrl: chore.audioUrl,
-          frequency: chore.frequency,
-          isArchived: true,
-          householdId: household.id,
-        };
-        dispatch(updateChore({ choreUpdateDto, choreId: chore.id }));
-      }
-      navigation.navigate("Home", { screen: "Chores" });
-    } else console.log("not changed");
+  const submitCompleteChore = () => {
+    var dateTime = newDateInClientTimezone();
+    const choreCompleted: ChoreCompletedCreateDto = {
+      completedAt: dateTime.toISOString(),
+      profileIdQol: profile.id,
+      choreId: chore.id,
+      householdId: household.id,
+    };
+
+    dispatch(addChoreCompleted(choreCompleted));
+    if (chore.frequency === 0) {
+      dispatch(
+        updateChore({
+          choreUpdateDto: {
+            ...chore,
+            isArchived: true,
+          },
+          choreId: chore.id,
+        }),
+      );
+    }
+
+    navigation.navigate("Home", { screen: "Chores" });
   };
   const onBackPressed = () => {
     navigation.navigate("Home", { screen: "Chores" });
@@ -57,137 +52,112 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
   const onEditPressed = () => {
     navigation.navigate("EditChore", { choreId: chore.id });
   };
+
+  const profilezz = useAppSelector((state) => state.profileReducer.profile);
+  console.log(profilezz);
   return (
-    <>
-      <View style={styles.container}>
-        <Title style={styles.title}>{chore.name}</Title>
-        <ScrollView
-          style={{
-            marginTop: 10,
-            maxHeight: 150,
-            maxWidth: "85%",
-            backgroundColor: "white",
-            borderRadius: 10,
-            borderWidth: 1,
-          }}
-        >
-          <Text style={styles.descriptionField}>
-            {chore.description}This task is do be done onceThis task is do be done onceThis task is
-            do be done onceThis task is do be done onceThis task is do be done onceThis task is do
-            be done onceThis task is do be done onceThis task is do be done onceThis task is do be
-            done onceThis task is do be done onceThis task is do be done onceThis task is do be done
-            onceThis task is do be done onceThis task is do be done onceThis task is do be done
-            onceThis task is do be done onceThis task is do be done onceThis task is do be done
-            onceThis task is do be done onceThis task is do be done onceThis task is do be done
-            onceThis task is do be done onceThis task is do be done onceThis task is do be done
-            onceThis task is do be done onceThis task is do be done onceThis task is do be done
-            onceThis task is do be done onceThis task is do be done onceThis task is do be done
-            onceThis task is do be done onceThis task is do be done onceThis task is do be done
-            onceThis task is do be done onceThis task is do be done onceThis task is do be done
-            onceThis task is do be done once
-          </Text>
-        </ScrollView>
+    <Surface style={styles.container}>
+      <Title style={styles.title}>{chore.name}</Title>
+      <View style={styles.segment}></View>
+      {chore.description && (
+        <>
+          <ScrollView style={styles.descriptionField}>
+            <Text>
+              {chore.description}
+            </Text>
+          </ScrollView>
+          <View style={styles.segment}></View>
+        </>
+      )}
+      <Text style={styles.text}>
+        The chore is worth <Title style={styles.title}>{chore.points}</Title> points.
+      </Text>
+      <View style={styles.segment}></View>
+      {chore.frequency == 0 ? (
+        <Text style={styles.text}>This task is do be done once</Text>
+      ) : chore.frequency == 1 ? (
         <Text style={styles.text}>
-          The chore is worth <Title style={styles.title}>{chore.points}</Title> points.
+          It should be done every other<Title style={styles.title}>{chore.frequency} </Title> day.
         </Text>
-        {chore.frequency == 0 ? (
-          <Text style={styles.text}>This task is do be done once</Text>
-        ) : chore.frequency == 1 ? (
-          <Text style={styles.text}>
-            It should be done every other<Title style={styles.title}>{chore.frequency} </Title> day.
-          </Text>
+      ) : (
+        <Text style={styles.text}>
+          Repeat every <Title style={styles.title}>{chore.frequency}</Title> days.
+        </Text>
+      )}
+      <View style={styles.segment}></View>
+      <View>
+        {chore.isArchived ? (
+          <Text style={styles.text}>Archived: ✅</Text>
+        ) : !isOverDue ? (
+          <Text style={styles.text}>Completed: ✅</Text>
         ) : (
-          <Text style={styles.text}>
-            Repeat every <Title style={styles.title}>{chore.frequency}</Title> days.
-          </Text>
+          <Text style={styles.text}>Not completed.</Text>
         )}
-        <View>
-          {chore.isArchived ? (
-            <Text style={styles.text}>
-              <Title style={styles.title}>Archived: ✅</Title>
-            </Text>
-          ) : !isOverDue ? (
-            <Text style={styles.text}>
-              <Title style={styles.title}>Completed: ✅</Title>
-            </Text>
-          ) : (
-            <Text style={styles.text}>
-              <Title style={styles.title}>Not completed. </Title>
-            </Text>
-          )}
-        </View>
       </View>
+      <View style={styles.segment}></View>
       <View style={styles.buttonContainer}>
-        <Button onPress={onBackPressed} mode='outlined' style={styles.button}>
+        <Button onPress={onBackPressed} mode='elevated' style={styles.button}>
           <Text style={styles.text}>Go back</Text>
         </Button>
         {profile.isAdmin && (
-          <Button onPress={onEditPressed} mode='outlined' style={styles.button}>
+          <Button onPress={onEditPressed} mode='elevated' style={styles.button}>
             <Text style={styles.text}>Edit</Text>
           </Button>
         )}
       </View>
-      <View style={styles.container}>
-        <Pressable style={{ width: "100%" }} onPress={onCheckedPressed}>
-          <Text style={styles.text}>Mark this chore as complete</Text>
-        </Pressable>
-        <Checkbox
-          color='black'
-          status={checked ? "checked" : "unchecked"}
-          onPress={() => setChecked(!checked)}
-        />
-      </View>
-    </>
+      <Button onPress={submitCompleteChore} mode='elevated' style={styles.completeChore}>
+        <Text style={styles.text}>Mark this chore as complete</Text>
+      </Button>
+    </Surface>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
     alignItems: "center",
     paddingHorizontal: 30,
+    elevation: 3,
+    width: "95%",
+    marginLeft: "auto",
+    marginRight: "auto",
+    borderRadius: 5,
+    marginTop: 20,
   },
-  checkbox: {
-    width: 50,
-    height: 50,
+  segment: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginVertical: 5,
+    width: "100%",
   },
   buttonContainer: {
     flexDirection: "row",
-    elevation: 10,
+    marginTop: 10,
   },
   title: {
-    backgroundColor: "white",
-    elevation: 10,
     textAlignVertical: "center",
-    color: "black",
-    fontWeight: "bold",
+    fontWeight: "400",
     textAlign: "center",
     fontSize: 30,
-    width: "98%",
     height: 70,
   },
   text: {
-    width: "100%",
-    color: "black",
-    elevation: 15,
-    fontWeight: "bold",
-    backgroundColor: "white",
+    fontWeight: "400",
     textAlignVertical: "center",
     textAlign: "center",
     fontSize: 20,
     height: 70,
-    margin: 3,
+    padding: 3,
   },
   descriptionField: {
-    width: "100%",
-    fontSize: 15,
-    margin: "auto",
-    borderwidth: 1,
-    borderRadius: 1,
+    marginVertical: 10,
+    maxHeight: 150,
   },
   button: {
     width: "50%",
-    height: "auto",
+  },
+  completeChore: {
+    marginTop: 10,
+    height: 70,
     justifyContent: "center",
-    backgroundColor: "white",
+    marginBottom: 20,
+    backgroundColor: "#5fd980",
   },
 });
