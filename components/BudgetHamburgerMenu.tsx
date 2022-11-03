@@ -91,7 +91,7 @@ export default function BudgetHambugerMenu({
             <Switch value={darkmode} onValueChange={setDarkmode} disabled={systemTheme} />
           </View>
         </Drawer.Section>
-        <Drawer.Section title='For Jimmy'>
+        {/* <Drawer.Section title='For Jimmy'>
           <TouchableOpacity
             style={[styles.menuListItem, { borderColor: currentTheme.colors.border }]}
             onPress={() => {
@@ -104,7 +104,7 @@ export default function BudgetHambugerMenu({
             <Text>NavScreen</Text>
             <MaterialCommunityIcons name='account-cowboy-hat' {...iconSettings} />
           </TouchableOpacity>
-        </Drawer.Section>
+        </Drawer.Section> */}
       </View>
       <Pressable
         onPress={() => setShowBudgetHambugerMenu(false)}
