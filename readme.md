@@ -126,3 +126,14 @@ VG: 32 (80%).
 
 -   [ ] En ägare ska kunna skapa grupper av sysslor som automatiskt tilldelas användarna i
         hushållet och roteras baserat på ett intervall i dagar.
+        
+![image](https://user-images.githubusercontent.com/79047651/199952354-950c0a9f-69e8-4512-b84e-b22d0de5d405.png) 
+![image](https://user-images.githubusercontent.com/79047651/199952406-3d10f545-bd51-47a5-a070-06f7e280aaea.png)
+![image](https://user-images.githubusercontent.com/79047651/199952472-f6fed771-ce59-4337-bb7e-e09154b275ce.png)
+![image](https://user-images.githubusercontent.com/79047651/199952547-f822ba92-c6d0-4450-948c-59e3384ec020.png)
+![image](https://user-images.githubusercontent.com/79047651/199952609-8d0b49b7-756b-4268-8513-b6bb648a7a48.png)
+ 
+ 
+ 
+ 
+
