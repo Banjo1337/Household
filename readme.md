@@ -10,7 +10,7 @@ npm i --force
 ```
 npm run start
 ```
-5. Du är nu redo att skanna QR+koden i Expo Go på en fysisk telefon, eller ladda appen i en android emulator!
+5. Du är nu redo att skanna QR-koden i Expo Go på en fysisk telefon, eller ladda appen i en android emulator!
 
 ### Exempel inlogg är: 
 
@@ -60,6 +60,8 @@ Vi har lite reflekterat huruvida man vill ha ett riktigt liveflöde som att när
 # [Figma](https://www.figma.com/file/KeYmGL1RYzPfQBJy00JnTM/household?node-id=0%3A1)
 
 
+
+### Krav uppfyllda: 36/40
 
 ## Kravlista (4)
 
