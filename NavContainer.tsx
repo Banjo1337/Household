@@ -7,7 +7,6 @@ import EditProfileScreen from "./screens/EditProfileScreen";
 import JoinOrCreateHouseholdPromptScreen from "./screens/JoinOrCreateHouseholdPromptScreen";
 import PendingRequestScreen from "./screens/PendingRequestScreen";
 import SelectProfileScreen from "./screens/SelectProfileScreen";
-import SettingsScreen from "./screens/SettingsScreen";
 import SignInScreen from "./screens/SignInScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import { NavigationContainer } from "@react-navigation/native";
@@ -37,7 +36,6 @@ export type RootStackParamList = {
   EditProfile: undefined;
   PendingRequest: undefined;
   ParsingJoinHousehold: { householdCode: string };
-  Settings: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -105,7 +103,6 @@ export default function NavContainer() {
             <Stack.Screen name='EditProfile' component={EditProfileScreen} />
             <Stack.Screen name='PendingRequest' component={PendingRequestScreen} />
             <Stack.Screen name='ParsingJoinHousehold' component={ParsingJoinHouseholdScreen} />
-            <Stack.Screen name='Settings' component={SettingsScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>
