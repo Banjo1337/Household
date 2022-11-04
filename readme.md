@@ -8,7 +8,9 @@
 
 Exempel inlogg är:
 tuco
+
 Password_A1
+
 Två profiler finns. Räven ger tillgång till ett levande hushåll med sysslor och statistik. Ugglad ger ett nystartat hushåll.
 
 
