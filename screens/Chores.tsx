@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   BackHandler,
   FlatList,
@@ -23,6 +23,7 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
   const chores = useAppSelector(selectChoresToShowInChoreScreen);
   const profile = useAppSelector(selectActiveProfile);
   const [showBudgetHambugerMenu, setShowBudgetHambugerMenu] = useState(false);
+  const touchX = useRef(0);
   const onAddChorePressed = () => {
     Props.navigation.navigate("AddChore");
   };
@@ -31,14 +32,19 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
     setEditableMode((current: boolean) => !current);
   };
 
-
   BackHandler.addEventListener("hardwareBackPress", () => {
     return true;
   });
 
   return (
     <>
-      <View style={{ justifyContent: "center" }}>
+      <View
+        style={{ justifyContent: "center" }}
+        onTouchStart={(e) => (touchX.current = e.nativeEvent.pageX)}
+        onTouchEnd={(e) => {
+          e.nativeEvent.pageX - touchX.current > 20 && setShowBudgetHambugerMenu(true);
+        }}
+      >
         <View style={{ alignItems: "center" }}>
           <TouchableOpacity
             style={styles.settingsText}
