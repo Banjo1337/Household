@@ -9,8 +9,8 @@ import { selectActiveProfile } from "../features/profile/profileSelector";
 import { Profile } from "../features/profile/profileTypes";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import useModalStyles from "../hooks/useModalStyles";
-import { useSetAndHydrateProfile } from "../hooks/useSetAndHydrateProfile";
 import { useResetAndDeHydrateProfile } from "../hooks/useResetAndDehydrateProfile";
+import { useSetAndHydrateProfile } from "../hooks/useSetAndHydrateProfile";
 import { RootStackParamList } from "../NavContainer";
 
 export default function SelectProfileScreen({
@@ -60,12 +60,18 @@ export default function SelectProfileScreen({
       <View style={styles.contentContainer}>
         <View style={styles.profileCircles}>
           {profiles?.map((p) => (
-            <SelectProfileButton key={p.id} profile={p} handleSelectUser={handleSelectUser} />
+            <View style={{ alignItems: "center" }}>
+              <Text>{p.alias}</Text>
+              <SelectProfileButton key={p.id} profile={p} handleSelectUser={handleSelectUser} />
+            </View>
           ))}
-          <View style={[styles.profilePortrait, { backgroundColor: "#474747" }]}>
-            <TouchableOpacity onPress={() => navigation.navigate("JoinOrCreateHouseholdPrompt")}>
-              <Text style={styles.avatar}>➕</Text>
-            </TouchableOpacity>
+          <View style={{ alignItems: "center" }}>
+            <Text>Create new Profile</Text>
+            <View style={[styles.profilePortrait, { backgroundColor: "#474747" }]}>
+              <TouchableOpacity onPress={() => navigation.navigate("JoinOrCreateHouseholdPrompt")}>
+                <Text style={styles.avatar}>➕</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
         <Button style={styles.logoutButton} mode={"elevated"} onPress={onLogoutPressed}>

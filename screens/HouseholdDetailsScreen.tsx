@@ -188,7 +188,11 @@ export default function HouseholdDetailsScreen({
             return <ProfileListItem profile={member} key={memberindex} />;
           })}
         </View>
-        <Button style={{ marginVertical: 40 }} onPress={() => navigation.goBack()}>
+        <Button
+          mode={"contained"}
+          style={{ marginVertical: 40 }}
+          onPress={() => navigation.goBack()}
+        >
           Close
         </Button>
       </View>
