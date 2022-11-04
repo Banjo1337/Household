@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Image,
   Modal,
@@ -42,8 +42,6 @@ export default function HouseholdDetailsScreen({
   const currentProfileId = useAppSelector((state) => state.profileReducer.profile).id;
   const household = useAppSelector(selectHousehold);
   const members = useAppSelector(selectProfileByHousehold);
-  console.log(members);
-  //console.log(membersOnPause);
   const [modalLeaveVisible, setModalLeaveVisible] = useState(false);
   const membersContainsAtLeastTwoAdmin = ContainTwoAdmin();
   const currentProfileisAdmin = CurrentProfileisAdmin();
@@ -92,8 +90,7 @@ export default function HouseholdDetailsScreen({
                         style={[styles.button, styles.buttonClose]}
                         onPress={() => {
                           setModalLeaveVisible(!modalLeaveVisible);
-                          dispatch(deleteProfile({ profileId: currentProfileId }));
-                          // TSC above: should there be more props other than profileId?
+                          dispatch(deleteProfile({ profileId: currentProfileId }));    
                           navigation.navigate("SelectProfile");
                         }}
                       >

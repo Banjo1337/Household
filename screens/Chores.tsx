@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   BackHandler,
   FlatList,
@@ -31,7 +31,6 @@ export default function ChoresScreen(Props: NativeStackScreenProps<RootStackPara
     setEditableMode((current: boolean) => !current);
   };
 
-  useEffect(() => {}, [chores]);
 
   BackHandler.addEventListener("hardwareBackPress", () => {
     return true;

@@ -3,16 +3,13 @@ import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AddChoreScreen from "./screens/AddChoreScreen";
 import ChoreDetailsScreen from "./screens/ChoreDetailsScreen";
-//import ChoresScreen from "./screens/Chores";
 import EditProfileScreen from "./screens/EditProfileScreen";
 import JoinOrCreateHouseholdPromptScreen from "./screens/JoinOrCreateHouseholdPromptScreen";
-import MegaNavigationGodScreen from "./screens/MegaNavigationGodScreen";
 import PendingRequestScreen from "./screens/PendingRequestScreen";
 import SelectProfileScreen from "./screens/SelectProfileScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import SignInScreen from "./screens/SignInScreen";
 import SignUpScreen from "./screens/SignUpScreen";
-//import StatisticsScreen from "./screens/StatisticsScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider as PaperProvider } from "react-native-paper";
 import { hydrateAuthenticationSliceFromSecureStorageThunk } from "./features/authentication/authenticationSlice";
@@ -41,7 +38,6 @@ export type RootStackParamList = {
   PendingRequest: undefined;
   ParsingJoinHousehold: { householdCode: string };
   Settings: undefined;
-  MegaNavigationGod: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -56,11 +52,6 @@ export default function NavContainer() {
       <PaperProvider theme={currentTheme}>
         <NavigationContainer theme={currentTheme}>
           <Stack.Navigator initialRouteName='SignIn'>
-            <Stack.Screen
-              name='MegaNavigationGod'
-              component={MegaNavigationGodScreen}
-              options={() => ({ title: "This is temporary" })}
-            />
             <Stack.Screen
               name='Home'
               component={TopTabNavigator}

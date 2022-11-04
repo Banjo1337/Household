@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { ScrollView, StyleSheet, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
