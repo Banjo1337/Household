@@ -78,7 +78,6 @@ const authenticationSlice = createSlice({
     builder.addCase(
       postSignInThunk.fulfilled,
       (state, action: PayloadAction<AuthenticationState>) => {
-        console.log("postSignInThunk.fulfilled");
         return {
           ...state,
           ...action.payload,
@@ -88,7 +87,6 @@ const authenticationSlice = createSlice({
       },
     );
     builder.addCase(hydrateAuthenticationSliceFromSecureStorageThunk.fulfilled, (state, action) => {
-      console.log("hydrateAuthenticationSliceFromSecureStorageThunk.fulfilled");
       return {
         ...state,
         ...action.payload,
