@@ -4,8 +4,6 @@ import { Pause, PauseCreateDto, PauseState, PauseUpdateDto } from "./pauseTypes"
 
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/Pause/";
 
-// const Token = () => useAppSelector(selectToken);
-
 export const hydratePauseSliceFromBackendThunk = createAsyncThunk<
   Pause[],
   string,
@@ -32,9 +30,6 @@ export const createPause = createAsyncThunk<
   { rejectValue: string; state: RootStateType }
 >("pause/CreatePause", async (pauseCreateDto: PauseCreateDto, thunkApi) => {
   const token = thunkApi.getState().authenticateReducer.token;
-  /* if (Token()) {
-      return thunkApi.rejectWithValue("User not logged in");
-    } */
 
   const startTime = pauseCreateDto.startDate;
   const endTime = pauseCreateDto.endDate;
@@ -80,17 +75,15 @@ export const createPause = createAsyncThunk<
 export const updatePause = createAsyncThunk<
   Pause,
   { pauseUpdateDto: PauseUpdateDto; pauseId: string },
-  { rejectValue: string }
+  { rejectValue: string; state: RootStateType }
 >("pause/UpdatePause", async ({ pauseUpdateDto, pauseId }, thunkApi) => {
-  /*   if (Token()) {
-    return thunkApi.rejectWithValue("User not logged in");
-  } */
+  const token = thunkApi.getState().authenticateReducer.token;
   try {
     const response = await fetch(baseUrl + "UpdatePause/" + pauseId, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
-        //authorization: "Bearer " + Token(),
+        authorization: "Bearer " + token,
       },
       body: JSON.stringify(pauseUpdateDto),
     });

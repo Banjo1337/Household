@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
+import { RootStateType } from "../../app/store";
 
 import {
   ChoreCompleted,
@@ -17,13 +18,15 @@ const initialState: ChoreCompletedState = {
 export const addChoreCompleted = createAsyncThunk<
   ChoreCompleted,
   ChoreCompletedCreateDto,
-  { rejectValue: string }
+  { rejectValue: string; state: RootStateType }
 >("choreCompleted/addChoreCompleted", async (choreCompleted: ChoreCompletedCreateDto, thunkApi) => {
+  const token = thunkApi.getState().authenticateReducer.token;
   try {
     const response = await fetch(baseUrl + "addChoreCompleted", {
       method: "POST",
       headers: {
         "content-type": "application/json",
+        authorization: "Bearer " + token,
       },
       body: JSON.stringify(choreCompleted),
     });

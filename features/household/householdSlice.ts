@@ -6,8 +6,6 @@ import {
   PayloadAction,
   Reducer,
 } from "@reduxjs/toolkit";
-import { useAppSelector } from "../../hooks/reduxHooks";
-import { selectToken } from "../authentication/authenticationSelectors";
 import { Profile } from "../profile/profileTypes";
 import { Household, HouseholdCreateDto, HouseholdEditDto } from "./householdTypes";
 import {
@@ -17,10 +15,9 @@ import {
   editProfile,
   EditProfilePayloadAction,
 } from "../profile/profileSlice";
+import { RootStateType } from "../../app/store";
 
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/Household/";
-
-const Token = () => useAppSelector(selectToken);
 
 export const hydrateHouseholdSliceFromBackendThunk = createAsyncThunk<
   Household,
@@ -40,17 +37,15 @@ export const hydrateHouseholdSliceFromBackendThunk = createAsyncThunk<
 export const createHouseholdThunk = createAsyncThunk<
   Household,
   HouseholdCreateDto,
-  { rejectValue: string }
+  { rejectValue: string; state: RootStateType }
 >("household/CreateHousehold", async (householdCreateDto: HouseholdCreateDto, thunkApi) => {
-  /* if (Token()) {
-    return thunkApi.rejectWithValue("User not logged in");
-  } */
+  const token = thunkApi.getState().authenticateReducer.token;
   try {
     const response = await fetch(baseUrl + "AddHousehold", {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        /* authorization: "Bearer " + Token(), */
+        authorization: "Bearer " + token,
       },
       body: JSON.stringify(householdCreateDto),
     });
@@ -72,17 +67,15 @@ export const createHouseholdThunk = createAsyncThunk<
 export const editHouseholdThunk = createAsyncThunk<
   Household,
   { householdEditDto: HouseholdEditDto; householdId: string },
-  { rejectValue: string }
+  { rejectValue: string; state: RootStateType }
 >("household/EditHousehold", async ({ householdEditDto, householdId }, thunkApi) => {
-  /*   if (Token()) {
-    return thunkApi.rejectWithValue("User not logged in");
-  } */
+  const token = thunkApi.getState().authenticateReducer.token;
   try {
     const response = await fetch(baseUrl + "EditHousehold/" + householdId, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
-        //authorization: "Bearer " + Token(),
+        authorization: "Bearer " + token,
       },
       body: JSON.stringify(householdEditDto),
     });
@@ -101,35 +94,35 @@ export const editHouseholdThunk = createAsyncThunk<
   }
 });
 
-export const deleteHouseholdThunk = createAsyncThunk<Household, string, { rejectValue: string }>(
-  "household/deleteHousehold",
-  async (householdId: string, thunkApi) => {
-    if (Token()) {
-      return thunkApi.rejectWithValue("User not logged in");
-    }
-    try {
-      const response = await fetch(baseUrl + "deleteHousehold/" + householdId, {
-        method: "DELETE",
-        headers: {
-          "content-type": "application/json",
-          authorization: "Bearer " + Token(),
-        },
-      });
+export const deleteHouseholdThunk = createAsyncThunk<
+  Household,
+  string,
+  { rejectValue: string; state: RootStateType }
+>("household/deleteHousehold", async (householdId: string, thunkApi) => {
+  const token = thunkApi.getState().authenticateReducer.token;
 
-      if (response.status == 204) {
-        return {} as Household;
-      }
+  try {
+    const response = await fetch(baseUrl + "deleteHousehold/" + householdId, {
+      method: "DELETE",
+      headers: {
+        "content-type": "application/json",
+        authorization: "Bearer " + token,
+      },
+    });
 
-      return thunkApi.rejectWithValue(response.statusText);
-    } catch (err) {
-      if (err instanceof Error) {
-        return thunkApi.rejectWithValue(err.message);
-      } else {
-        return thunkApi.rejectWithValue("");
-      }
+    if (response.status == 204) {
+      return {} as Household;
     }
-  },
-);
+
+    return thunkApi.rejectWithValue(response.statusText);
+  } catch (err) {
+    if (err instanceof Error) {
+      return thunkApi.rejectWithValue(err.message);
+    } else {
+      return thunkApi.rejectWithValue("");
+    }
+  }
+});
 
 export const getProfilesByHouseholdId = createAsyncThunk<
   Profile[],

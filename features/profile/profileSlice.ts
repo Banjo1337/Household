@@ -1,46 +1,52 @@
 import { createAsyncThunk, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
+import { RootStateType } from "../../app/store";
 import { Profile, ProfileCreateDto, ProfileEditDto, ProfileState } from "./profileTypes";
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/profile/";
 
-export const createProfile = createAsyncThunk<Profile, ProfileCreateDto, { rejectValue: string }>(
-  "profile/CreateProfile",
-  async (profileCreateDto: ProfileCreateDto, thunkApi) => {
-    try {
-      const response = await fetch(baseUrl + "createProfile", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(profileCreateDto),
-      });
+export const createProfile = createAsyncThunk<
+  Profile,
+  ProfileCreateDto,
+  { rejectValue: string; state: RootStateType }
+>("profile/CreateProfile", async (profileCreateDto: ProfileCreateDto, thunkApi) => {
+  const token = thunkApi.getState().authenticateReducer.token;
+  try {
+    const response = await fetch(baseUrl + "createProfile", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: "Bearer " + token,
+      },
+      body: JSON.stringify(profileCreateDto),
+    });
 
-      if (response.ok) {
-        return (await response.json()) as Profile;
-      }
-
-      return thunkApi.rejectWithValue(JSON.stringify(response.body));
-    } catch (err) {
-      if (err instanceof Error) {
-        return thunkApi.rejectWithValue(err.message);
-      } else {
-        return thunkApi.rejectWithValue("");
-      }
+    if (response.ok) {
+      return (await response.json()) as Profile;
     }
-  },
-);
+
+    return thunkApi.rejectWithValue(JSON.stringify(response.body));
+  } catch (err) {
+    if (err instanceof Error) {
+      return thunkApi.rejectWithValue(err.message);
+    } else {
+      return thunkApi.rejectWithValue("");
+    }
+  }
+});
 
 export const editProfile = createAsyncThunk<
   { profile: Profile; isActiveProfile: boolean },
   { profileEditDto: ProfileEditDto; profileId: string; isActiveProfile?: boolean },
-  { rejectValue: string }
+  { rejectValue: string; state: RootStateType }
 >(
   "profile/EditProfile",
   async ({ profileEditDto, profileId, isActiveProfile = true }, thunkApi) => {
+    const token = thunkApi.getState().authenticateReducer.token;
     try {
       const response = await fetch(baseUrl + "editProfile/" + profileId, {
         method: "PATCH",
         headers: {
           "content-type": "application/json",
+          authorization: "Bearer " + token,
         },
         body: JSON.stringify(profileEditDto),
       });
@@ -66,12 +72,16 @@ export const editProfile = createAsyncThunk<
 export const deleteProfile = createAsyncThunk<
   { profileId: string; isActiveProfile: boolean },
   { profileId: string; isActiveProfile?: boolean },
-  { rejectValue: string }
+  { rejectValue: string; state: RootStateType }
 >("profile/deleteProfile", async ({ profileId, isActiveProfile = true }, thunkApi) => {
+  const token = thunkApi.getState().authenticateReducer.token;
   try {
     const response = await fetch(baseUrl + "DeleteProfile/" + profileId, {
       method: "DELETE",
-      headers: {},
+      headers: {
+        "content-type": "application/json",
+        authorization: "Bearer " + token,
+      },
     });
 
     if (response.status == 204) {
