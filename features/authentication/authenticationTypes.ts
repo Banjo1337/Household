@@ -16,8 +16,3 @@ export type SignInReply = {
   expiration: Date;
   authUserId: string;
 };
-
-export type SignUpReply = {
-  status: string;
-  message: string;
-};

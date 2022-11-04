@@ -1,10 +1,21 @@
-import { AnyAction, createAsyncThunk, createSlice, isAnyOf, PayloadAction, Reducer } from "@reduxjs/toolkit";
-import { AuthenticationCredentials, AuthenticationState, SignInReply } from "./authenticationTypes";
+import {
+  AnyAction,
+  createAsyncThunk,
+  createSlice,
+  isAnyOf,
+  PayloadAction,
+  Reducer,
+} from "@reduxjs/toolkit";
 import * as SecureStore from "expo-secure-store";
+import { AuthenticationCredentials, AuthenticationState, SignInReply } from "./authenticationTypes";
 
 const BASE_URL = "https://household-backend.azurewebsites.net/api/V01/Authenticate/";
 
-export const postSignInThunk = createAsyncThunk<AuthenticationState, AuthenticationCredentials, { rejectValue: string }>("authentication/postLogin", async (credentials: AuthenticationCredentials, thunkApi) => {
+export const postSignInThunk = createAsyncThunk<
+  AuthenticationState,
+  AuthenticationCredentials,
+  { rejectValue: string }
+>("authentication/postLogin", async (credentials: AuthenticationCredentials, thunkApi) => {
   try {
     const response = await fetch(BASE_URL + `login`, {
       method: "POST",
@@ -29,7 +40,11 @@ export const postSignInThunk = createAsyncThunk<AuthenticationState, Authenticat
   }
 });
 
-export const hydrateAuthenticationSliceFromSecureStorageThunk = createAsyncThunk<AuthenticationState, void, { rejectValue: string }>("authentication/hydrateFromSecureStorage", async (_, thunkApi) => {
+export const hydrateAuthenticationSliceFromSecureStorageThunk = createAsyncThunk<
+  AuthenticationState,
+  void,
+  { rejectValue: string }
+>("authentication/hydrateFromSecureStorage", async (_, thunkApi) => {
   try {
     const token = await SecureStore.getItemAsync("token");
     const authUserId = await SecureStore.getItemAsync("authUserId");
@@ -60,15 +75,18 @@ const authenticationSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(postSignInThunk.fulfilled, (state, action: PayloadAction<AuthenticationState>) => {
-      console.log("postSignInThunk.fulfilled");
-      return {
-        ...state,
-        ...action.payload,
-        hasError: false,
-        error: "",
-      };
-    });
+    builder.addCase(
+      postSignInThunk.fulfilled,
+      (state, action: PayloadAction<AuthenticationState>) => {
+        console.log("postSignInThunk.fulfilled");
+        return {
+          ...state,
+          ...action.payload,
+          hasError: false,
+          error: "",
+        };
+      },
+    );
     builder.addCase(hydrateAuthenticationSliceFromSecureStorageThunk.fulfilled, (state, action) => {
       console.log("hydrateAuthenticationSliceFromSecureStorageThunk.fulfilled");
       return {
@@ -79,18 +97,22 @@ const authenticationSlice = createSlice({
       };
     });
 
-    builder.addMatcher(isAnyOf(postSignInThunk.rejected, hydrateAuthenticationSliceFromSecureStorageThunk.rejected), (state, action) => {
-      console.log(action.payload);
-      return {
-        ...state,
-        hasError: true,
-        error: action.payload as string,
-      };
-    });
+    builder.addMatcher(
+      isAnyOf(postSignInThunk.rejected, hydrateAuthenticationSliceFromSecureStorageThunk.rejected),
+      (state, action) => {
+        console.log(action.payload);
+        return {
+          ...state,
+          hasError: true,
+          error: action.payload as string,
+        };
+      },
+    );
   },
 });
 
 export const { logout } = authenticationSlice.actions;
 export default authenticationSlice.reducer;
 
-export const authenticateReducer: Reducer<AuthenticationState, AnyAction> = authenticationSlice.reducer;
+export const authenticateReducer: Reducer<AuthenticationState, AnyAction> =
+  authenticationSlice.reducer;
