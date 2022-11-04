@@ -3,7 +3,13 @@
 1. Klona ner projekt.
 2. CD'a in i root-mappen.
 3. Kör kommandot "npm i --force" och starta emulatorn(om emulator skall användas).
+```
+npm i --force
+```
 4. Kör kommandot "npm run start".
+```
+npm run start
+```
 5. Du är nu redo att skanna QR+koden i Expo Go på en fysisk telefon, eller ladda appen i en android emulator!
 
 Exempel inlogg är:
@@ -20,7 +26,6 @@ Denna app används för att tilldela och spara vem som gör olika sysslor i ett 
 
 ---
 
-## ⚠ Fritt fram första veckan att pusha i main, ingen branch protection! ⚠
 
 * Dessa krav måste göras (20st).
 Antal krav: 40.
