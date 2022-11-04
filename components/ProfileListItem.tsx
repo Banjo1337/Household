@@ -1,7 +1,8 @@
+import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
-import { View, StyleSheet } from "react-native";
 import { Profile } from "../features/profile/profileTypes";
 import { useAvatar } from "../hooks/useAvatar";
+
 interface Props {
   profile: Profile;
 }

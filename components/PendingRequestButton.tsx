@@ -1,5 +1,5 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native-paper";
 import { RootStackParamList } from "../NavContainer";
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 export default function PendingRequestButton({ pendingRequestCount, navigation }: Props) {
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       onPress={() => navigation.navigate("PendingRequest")}
       style={styles.pendingRequestContainer}
     >

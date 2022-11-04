@@ -1,4 +1,4 @@
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native-paper";
 import { Profile } from "../features/profile/profileTypes";
 import { useAvatar } from "../hooks/useAvatar";
