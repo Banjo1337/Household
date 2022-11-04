@@ -1,11 +1,10 @@
 import { createAsyncThunk, createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
-import { useAppSelector } from "../../hooks/reduxHooks";
-import { selectToken } from "../authentication/authenticationSelectors";
+import { RootStateType } from "../../app/store";
 import { Chore, ChoreCreateDto, ChoreState, ChoreUpdateDto } from "./choreTypes";
 
 const baseUrl = "https://household-backend.azurewebsites.net/api/V01/chore/";
 
-const Token = () => useAppSelector(selectToken);
+//const Token = () => useAppSelector(selectToken);
 
 export const hydrateChoresSliceFromBackendThunk = createAsyncThunk<
   Chore[],
@@ -29,50 +28,48 @@ export const hydrateChoresSliceFromBackendThunk = createAsyncThunk<
   }
 });
 
-export const createChore = createAsyncThunk<Chore, ChoreCreateDto, { rejectValue: string }>(
-  "chore/CreateChore",
-  async (choreCreateDto: ChoreCreateDto, thunkApi) => {
-    if (!Token) {
-      return thunkApi.rejectWithValue("User not logged in");
-    }
-    try {
-      const response = await fetch(baseUrl + "AddChore", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          authorization: "Bearer " + Token,
-        },
-        body: JSON.stringify(choreCreateDto),
-      });
+export const createChore = createAsyncThunk<
+  Chore,
+  ChoreCreateDto,
+  { rejectValue: string; state: RootStateType }
+>("chore/CreateChore", async (choreCreateDto: ChoreCreateDto, thunkApi) => {
+  const token = thunkApi.getState().authenticateReducer.token;
 
-      if (response.ok) {
-        return (await response.json()) as Chore;
-      }
-      return thunkApi.rejectWithValue(JSON.stringify(response.body));
-    } catch (err) {
-      if (err instanceof Error) {
-        return thunkApi.rejectWithValue(err.message);
-      } else {
-        return thunkApi.rejectWithValue("");
-      }
+  try {
+    const response = await fetch(baseUrl + "AddChore", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: "Bearer " + token,
+      },
+      body: JSON.stringify(choreCreateDto),
+    });
+
+    if (response.ok) {
+      return (await response.json()) as Chore;
     }
-  },
-);
+    return thunkApi.rejectWithValue(JSON.stringify(response.body));
+  } catch (err) {
+    if (err instanceof Error) {
+      return thunkApi.rejectWithValue(err.message);
+    } else {
+      return thunkApi.rejectWithValue("");
+    }
+  }
+});
 
 export const updateChore = createAsyncThunk<
   Chore,
   { choreUpdateDto: ChoreUpdateDto; choreId: string },
-  { rejectValue: string }
+  { rejectValue: string; state: RootStateType }
 >("chore/UpdateChore", async ({ choreUpdateDto, choreId }, thunkApi) => {
-  if (!Token) {
-    return thunkApi.rejectWithValue("User not logged in");
-  }
+  const token = thunkApi.getState().authenticateReducer.token;
   try {
     const response = await fetch(baseUrl + "UpdateChore/" + choreId, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
-        authorization: "Bearer " + Token,
+        authorization: "Bearer " + token,
       },
       body: JSON.stringify(choreUpdateDto),
     });
@@ -90,33 +87,32 @@ export const updateChore = createAsyncThunk<
   }
 });
 
-export const deleteChore = createAsyncThunk<string, string, { rejectValue: string }>(
-  "chore/deleteChore",
-  async (choreId: string, thunkApi) => {
-    if (!Token) {
-      return thunkApi.rejectWithValue("User not logged in");
-    }
-    try {
-      const response = await fetch(baseUrl + "DeleteChore/" + choreId, {
-        method: "DELETE",
-        headers: {
-          authorization: "Bearer " + Token,
-        },
-      });
+export const deleteChore = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string; state: RootStateType }
+>("chore/deleteChore", async (choreId: string, thunkApi) => {
+  const token = thunkApi.getState().authenticateReducer.token;
+  try {
+    const response = await fetch(baseUrl + "DeleteChore/" + choreId, {
+      method: "DELETE",
+      headers: {
+        authorization: "Bearer " + token,
+      },
+    });
 
-      if (response.status == 204) {
-        return choreId;
-      }
-      return thunkApi.rejectWithValue(JSON.stringify(response.body));
-    } catch (err) {
-      if (err instanceof Error) {
-        return thunkApi.rejectWithValue(err.message);
-      } else {
-        return thunkApi.rejectWithValue("");
-      }
+    if (response.status == 204) {
+      return choreId;
     }
-  },
-);
+    return thunkApi.rejectWithValue(JSON.stringify(response.body));
+  } catch (err) {
+    if (err instanceof Error) {
+      return thunkApi.rejectWithValue(err.message);
+    } else {
+      return thunkApi.rejectWithValue("");
+    }
+  }
+});
 
 const initialState: ChoreState = {
   chores: [] as Chore[],
