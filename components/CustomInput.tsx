@@ -58,11 +58,11 @@ const CustomInput = ({
               <Text
                 style={{
                   color: "red",
-                  alignSelf: "auto",
+                  alignSelf: "stretch",
                   position: "absolute",
                   top: 75,
-                  fontSize: 12,
-                  fontWeight: "600"
+                  fontSize: 11,
+                  fontWeight: "bold"
                 }}
               >
                 {error.message}
