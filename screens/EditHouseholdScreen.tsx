@@ -11,7 +11,7 @@ import SwitchToPause from "../components/SwitchToPause";
 import {
   selectHousehold,
   selectPendingRequestProfilesCount,
-  selectProfileByHousehold,
+  selectProfileByHousehold
 } from "../features/household/householdSelectors";
 import { deleteHouseholdThunk, editHouseholdThunk } from "../features/household/householdSlice";
 import { deleteProfile, editProfile } from "../features/profile/profileSlice";
@@ -272,6 +272,7 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
         <Text style={{ marginTop: 20 }}>Change household's name: </Text>
         <CustomInput
           name='householdName'
+          defaultValue={""}
           placeholder='Enter a new household name'
           control={control}
         ></CustomInput>
