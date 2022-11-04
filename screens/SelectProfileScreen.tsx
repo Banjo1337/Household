@@ -60,9 +60,9 @@ export default function SelectProfileScreen({
       <View style={styles.contentContainer}>
         <View style={styles.profileCircles}>
           {profiles?.map((p) => (
-            <View style={{ alignItems: "center" }}>
+            <View key={p.id} style={{ alignItems: "center" }}>
               <Text>{p.alias}</Text>
-              <SelectProfileButton key={p.id} profile={p} handleSelectUser={handleSelectUser} />
+              <SelectProfileButton profile={p} handleSelectUser={handleSelectUser} />
             </View>
           ))}
           <View style={{ alignItems: "center" }}>
