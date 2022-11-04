@@ -1,11 +1,10 @@
 import React from "react";
 import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Surface, Text, IconButton } from "react-native-paper";
-
+import { IconButton, Surface, Text } from "react-native-paper";
 import {
   selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId,
   selectIsChoreOverdueByChoreId,
-  selectProfileWhoDidThisChoreByChoreId,
+  selectProfileWhoDidThisChoreByChoreId
 } from "../features/chore/choreSelectors";
 import { Chore } from "../features/chore/choreTypes";
 import { useAppSelector } from "../hooks/reduxHooks";
@@ -26,14 +25,11 @@ export default function ChoreCard({ chore, navigation, editableMode }: Props) {
     selectDaysPassedSienceLastDoneAndFrequenceyAsTextByChoreId(state, chore.id),
   );
   const isOverdue = useAppSelector((state) => selectIsChoreOverdueByChoreId(state, chore.id));
-    console.log("############# daysPassedAndFrequency ##############");
-    console.log(daysPassedAndFrequency);
-    console.log("############# daysPassedAndFrequency END ##############");
 
-  if(daysPassedAndFrequency === "0/undefined") {
+  if (daysPassedAndFrequency === "0/undefined") {
     return null;
   }
-  
+
   return (
     <View style={{ alignItems: "center" }}>
       <Surface style={styles.surface}>

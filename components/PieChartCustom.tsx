@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { Title } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
+import { Title } from "react-native-paper";
 import { G, Text } from "react-native-svg";
 import { PieChart } from "react-native-svg-charts";
 

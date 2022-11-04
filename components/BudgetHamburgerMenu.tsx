@@ -1,13 +1,13 @@
-import { Drawer, Switch, Text } from "react-native-paper";
-import { Modal, Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Dispatch } from "react";
-import { useTheme } from "../features/theme/ThemeContext";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../NavContainer";
-import { useAppDispatch } from "../hooks/reduxHooks";
+import { Dispatch } from "react";
+import { Modal, Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Drawer, Switch, Text } from "react-native-paper";
 import { logout } from "../features/authentication/authenticationSlice";
+import { useTheme } from "../features/theme/ThemeContext";
+import { useAppDispatch } from "../hooks/reduxHooks";
 import { useResetAndDeHydrateProfile } from "../hooks/useResetAndDehydrateProfile";
+import { RootStackParamList } from "../NavContainer";
 interface Props {
   visible: boolean;
   setVisible: Dispatch<React.SetStateAction<boolean>>;
@@ -91,20 +91,6 @@ export default function BudgetHambugerMenu({
             <Switch value={darkmode} onValueChange={setDarkmode} disabled={systemTheme} />
           </View>
         </Drawer.Section>
-        {/* <Drawer.Section title='For Jimmy'>
-          <TouchableOpacity
-            style={[styles.menuListItem, { borderColor: currentTheme.colors.border }]}
-            onPress={() => {
-              resetAndDeHydrateProfile();
-              dispatch(logout());
-              setShowBudgetHambugerMenu(false);
-              navigation.navigate("MegaNavigationGod");
-            }}
-          >
-            <Text>NavScreen</Text>
-            <MaterialCommunityIcons name='account-cowboy-hat' {...iconSettings} />
-          </TouchableOpacity>
-        </Drawer.Section> */}
       </View>
       <Pressable
         onPress={() => setShowBudgetHambugerMenu(false)}

@@ -1,7 +1,7 @@
-import { Text } from "react-native-paper";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import { useAvatar } from "../hooks/useAvatar";
+import { Text } from "react-native-paper";
 import { Avatar } from "../features/profile/profileTypes";
+import { useAvatar } from "../hooks/useAvatar";
 
 interface Props {
   avatar: Avatar;
@@ -10,13 +10,13 @@ interface Props {
 }
 export default function AvatarSelectorItem({ avatar, handlePress, selectedAvatar }: Props) {
   const avatarAttributes = useAvatar(avatar);
-  
+
   return avatarAttributes ? (
     <TouchableOpacity
       onPress={() => handlePress(avatar)}
       style={[styles.bubble, selectedAvatar === avatar && styles.selectedAvatar, { backgroundColor: avatarAttributes.color }]}
     >
-    <Text style={styles.avatar}>{avatarAttributes.emoji}</Text>
+      <Text style={styles.avatar}>{avatarAttributes.emoji}</Text>
     </TouchableOpacity>
   ) : null;
 }
