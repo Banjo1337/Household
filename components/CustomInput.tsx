@@ -58,11 +58,11 @@ const CustomInput = ({
               <Text
                 style={{
                   color: "red",
-                  alignSelf: "stretch",
+                  alignSelf: "auto",
                   position: "absolute",
                   top: 75,
-                  fontSize: 20,
-                  fontWeight: "bold",
+                  fontSize: 12,
+                  fontWeight: "600"
                 }}
               >
                 {error.message}
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingBottom: 20,
   },
-  input: { marginTop: 10, maxHeight: 200, borderWidth: 2, borderRadius: 5 },
+  input: { marginTop: 12, maxHeight: 200, borderWidth: 2 },
 });
 
 export default CustomInput;
