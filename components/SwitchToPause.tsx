@@ -33,11 +33,7 @@ export default function SwitchToPause({ profile }: Props) {
 
   const todaysDate = newDateInClientTimezone();
 
-  const {
-    control,
-    handleSubmit,
-    //formState: {},
-  } = useForm();
+  const { control, handleSubmit } = useForm();
 
   const onDefinePauseDurationPressed = (data: FieldValues) => {
     const duration = Number(data.duration);
