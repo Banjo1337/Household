@@ -57,6 +57,7 @@ Vi har lite reflekterat huruvida man vill ha ett riktigt liveflöde som att när
 # [Frontend repo](https://github.com/Banjo1337/Household)
 # [Backend repo](https://github.com/boborjim/household-backend)
 # [Presentation](https://docs.google.com/presentation/d/1H7-LkNMmhEaNceBP7-F0jG0_xjJD7SWJPvsmaN3SC90/edit?usp=sharing)
+# [Figma](https://www.figma.com/file/KeYmGL1RYzPfQBJy00JnTM/household?node-id=0%3A1)
 
 
 
