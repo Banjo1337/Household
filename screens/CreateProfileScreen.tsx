@@ -1,5 +1,4 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";

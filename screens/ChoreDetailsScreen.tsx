@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useState } from "react";
+import { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Surface, Text, Title } from "react-native-paper";
 import { newDateInClientTimezone } from "../app/dateUtils";
@@ -53,8 +53,7 @@ export default function ChoreDetailsScreen({ route, navigation }: Props) {
     navigation.navigate("EditChore", { choreId: chore.id });
   };
 
-  const profilezz = useAppSelector((state) => state.profileReducer.profile);
-  console.log(profilezz);
+
   return (
     <Surface style={styles.container}>
       <Title style={styles.title}>{chore.name}</Title>

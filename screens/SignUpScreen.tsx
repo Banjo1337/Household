@@ -1,6 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { Image, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
@@ -62,7 +61,6 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
         const signUpResponse = (await response.json()) as SignUpResponse;
         return signUpResponse;
       } catch (error) {
-        console.log("Error in signUp in SignUpScreen.tsx: ", error);
         return {} as SignUpResponse;
       }
     }
@@ -70,7 +68,6 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
 
   const PostSignUp = async (signUpDto: SignUpDto): Promise<Response> => {
     try {
-      console.log("About to send signUp post request");
       const response: Response = await fetch(BASE_URL + `register`, {
         method: "POST",
         headers: {
@@ -80,7 +77,6 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
       });
       return response;
     } catch (error) {
-      console.log("Error in PostSignUp in SignUpScreen.tsx: ", error);
       return {} as Response;
     }
   };

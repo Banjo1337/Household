@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { Modal, StyleSheet, View } from "react-native";
 import { Button, ProgressBar, Text, Title } from "react-native-paper";

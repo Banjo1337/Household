@@ -5,7 +5,6 @@ import AddChoreScreen from "./screens/AddChoreScreen";
 import ChoreDetailsScreen from "./screens/ChoreDetailsScreen";
 import EditProfileScreen from "./screens/EditProfileScreen";
 import JoinOrCreateHouseholdPromptScreen from "./screens/JoinOrCreateHouseholdPromptScreen";
-import MegaNavigationGodScreen from "./screens/MegaNavigationGodScreen";
 import PendingRequestScreen from "./screens/PendingRequestScreen";
 import SelectProfileScreen from "./screens/SelectProfileScreen";
 import SignInScreen from "./screens/SignInScreen";
@@ -37,7 +36,6 @@ export type RootStackParamList = {
   EditProfile: undefined;
   PendingRequest: undefined;
   ParsingJoinHousehold: { householdCode: string };
-  MegaNavigationGod: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -52,11 +50,6 @@ export default function NavContainer() {
       <PaperProvider theme={currentTheme}>
         <NavigationContainer theme={currentTheme}>
           <Stack.Navigator initialRouteName='SignIn'>
-            <Stack.Screen
-              name='MegaNavigationGod'
-              component={MegaNavigationGodScreen}
-              options={() => ({ title: "This is temporary" })}
-            />
             <Stack.Screen
               name='Home'
               component={TopTabNavigator}

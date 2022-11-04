@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useState } from "react";
+import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { Image, Modal, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
@@ -55,9 +55,6 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
   const members = useAppSelector(selectProfileByHousehold);
   const pendingRequestCount = useAppSelector(selectPendingRequestProfilesCount);
   const modalStyles = useModalStyles();
-  //const pauses = useAppSelector(selectPauses);
-  //console.log(members);
-  //console.log(pauses);
 
   const [modalAddAdminVisible, setModalAddAdminVisible] = useState(false);
   const [modalRemoveAdminVisible, setModalRemoveAdminVisible] = useState(false);
@@ -70,7 +67,6 @@ export default function EditHouseholdScreen(Props: NativeStackScreenProps<RootSt
   const {
     control,
     handleSubmit,
-    //formState: {},
   } = useForm();
 
   const onEditHouseholdPressed = (data: FieldValues) => {

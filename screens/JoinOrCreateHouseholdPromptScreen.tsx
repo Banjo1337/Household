@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useEffect } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
@@ -27,13 +27,11 @@ export default function JoinOrCreateHouseholdPromptScreen(
   
   const toggleInput = () => {
     setInput((joinHousehold) => !joinHousehold);
-    console.log("toggle pressed" + joinAsAdmin);
   };
 
   const [joinAsAdmin, setInput] = useState(false);
 
   const onCreateHouseholdPressed = (data: FieldValues) => {
-    console.log("you have pressed create a household with name " + data.householdName);
     const result = dispatch(createHouseholdThunk({ name: data.householdName }));
 
     result.then(() => {
@@ -109,7 +107,6 @@ export default function JoinOrCreateHouseholdPromptScreen(
 const styles = StyleSheet.create({
   scrollContainer: {
     height: Dimensions.get("window").height - 100,
-    // The above equaction will have to be adjusted based on if we're gonna use the toptabs bar. Keep this in mind.
   },
   container: {
     alignItems: "center",
