@@ -57,13 +57,6 @@ Vi har lite reflekterat huruvida man vill ha ett riktigt liveflöde som att när
 
 
 
-* Dessa krav måste göras (20st).
-Antal krav: 40.
-
-G: 20 (50%).
-
-VG: 32 (80%).
-
 ## Kravlista (4)
 
 -   [x] En logga, splashscreen och appikon ska designas och användas. *
