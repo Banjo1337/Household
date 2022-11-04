@@ -24,6 +24,8 @@ Två profiler finns. Räven ger tillgång till ett levande hushåll med sysslor 
 # Beskrivning
 Denna app används för att tilldela och spara vem som gör olika sysslor i ett hushåll. Ett hushåll består av upp till 8 personer, där statistik lagras för varje nuvarande vecka, nästa vecka samt föregående månad. Grafisk layout är barnanpassad. 
 
+![image](https://user-images.githubusercontent.com/90799243/199987199-3de2fc98-27b4-4b6a-a680-bc14034e037e.png)
+
 ---
 
 
