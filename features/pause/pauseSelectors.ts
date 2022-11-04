@@ -46,7 +46,7 @@ export const selectHasUserPauseAtThisTime = (
   const thisUsersPauses: Pause[] = allPauses.filter(
     (pause: Pause) => pause.profileIdQol === profileId,
   );
-  // Check if there is a pause that is active at this time
+
   const thisUsersPausesAtThisTime: Pause[] = thisUsersPauses.filter((pause: Pause) => {
     const pauseStart: number = new Date(pause.startDate).getTime();
     const pauseEnd: number = new Date(pause.endDate).getTime();
@@ -56,10 +56,6 @@ export const selectHasUserPauseAtThisTime = (
   return thisUsersPausesAtThisTime.length > 0;
 };
 
-//EdgeCase1: There is no pause in timePeriod
-//EdgeCase2: Everything is paus in this timePeriod
-//EdgeCase3: A pause start outside this period and ends inside this period
-//EdgeCase4: A pause start inside this period and ends outside this period
 export const selectPausePercentageAsDecimalInTimePeriodByProfileId = (
   state: RootStateType,
   profileId: string,
@@ -150,7 +146,7 @@ export const selectPausePercentageAsDecimalInTimePeriodByProfileId = (
     pausesStartInsideTimePeriodButEndOutsideTimePeriodTime;
 
   let returnValue = accumulatedPauseTime / totalTime;
-  //För att undvika division med 0 hos de som konsumerar denna.
+
   if (returnValue >= 1) {
     return 0.99;
   }
