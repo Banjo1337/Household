@@ -113,7 +113,7 @@ export default function SignUpScreen({ navigation }: NativeStackScreenProps<Root
             pattern: {
               value: PWD_REGEX,
               message:
-                "Password too weak."
+                "Minimum 6 characters, at least one uppercase letter, one lowercase letter, one number and one special character."
             },
           }}
         >

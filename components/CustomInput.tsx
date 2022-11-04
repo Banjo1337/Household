@@ -61,8 +61,8 @@ const CustomInput = ({
                   alignSelf: "stretch",
                   position: "absolute",
                   top: 75,
-                  fontSize: 20,
-                  fontWeight: "bold",
+                  fontSize: 11,
+                  fontWeight: "bold"
                 }}
               >
                 {error.message}
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingBottom: 20,
   },
-  input: { marginTop: 10, maxHeight: 200, borderWidth: 2, borderRadius: 5 },
+  input: { marginTop: 12, maxHeight: 200, borderWidth: 2 },
 });
 
 export default CustomInput;
