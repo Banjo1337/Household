@@ -24,9 +24,37 @@ Två profiler finns. Räven ger tillgång till ett levande hushåll med sysslor 
 # Beskrivning
 Denna app används för att tilldela och spara vem som gör olika sysslor i ett hushåll. Ett hushåll består av upp till 8 personer, där statistik lagras för varje nuvarande vecka, nästa vecka samt föregående månad. Grafisk layout är barnanpassad. 
 
-![image](https://user-images.githubusercontent.com/90799243/199987199-3de2fc98-27b4-4b6a-a680-bc14034e037e.png)
+# Avgränsningar
 
----
+Applikationen är utvecklad specifikt för Androidtelefoner.
+
+I vår applikation så syns enbart den senaste medlemmen av ett hushåll som gjort en syssla. Vill man istället se vem som gjort mest så hänvisas man till statistik.
+
+Arkiverade engångssysslor syns i ett dygn efter att den markerats som färdig.
+
+Görs en syssla kommer siffran 1/x visas vilket indikerar att den gjorts senaste dygnet.
+
+Skapas däremot en syssla så står 0/x i dagsvyn vilket indikerar att den aldrig gjorts.
+
+"Completed" i sysslodetaljer står som completed om sysslan inte är försenad.
+
+En bock med grön bakgrund visas enbart i dagsvy på engångssysslor som är avklarade och arkiverade.
+
+Tolkningen "ägare" i vårt projekt är att en ägare är admin och ett hushåll kan ha många admins.
+
+I produktbeställningen är karusellen för att välja poäng/frekvens på sysslor horisontell men efter diskussion med beställare godkänns en vertikal "picker".
+Även i vårt val av styling och design har visa friheter tagits med produktbeställare utan protester. 
+
+Egentligen kanske användare inte skulle få göra något innan man valt avatar. I nuläget representeras användare som inte valt avatar av ett timglas.
+
+Vi har två properties som inte används i Chore, AudioUrl och ImageUrl. Detta för att tiden att implementera inte fanns där.
+
+# Reflektioner
+Vi har lite reflekterat huruvida man vill ha ett riktigt liveflöde som att när man har appen framför sig, se tex sysslor som läggs till i faktisk realtid. Å ena sidan kan det vara bra men osäker på om det egentligen är nödvändigt för den här typen av app.  Vi hade kanske velat ha lagt till det här om vi haft mer tid (websockets, signalR).
+
+# [Frontend repo](https://github.com/Banjo1337/Household)
+# [Backend repo](https://github.com/boborjim/household-backend)
+
 
 
 * Dessa krav måste göras (20st).
@@ -151,6 +179,10 @@ VG: 32 (80%).
 ![image](https://user-images.githubusercontent.com/79047651/199952472-f6fed771-ce59-4337-bb7e-e09154b275ce.png)
 ![image](https://user-images.githubusercontent.com/79047651/199952547-f822ba92-c6d0-4450-948c-59e3384ec020.png)
 ![image](https://user-images.githubusercontent.com/79047651/199952609-8d0b49b7-756b-4268-8513-b6bb648a7a48.png)
+
+
+
+
  
  
  
