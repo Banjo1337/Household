@@ -12,13 +12,13 @@ npm run start
 ```
 5. Du är nu redo att skanna QR+koden i Expo Go på en fysisk telefon, eller ladda appen i en android emulator!
 
-Exempel inlogg är: 
+### Exempel inlogg är: 
 
-tuco
+Användarnamn: tuco
 
-Password_A1
+Lösenord: Password_A1
 
-Två profiler finns. Räven ger tillgång till ett levande hushåll med sysslor och statistik. Ugglad ger ett nystartat hushåll.
+Två profiler finns. Räven ger tillgång till ett levande hushåll med sysslor och statistik. Ugglan ger ett nystartat hushåll.
 
 
 # Beskrivning
@@ -56,6 +56,7 @@ Vi har lite reflekterat huruvida man vill ha ett riktigt liveflöde som att när
 
 # [Frontend repo](https://github.com/Banjo1337/Household)
 # [Backend repo](https://github.com/boborjim/household-backend)
+# [Presentation](https://docs.google.com/presentation/d/1H7-LkNMmhEaNceBP7-F0jG0_xjJD7SWJPvsmaN3SC90/edit?usp=sharing)
 
 
 
