@@ -6,6 +6,15 @@
 4. Kör kommandot "npm run start".
 5. Du är nu redo att skanna QR+koden i Expo Go på en fysisk telefon, eller ladda appen i en android emulator!
 
+Exempel inlogg är:
+tuco
+Password_A1
+Två profiler finns. Räven ger tillgång till ett levande hushåll med sysslor och statistik. Ugglad ger ett nystartat hushåll.
+
+
+Beskrivning:
+Denna app används för att tilldela och spara vem som gör olika sysslor i ett hushåll. Ett hushåll består av upp till 8 personer, där statistik lagras för varje nuvarande vecka, nästa vecka samt föregående månad. Grafisk layout är barnanpassad. 
+
 ---
 
 ## ⚠ Fritt fram första veckan att pusha i main, ingen branch protection! ⚠
