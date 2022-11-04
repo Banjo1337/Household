@@ -7,6 +7,7 @@
 5. Du är nu redo att skanna QR+koden i Expo Go på en fysisk telefon, eller ladda appen i en android emulator!
 
 Exempel inlogg är:
+
 tuco
 
 Password_A1
