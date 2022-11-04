@@ -31,6 +31,7 @@ export const createPause = createAsyncThunk<
   PauseCreateDto,
   { rejectValue: string; state: RootStateType }
 >("pause/CreatePause", async (pauseCreateDto: PauseCreateDto, thunkApi) => {
+  const token = thunkApi.getState().authenticateReducer.token;
   /* if (Token()) {
       return thunkApi.rejectWithValue("User not logged in");
     } */
@@ -57,7 +58,7 @@ export const createPause = createAsyncThunk<
       method: "POST",
       headers: {
         "content-type": "application/json",
-        // authorization: "Bearer " + Token(),
+        authorization: "Bearer " + token,
       },
       body: JSON.stringify(pauseCreateDto),
     });
