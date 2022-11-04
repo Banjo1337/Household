@@ -2,6 +2,7 @@ import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import { Profile } from "../features/profile/profileTypes";
 import { useAvatar } from "../hooks/useAvatar";
+
 interface Props {
   profile: Profile;
 }
